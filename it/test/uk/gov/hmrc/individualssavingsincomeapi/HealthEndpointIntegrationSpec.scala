@@ -1,4 +1,4 @@
-package uk.gov.hmrc.individualscapitalgainsincomeapi
+package uk.gov.hmrc.individualssavingsincomeapi
 
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.should.Matchers

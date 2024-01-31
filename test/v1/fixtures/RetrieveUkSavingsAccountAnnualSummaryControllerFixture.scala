@@ -16,7 +16,7 @@
 
 package v1.fixtures
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 
 object RetrieveUkSavingsAccountAnnualSummaryControllerFixture {
 
@@ -26,26 +26,5 @@ object RetrieveUkSavingsAccountAnnualSummaryControllerFixture {
       |   "untaxedUkInterest": 34514974058.99
       |   }
       """.stripMargin)
-
-  def mtdRetrieveResponseWithHateaos(nino: String, taxYear: String, savingsAccountId: String): JsValue = mtdRetrieveResponse.as[JsObject] ++ Json
-    .parse(
-      s"""
-      |{
-      |"links":[
-      |{
-      |   "href":"/individuals/income-received/savings/uk-accounts/$nino/$taxYear/$savingsAccountId",
-      |   "rel":"create-and-amend-uk-savings-account-annual-summary",
-      |   "method":"PUT"
-      |},
-      |{
-      |   "href":"/individuals/income-received/savings/uk-accounts/$nino/$taxYear/$savingsAccountId",
-      |   "rel":"self",
-      |   "method":"GET"
-      |}
-      |]
-      |}
-  """.stripMargin
-    )
-    .as[JsObject]
 
 }

@@ -23,7 +23,7 @@ import api.models.audit._
 import api.models.auth.UserDetails
 import api.models.domain.Nino
 import api.models.errors._
-import api.models.hateoas.{HateoasWrapper, Link}
+import api.models.hateoas.Link
 import api.models.outcomes.ResponseWrapper
 import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
@@ -31,7 +31,7 @@ import play.api.mvc.{AnyContentAsJson, Result}
 import v1.mocks.requestParsers.MockAddUkSavingsAccountRequestParser
 import v1.mocks.services.MockAddUkSavingsAccountService
 import v1.models.request.addUkSavingsAccount.{AddUkSavingsAccountRawData, AddUkSavingsAccountRequest, AddUkSavingsAccountRequestBody}
-import v1.models.response.addUkSavingsAccount.{AddUkSavingsAccountHateoasData, AddUkSavingsAccountResponse}
+import v1.models.response.addUkSavingsAccount.AddUkSavingsAccountResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -59,10 +59,6 @@ class AddUkSavingsAccountControllerSpec
         MockAddUkSavingsAccountService
           .addUkSavingsAccountService(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseData))))
-
-        MockHateoasFactory
-          .wrap(responseData, AddUkSavingsAccountHateoasData(nino, savingsAccountId))
-          .returns(HateoasWrapper(responseData, links))
 
         runOkTest(expectedStatus = OK, maybeExpectedResponseBody = Some(responseJson))
       }
@@ -98,7 +94,6 @@ class AddUkSavingsAccountControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockAddUkSavingsAccountRequestParser,
       service = mockAddUkSavingsAccountService,
-      hateoasFactory = mockHateoasFactory,
       auditService = mockAuditService,
       cc = cc,
       idGenerator = mockIdGenerator
@@ -111,7 +106,7 @@ class AddUkSavingsAccountControllerSpec
         auditType = "AddUkSavingsAccount",
         transactionName = "add-uk-savings-account",
         detail = FlattenedGenericAuditDetail(
-          versionNumber = Some("1.0"),
+          versionNumber = Some("2.0"),
           userDetails = UserDetails(mtdId, "Individual", None),
           params = Map("nino" -> nino),
           request = maybeRequestBody,
@@ -148,14 +143,7 @@ class AddUkSavingsAccountControllerSpec
 
     val responseJson: JsValue = Json.parse(s"""
       |{
-      |    "savingsAccountId": "$savingsAccountId",
-      |    "links":[
-      |      {
-      |         "href":"/individuals/income-received/savings/uk-accounts/$nino",
-      |         "method":"GET",
-      |         "rel":"list-all-uk-savings-account"
-      |      }
-      |   ]
+      |    "savingsAccountId": "$savingsAccountId"
       |}
       |""".stripMargin)
 

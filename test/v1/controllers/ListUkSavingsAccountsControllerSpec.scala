@@ -21,16 +21,16 @@ import api.hateoas.HateoasLinks
 import api.mocks.hateoas.MockHateoasFactory
 import api.models.domain.Nino
 import api.models.errors._
+import api.models.hateoas.Link
 import api.models.hateoas.Method.{GET, POST}
 import api.models.hateoas.RelType.{ADD_UK_SAVINGS_INCOME, SELF}
-import api.models.hateoas.{HateoasWrapper, Link}
 import api.models.outcomes.ResponseWrapper
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import v1.mocks.requestParsers.MockListUkSavingsAccountsRequestParser
 import v1.mocks.services.MockListUkSavingsAccountsService
 import v1.models.request.listUkSavingsAccounts.{ListUkSavingsAccountsRawData, ListUkSavingsAccountsRequest}
-import v1.models.response.listUkSavingsAccounts.{ListUkSavingsAccountsHateoasData, ListUkSavingsAccountsResponse, UkSavingsAccount}
+import v1.models.response.listUkSavingsAccounts.{ListUkSavingsAccountsResponse, UkSavingsAccount}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -94,18 +94,6 @@ class ListUkSavingsAccountsControllerSpec
       |        "savingsAccountId": "000000000000003",
       |        "accountName": "Bank Account 3"
       |    }
-      | ],
-      | "links": [
-      |      {
-      |         "href":"/individuals/income-received/savings/uk-accounts/$nino",
-      |         "rel":"add-uk-savings-account",
-      |         "method":"POST"
-      |      },
-      |      {
-      |         "href":"/individuals/income-received/savings/uk-accounts/$nino",
-      |         "rel":"self",
-      |         "method":"GET"
-      |      }
       | ]
       |}""".stripMargin)
 
@@ -119,16 +107,6 @@ class ListUkSavingsAccountsControllerSpec
         MockListUkSavingsAccountsService
           .listUkSavingsAccounts(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, validListUkSavingsAccountResponse))))
-
-        MockHateoasFactory
-          .wrap(validListUkSavingsAccountResponse, ListUkSavingsAccountsHateoasData(nino))
-          .returns(
-            HateoasWrapper(
-              validListUkSavingsAccountResponse,
-              Seq(
-                addUkSavingsAccountsLink,
-                listUkSavingsAccountsLink
-              )))
 
         runOkTest(
           expectedStatus = OK,
@@ -167,7 +145,6 @@ class ListUkSavingsAccountsControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockListUkSavingsAccountsRequestParser,
       service = mockListUkSavingsAccountsService,
-      hateoasFactory = mockHateoasFactory,
       cc = cc,
       idGenerator = mockIdGenerator
     )

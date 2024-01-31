@@ -20,7 +20,7 @@ import api.hateoas.HateoasLinksFactory
 import api.models.hateoas.{HateoasData, Link}
 import config.AppConfig
 import play.api.libs.json.{Json, OWrites}
-import v1.models.response.listEmployment.Employment.{createAmendUkSavings, retrieveUkSavings}
+import v1.models.response.listUkSavingsAccounts.UkSavingsAccount.{createAmendUkSavings, retrieveUkSavings}
 
 case class RetrieveUkSavingsAnnualSummaryResponse(taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal])
 

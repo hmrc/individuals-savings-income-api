@@ -50,21 +50,9 @@ class RetrieveUkSavingsAccountAnnualSummaryControllerISpec extends IntegrationBa
     val mtdResponse: JsValue = Json.parse(s"""
         {
          |   "taxedUkInterest": 93556675358.99,
-         |   "untaxedUkInterest": 34514974058.99,
-         |   "links":[
-         |     {
-         |          "href":"/individuals/income-received/savings/uk-accounts/$nino/$taxYear/$savingsAccountId",
-         |          "rel":"create-and-amend-uk-savings-account-annual-summary",
-         |          "method":"PUT"
-         |    },
-         |    {
-         |          "href":"/individuals/income-received/savings/uk-accounts/$nino/$taxYear/$savingsAccountId",
-         |          "rel":"self",
-         |          "method":"GET"
-         |    }
-         |   ]
-         |}
-         |""".stripMargin)
+         |   "untaxedUkInterest": 34514974058.99
+        }
+         """.stripMargin)
 
     def downstreamUri: String
 

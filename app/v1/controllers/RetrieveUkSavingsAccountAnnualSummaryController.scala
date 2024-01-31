@@ -17,13 +17,11 @@
 package v1.controllers
 
 import api.controllers.{AuthorisedController, EndpointLogContext, RequestContext, RequestHandler}
-import api.hateoas.HateoasFactory
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.IdGenerator
 import v1.controllers.requestParsers.RetrieveUkSavingsAccountRequestParser
 import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRawData
-import v1.models.response.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryResponseHateoasData
 import v1.services.RetrieveUkSavingsAccountAnnualSummaryService
 
 import javax.inject.{Inject, Singleton}
@@ -34,7 +32,6 @@ class RetrieveUkSavingsAccountAnnualSummaryController @Inject() (val authService
                                                                  val lookupService: MtdIdLookupService,
                                                                  parser: RetrieveUkSavingsAccountRequestParser,
                                                                  service: RetrieveUkSavingsAccountAnnualSummaryService,
-                                                                 hateoasFactory: HateoasFactory,
                                                                  cc: ControllerComponents,
                                                                  val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc) {
@@ -55,7 +52,7 @@ class RetrieveUkSavingsAccountAnnualSummaryController @Inject() (val authService
         RequestHandler
           .withParser(parser)
           .withService(service.retrieveUkSavingsAccountAnnualSummary)
-          .withHateoasResult(hateoasFactory)(RetrieveUkSavingsAnnualSummaryResponseHateoasData(nino, taxYear, savingsAccountId))
+          .withPlainJsonResult()
 
       requestHandler.handleRequest(rawData)
     }

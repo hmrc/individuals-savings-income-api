@@ -20,15 +20,13 @@ import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.hateoas.MockHateoasFactory
 import api.models.domain.{Nino, TaxYear, Timestamp}
 import api.models.errors._
-import api.models.hateoas.Method.{DELETE, GET, PUT}
-import api.models.hateoas.{HateoasWrapper, Link}
 import api.models.outcomes.ResponseWrapper
 import play.api.mvc.Result
 import v1.fixtures.RetrieveSavingsControllerFixture
 import v1.mocks.requestParsers.MockRetrieveSavingsRequestParser
 import v1.mocks.services.MockRetrieveSavingsService
 import v1.models.request.retrieveSavings.{RetrieveSavingsRawData, RetrieveSavingsRequest}
-import v1.models.response.retrieveSavings.{ForeignInterestItem, RetrieveSavingsHateoasData, RetrieveSavingsResponse, Securities}
+import v1.models.response.retrieveSavings.{ForeignInterestItem, RetrieveSavingsResponse, Securities}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -52,12 +50,6 @@ class RetrieveSavingsControllerSpec
     taxYear = TaxYear.fromMtd(taxYear)
   )
 
-  private val hateoasLinks = List(
-    Link(href = s"/individuals/income-received/savings/$nino/$taxYear", method = PUT, rel = "create-and-amend-savings-income"),
-    Link(href = s"/individuals/income-received/savings/$nino/$taxYear", method = GET, rel = "self"),
-    Link(href = s"/individuals/income-received/savings/$nino/$taxYear", method = DELETE, rel = "delete-savings-income")
-  )
-
   private val fullSecuritiesItemsModel = Securities(
     taxTakenOff = Some(100.0),
     grossAmount = 1455.0,
@@ -70,7 +62,7 @@ class RetrieveSavingsControllerSpec
     taxTakenOff = Some(22.22),
     specialWithholdingTax = Some(22.22),
     taxableAmount = 2321.22,
-    foreignTaxCreditRelief = true
+    foreignTaxCreditRelief = Some(true)
   )
 
   private val retrieveSavingsResponseModel = RetrieveSavingsResponse(
@@ -79,7 +71,7 @@ class RetrieveSavingsControllerSpec
     foreignInterest = Some(Seq(fullForeignInterestsModel))
   )
 
-  private val mtdResponse = RetrieveSavingsControllerFixture.mtdResponseWithHateoas(nino, taxYear)
+  private val mtdResponse = RetrieveSavingsControllerFixture.mtdRetrieveSavingsResponse
 
   "RetrieveSavingsController" should {
     "return a successful response with status 200 (OK)" when {
@@ -91,10 +83,6 @@ class RetrieveSavingsControllerSpec
         MockRetrieveSavingsService
           .retrieve(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, retrieveSavingsResponseModel))))
-
-        MockHateoasFactory
-          .wrap(retrieveSavingsResponseModel, RetrieveSavingsHateoasData(nino, taxYear))
-          .returns(HateoasWrapper(retrieveSavingsResponseModel, hateoasLinks))
 
         runOkTest(
           expectedStatus = OK,
@@ -135,7 +123,6 @@ class RetrieveSavingsControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockRetrieveSavingsRequestParser,
       service = mockRetrieveSavingsService,
-      hateoasFactory = mockHateoasFactory,
       cc = cc,
       idGenerator = mockIdGenerator
     )

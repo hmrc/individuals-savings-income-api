@@ -17,14 +17,12 @@
 package v1.controllers
 
 import api.controllers._
-import api.hateoas.HateoasFactory
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import utils.IdGenerator
 import v1.controllers.requestParsers.AddUkSavingsAccountRequestParser
 import v1.models.request.addUkSavingsAccount.AddUkSavingsAccountRawData
-import v1.models.response.addUkSavingsAccount.AddUkSavingsAccountHateoasData
 import v1.services.AddUkSavingsAccountService
 
 import javax.inject.{Inject, Singleton}
@@ -36,7 +34,6 @@ class AddUkSavingsAccountController @Inject() (val authService: EnrolmentsAuthSe
                                                parser: AddUkSavingsAccountRequestParser,
                                                service: AddUkSavingsAccountService,
                                                auditService: AuditService,
-                                               hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
                                                val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc) {
@@ -61,11 +58,11 @@ class AddUkSavingsAccountController @Inject() (val authService: EnrolmentsAuthSe
             auditService = auditService,
             auditType = "AddUkSavingsAccount",
             transactionName = "add-uk-savings-account",
-            params = Map("versionNumber" -> "1.0", "nino" -> nino),
+            params = Map("versionNumber" -> "2.0", "nino" -> nino),
             requestBody = Some(request.body),
             includeResponse = true
           ))
-          .withHateoasResultFrom(hateoasFactory)((_, resp) => AddUkSavingsAccountHateoasData(nino, resp.savingsAccountId))
+          .withPlainJsonResult()
 
       requestHandler.handleRequest(rawData)
     }

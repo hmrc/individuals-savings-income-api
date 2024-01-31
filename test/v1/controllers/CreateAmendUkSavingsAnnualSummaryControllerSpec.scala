@@ -23,7 +23,6 @@ import api.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
 import api.models.auth.UserDetails
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors._
-import api.models.hateoas.HateoasWrapper
 import api.models.hateoas.RelType.CREATE_AND_AMEND_UK_SAVINGS
 import api.models.outcomes.ResponseWrapper
 import play.api.libs.json.{JsObject, JsValue}
@@ -31,7 +30,6 @@ import play.api.mvc.{AnyContentAsJson, Result}
 import v1.mocks.requestParsers.MockCreateAmendUkSavingsAnnualSummaryRequestParser
 import v1.mocks.services.MockCreateAmendUkSavingsAnnualSummaryService
 import v1.models.request.createAmendUkSavingsAnnualSummary._
-import v1.models.response.createAmendUkSavingsIncomeAnnualSummary.CreateAndAmendUkSavingsAnnualSummaryHateoasData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -75,11 +73,7 @@ class CreateAmendUkSavingsAnnualSummaryControllerSpec
           .createOrAmendAnnualSummary(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
 
-        MockHateoasFactory
-          .wrap((), CreateAndAmendUkSavingsAnnualSummaryHateoasData(nino, taxYear, savingsAccountId))
-          .returns(HateoasWrapper((), testHateoasLinks))
-
-        runOkTest(expectedStatus = OK, maybeExpectedResponseBody = Some(testHateoasLinksJson))
+        runOkTest(expectedStatus = OK)
       }
     }
 
@@ -114,7 +108,6 @@ class CreateAmendUkSavingsAnnualSummaryControllerSpec
       parser = mockCreateAmendUkSavingsAnnualSummaryRequestParser,
       service = mockCreateAmendUkSavingsAnnualSummaryService,
       auditService = mockAuditService,
-      hateoasFactory = mockHateoasFactory,
       cc = cc,
       idGenerator = mockIdGenerator
     )
@@ -127,7 +120,7 @@ class CreateAmendUkSavingsAnnualSummaryControllerSpec
         auditType = "createAmendUkSavingsAnnualSummary",
         transactionName = CREATE_AND_AMEND_UK_SAVINGS,
         detail = FlattenedGenericAuditDetail(
-          versionNumber = Some("1.0"),
+          versionNumber = Some("2.0"),
           userDetails = UserDetails(mtdId, "Individual", None),
           params = Map("nino" -> nino, "taxYear" -> taxYear, "savingsAccountId" -> savingsAccountId),
           request = requestBody,

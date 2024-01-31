@@ -17,15 +17,12 @@
 package v1.controllers
 
 import api.controllers._
-import api.hateoas.HateoasFactory
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import utils.IdGenerator
 import v1.controllers.requestParsers.CreateAmendSavingsRequestParser
 import v1.models.request.amendSavings.CreateAmendSavingsRawData
-import v1.models.response.createAmendSavings.CreateAndAmendSavingsIncomeHateoasData
-import v1.models.response.createAmendSavings.CreateAndAmendSavingsIncomeResponse.CreateAndAmendSavingsIncomeLinksFactory
 import v1.services.CreateAmendSavingsService
 
 import javax.inject.{Inject, Singleton}
@@ -37,7 +34,6 @@ class CreateAmendSavingsController @Inject() (val authService: EnrolmentsAuthSer
                                               parser: CreateAmendSavingsRequestParser,
                                               service: CreateAmendSavingsService,
                                               auditService: AuditService,
-                                              hateoasFactory: HateoasFactory,
                                               cc: ControllerComponents,
                                               val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc) {
@@ -61,6 +57,7 @@ class CreateAmendSavingsController @Inject() (val authService: EnrolmentsAuthSer
       val requestHandler = RequestHandler
         .withParser(parser)
         .withService(service.createAmendSaving)
+        .withNoContentResult(OK)
         .withAuditing(AuditHandler(
           auditService = auditService,
           auditType = "CreateAmendSavingsIncome",
@@ -69,7 +66,6 @@ class CreateAmendSavingsController @Inject() (val authService: EnrolmentsAuthSer
           requestBody = Some(request.body),
           includeResponse = true
         ))
-        .withHateoasResult(hateoasFactory)(CreateAndAmendSavingsIncomeHateoasData(nino, taxYear))
 
       requestHandler.handleRequest(rawData)
     }

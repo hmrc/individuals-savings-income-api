@@ -17,13 +17,11 @@
 package v1.controllers
 
 import api.controllers.{AuthorisedController, EndpointLogContext, RequestContext, RequestHandler}
-import api.hateoas.HateoasFactory
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.IdGenerator
 import v1.controllers.requestParsers.RetrieveSavingsRequestParser
 import v1.models.request.retrieveSavings.RetrieveSavingsRawData
-import v1.models.response.retrieveSavings.RetrieveSavingsHateoasData
 import v1.services.RetrieveSavingsService
 
 import javax.inject.{Inject, Singleton}
@@ -34,7 +32,6 @@ class RetrieveSavingsController @Inject() (val authService: EnrolmentsAuthServic
                                            val lookupService: MtdIdLookupService,
                                            parser: RetrieveSavingsRequestParser,
                                            service: RetrieveSavingsService,
-                                           hateoasFactory: HateoasFactory,
                                            cc: ControllerComponents,
                                            val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc) {
@@ -57,7 +54,7 @@ class RetrieveSavingsController @Inject() (val authService: EnrolmentsAuthServic
       val requestHandler = RequestHandler
         .withParser(parser)
         .withService(service.retrieveSavings)
-        .withHateoasResult(hateoasFactory)(RetrieveSavingsHateoasData(nino, taxYear))
+        .withPlainJsonResult()
 
       requestHandler.handleRequest(rawData)
 

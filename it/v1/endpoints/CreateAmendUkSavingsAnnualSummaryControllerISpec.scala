@@ -50,8 +50,6 @@ class CreateAmendUkSavingsAnnualSummaryControllerISpec extends IntegrationBaseSp
 
         val response: WSResponse = await(request.put(requestJson))
         response.status shouldBe OK
-        response.json shouldBe hateoasResponse
-        response.header("Content-Type") shouldBe Some("application/json")
       }
 
       "a valid request is made for a Tax Year Specific tax year" in new TysIfsTest {
@@ -68,8 +66,6 @@ class CreateAmendUkSavingsAnnualSummaryControllerISpec extends IntegrationBaseSp
 
         val response: WSResponse = await(request.put(requestJson))
         response.status shouldBe OK
-        response.json shouldBe hateoasResponse
-        response.header("Content-Type") shouldBe Some("application/json")
       }
 
     }
@@ -195,28 +191,13 @@ class CreateAmendUkSavingsAnnualSummaryControllerISpec extends IntegrationBaseSp
                     |   "untaxedUkInterest": 12.99
                     |}""".stripMargin)
 
-    val hateoasResponse: JsValue = Json.parse(s"""{
-                                                 |    "links":[
-                                                 |      {
-                                                 |         "href":"/individuals/income-received/savings/uk-accounts/$nino/$taxYear/$savingsAccountId",
-                                                 |         "method":"PUT",
-                                                 |         "rel":"create-and-amend-uk-savings-account-annual-summary"
-                                                 |      },
-                                                 |      {
-                                                 |         "href":"/individuals/income-received/savings/uk-accounts/$nino/$taxYear/$savingsAccountId",
-                                                 |         "method":"GET",
-                                                 |         "rel":"self"
-                                                 |      }
-                                                 |   ]
-                                                 |}""".stripMargin)
-
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
       setupStubs()
       buildRequest(s"/savings/uk-accounts/$nino/$taxYear/$savingsAccountId")
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.1.0+json"),
+          (ACCEPT, "application/vnd.hmrc.2.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }

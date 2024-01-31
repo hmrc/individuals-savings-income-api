@@ -17,13 +17,11 @@
 package v1.controllers
 
 import api.controllers.{AuthorisedController, EndpointLogContext, RequestContext, RequestHandler}
-import api.hateoas.HateoasFactory
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.IdGenerator
 import v1.controllers.requestParsers.ListUkSavingsAccountsRequestParser
 import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRawData
-import v1.models.response.listUkSavingsAccounts.ListUkSavingsAccountsHateoasData
 import v1.services.ListUkSavingsAccountsService
 
 import javax.inject.{Inject, Singleton}
@@ -34,7 +32,6 @@ class ListUkSavingsAccountsController @Inject() (val authService: EnrolmentsAuth
                                                  val lookupService: MtdIdLookupService,
                                                  parser: ListUkSavingsAccountsRequestParser,
                                                  service: ListUkSavingsAccountsService,
-                                                 hateoasFactory: HateoasFactory,
                                                  cc: ControllerComponents,
                                                  val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc) {
@@ -58,7 +55,7 @@ class ListUkSavingsAccountsController @Inject() (val authService: EnrolmentsAuth
         RequestHandler
           .withParser(parser)
           .withService(service.listUkSavingsAccounts)
-          .withHateoasResult(hateoasFactory)(ListUkSavingsAccountsHateoasData(nino))
+          .withPlainJsonResult()
 
       requestHandler.handleRequest(rawData)
     }

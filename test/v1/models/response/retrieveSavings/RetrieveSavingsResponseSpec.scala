@@ -19,6 +19,7 @@ package v1.models.response.retrieveSavings
 import api.models.domain.Timestamp
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
+import v1.models.response.retrieveSavings.{ForeignInterestItem, RetrieveSavingsResponse, Securities}
 
 class RetrieveSavingsResponseSpec extends UnitSpec {
 
@@ -60,7 +61,7 @@ class RetrieveSavingsResponseSpec extends UnitSpec {
       taxTakenOff = Some(22.22),
       specialWithholdingTax = Some(22.22),
       taxableAmount = 2321.22,
-      foreignTaxCreditRelief = true
+      foreignTaxCreditRelief = Some(true)
     )
 
   private val model: RetrieveSavingsResponse =
@@ -84,7 +85,7 @@ class RetrieveSavingsResponseSpec extends UnitSpec {
       taxTakenOff = None,
       specialWithholdingTax = None,
       taxableAmount = 3000.33,
-      foreignTaxCreditRelief = true
+      foreignTaxCreditRelief = Some(true)
     )
 
   private val minimumModel: RetrieveSavingsResponse =
@@ -106,12 +107,12 @@ class RetrieveSavingsResponseSpec extends UnitSpec {
       |      },
       |   "foreignInterest": [
       |      {
-      |         "amountBeforeTax": 1232.22,
       |         "countryCode": "DEU",
+      |         "amountBeforeTax": 1232.22,
       |         "taxTakenOff": 22.22,
       |         "specialWithholdingTax": 22.22,
-      |         "taxableAmount": 2321.22,
-      |         "foreignTaxCreditRelief": true
+      |         "foreignTaxCreditRelief": true,
+      |         "taxableAmount": 2321.22
       |      }
       |   ]
       |}

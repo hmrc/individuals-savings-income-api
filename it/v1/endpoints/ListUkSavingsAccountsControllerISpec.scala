@@ -73,18 +73,6 @@ class ListUkSavingsAccountsControllerISpec extends IntegrationBaseSpec {
           |        "savingsAccountId": "000000000000003",
           |        "accountName": "Bank Account 3"
           |    }
-          | ],
-          | "links": [
-          |      {
-          |         "href":"/individuals/income-received/savings/uk-accounts/$nino",
-          |         "rel":"add-uk-savings-account",
-          |         "method":"POST"
-          |      },
-          |      {
-          |         "href":"/individuals/income-received/savings/uk-accounts/$nino",
-          |         "rel":"self",
-          |         "method":"GET"
-          |      }
           | ]
           |}""".stripMargin)
 

@@ -47,14 +47,7 @@ class AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
 
     val responseJson: JsValue = Json.parse(s"""
          |{
-         |   "savingsAccountId": "$savingsAccountId",
-         |   "links":[
-         |      {
-         |         "href":"/individuals/income-received/savings/uk-accounts/$nino",
-         |         "method":"GET",
-         |         "rel":"list-all-uk-savings-account"
-         |      }
-         |   ]
+         |   "savingsAccountId": "$savingsAccountId"
          |}
          |""".stripMargin)
 
@@ -68,7 +61,7 @@ class AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
       setupStubs()
       buildRequest(uri)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.1.0+json"),
+          (ACCEPT, "application/vnd.hmrc.2.0+json"),
           (AUTHORIZATION, "Bearer 123") // some bearer token
         )
     }

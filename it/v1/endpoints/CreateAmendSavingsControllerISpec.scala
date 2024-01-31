@@ -42,8 +42,6 @@ class CreateAmendSavingsControllerISpec extends IntegrationBaseSpec {
 
         val response: WSResponse = await(request().put(requestBodyJson))
         response.status shouldBe OK
-        response.body[JsValue] shouldBe hateoasResponse
-        response.header("Content-Type") shouldBe Some("application/json")
       }
 
       "any valid request is made for Tax Year Specific (TYS)" in new TysIfsTest {
@@ -57,8 +55,6 @@ class CreateAmendSavingsControllerISpec extends IntegrationBaseSpec {
 
         val response: WSResponse = await(request().put(requestBodyJson))
         response.status shouldBe OK
-        response.body[JsValue] shouldBe hateoasResponse
-        response.header("Content-Type") shouldBe Some("application/json")
       }
     }
 
@@ -461,30 +457,6 @@ class CreateAmendSavingsControllerISpec extends IntegrationBaseSpec {
     """.stripMargin
     )
 
-    val hateoasResponse: JsValue = Json.parse(
-      s"""
-         |{
-         |   "links":[
-         |      {
-         |         "href":"/individuals/income-received/savings/$nino/$taxYear",
-         |         "rel":"create-and-amend-savings-income",
-         |         "method":"PUT"
-         |      },
-         |      {
-         |         "href":"/individuals/income-received/savings/$nino/$taxYear",
-         |         "rel":"self",
-         |         "method":"GET"
-         |      },
-         |      {
-         |         "href":"/individuals/income-received/savings/$nino/$taxYear",
-         |         "rel":"delete-savings-income",
-         |         "method":"DELETE"
-         |      }
-         |   ]
-         |}
-    """.stripMargin
-    )
-
     def mtdUri: String = s"/savings/$nino/$taxYear"
     def downstreamUri: String
     def setupStubs(): StubMapping
@@ -493,7 +465,7 @@ class CreateAmendSavingsControllerISpec extends IntegrationBaseSpec {
       setupStubs()
       buildRequest(mtdUri)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.1.0+json"),
+          (ACCEPT, "application/vnd.hmrc.2.0+json"),
           (AUTHORIZATION, "Bearer 123") // some bearer token
         )
     }

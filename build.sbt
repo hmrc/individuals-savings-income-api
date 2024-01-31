@@ -20,7 +20,7 @@ import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.versioning.SbtGitVersioning
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
-val appName = "individuals-income-received-api"
+val appName = "individuals-savings-income-api"
 
 lazy val ItTest = config("it") extend Test
 
@@ -54,7 +54,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     resolvers += Resolver.jcenterRepo
   )
-  .settings(PlayKeys.playDefaultPort := 7794)
+  .settings(PlayKeys.playDefaultPort := 9770)
 
 dependencyUpdatesFilter -= moduleFilter(organization = "com.typesafe.play")
 dependencyUpdatesFilter -= moduleFilter(name = "simple-reactivemongo")

@@ -21,16 +21,13 @@ import api.hateoas.HateoasLinks
 import api.mocks.hateoas.MockHateoasFactory
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors._
-import api.models.hateoas.Method.{GET, PUT}
-import api.models.hateoas.RelType.{CREATE_AND_AMEND_UK_SAVINGS_INCOME, SELF}
-import api.models.hateoas.{HateoasWrapper, Link}
 import api.models.outcomes.ResponseWrapper
 import play.api.mvc.Result
 import v1.fixtures.RetrieveUkSavingsAccountAnnualSummaryControllerFixture
 import v1.mocks.requestParsers.MockRetrieveUkSavingsAnnualRequestParser
 import v1.mocks.services.MockRetrieveUkSavingsAnnualSummaryService
 import v1.models.request.retrieveUkSavingsAnnualSummary.{RetrieveUkSavingsAnnualSummaryRawData, RetrieveUkSavingsAnnualSummaryRequest}
-import v1.models.response.retrieveUkSavingsAnnualSummary.{RetrieveUkSavingsAnnualSummaryResponse, RetrieveUkSavingsAnnualSummaryResponseHateoasData}
+import v1.models.response.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -56,20 +53,12 @@ class RetrieveUkSavingsAccountAnnualSummaryControllerSpec
     savingsAccountId = savingsAccountId
   )
 
-  private val link: String = s"/individuals/income-received/savings/uk-accounts/$nino/$taxYear/$savingsAccountId"
-
-  private val links: Seq[Link] = Seq[Link](
-    Link(href = link, method = PUT, rel = CREATE_AND_AMEND_UK_SAVINGS_INCOME),
-    Link(href = link, method = GET, rel = SELF)
-  )
-
   private val retrieveUkSavingsAnnualSummaryResponse: RetrieveUkSavingsAnnualSummaryResponse = new RetrieveUkSavingsAnnualSummaryResponse(
     taxedUkInterest = taxedUkIncome,
     untaxedUkInterest = unTaxedUkIncome
   )
 
-  private val mtdResponse = RetrieveUkSavingsAccountAnnualSummaryControllerFixture
-    .mtdRetrieveResponseWithHateaos(nino, taxYear, savingsAccountId)
+  private val mtdResponse = RetrieveUkSavingsAccountAnnualSummaryControllerFixture.mtdRetrieveResponse
 
   "RetrieveUkSavingsAccountSummaryControllerSpec" should {
     "return OK" when {
@@ -81,15 +70,6 @@ class RetrieveUkSavingsAccountAnnualSummaryControllerSpec
         MockRetrieveUkSavingsAnnualSummaryService
           .retrieveUkSavings(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, retrieveUkSavingsAnnualSummaryResponse))))
-
-        MockHateoasFactory
-          .wrap(retrieveUkSavingsAnnualSummaryResponse, RetrieveUkSavingsAnnualSummaryResponseHateoasData(nino, taxYear, savingsAccountId))
-          .returns(
-            HateoasWrapper(
-              retrieveUkSavingsAnnualSummaryResponse,
-              links
-            )
-          )
 
         runOkTest(
           expectedStatus = OK,
@@ -128,7 +108,6 @@ class RetrieveUkSavingsAccountAnnualSummaryControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockRetrieveUkSavingsSummaryRequestParser,
       service = mockRetrieveUkSavingsAnnualSummaryService,
-      hateoasFactory = mockHateoasFactory,
       cc = cc,
       idGenerator = mockIdGenerator
     )

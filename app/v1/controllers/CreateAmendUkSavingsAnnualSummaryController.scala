@@ -17,7 +17,6 @@
 package v1.controllers
 
 import api.controllers._
-import api.hateoas.HateoasFactory
 import api.models.hateoas.RelType.CREATE_AND_AMEND_UK_SAVINGS
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.JsValue
@@ -25,7 +24,6 @@ import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import utils.IdGenerator
 import v1.controllers.requestParsers.CreateAmendUkSavingsAccountAnnualSummaryRequestParser
 import v1.models.request.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualSummaryRawData
-import v1.models.response.createAmendUkSavingsIncomeAnnualSummary.CreateAndAmendUkSavingsAnnualSummaryHateoasData
 import v1.services.CreateAmendUkSavingsAnnualSummaryService
 
 import javax.inject.{Inject, Singleton}
@@ -37,7 +35,6 @@ class CreateAmendUkSavingsAnnualSummaryController @Inject() (val authService: En
                                                              parser: CreateAmendUkSavingsAccountAnnualSummaryRequestParser,
                                                              service: CreateAmendUkSavingsAnnualSummaryService,
                                                              auditService: AuditService,
-                                                             hateoasFactory: HateoasFactory,
                                                              cc: ControllerComponents,
                                                              val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc) {
@@ -62,15 +59,15 @@ class CreateAmendUkSavingsAnnualSummaryController @Inject() (val authService: En
       val requestHandler = RequestHandler
         .withParser(parser)
         .withService(service.createAmend)
+        .withNoContentResult(OK)
         .withAuditing(AuditHandler.flattenedAuditing(
           auditService = auditService,
           auditType = "createAmendUkSavingsAnnualSummary",
           transactionName = CREATE_AND_AMEND_UK_SAVINGS,
-          params = Map("versionNumber" -> "1.0", "nino" -> nino, "taxYear" -> taxYear, "savingsAccountId" -> savingsAccountId),
+          params = Map("versionNumber" -> "2.0", "nino" -> nino, "taxYear" -> taxYear, "savingsAccountId" -> savingsAccountId),
           requestBody = Some(request.body),
           includeResponse = true
         ))
-        .withHateoasResult(hateoasFactory)(CreateAndAmendUkSavingsAnnualSummaryHateoasData(nino, taxYear, savingsAccountId))
 
       requestHandler.handleRequest(rawData)
     }

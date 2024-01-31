@@ -21,15 +21,12 @@ import api.mocks.hateoas.MockHateoasFactory
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors._
-import api.models.hateoas.Method.{DELETE, GET, PUT}
-import api.models.hateoas.{HateoasWrapper, Link}
 import api.models.outcomes.ResponseWrapper
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsJson, Result}
 import v1.mocks.requestParsers.MockCreateCreateAmendSavingsRequestParser
 import v1.mocks.services.MockCreateAmendSavingsService
 import v1.models.request.amendSavings._
-import v1.models.response.createAmendSavings.CreateAndAmendSavingsIncomeHateoasData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -116,36 +113,6 @@ class CreateAmendSavingsControllerSpec
     body = amendSavingsRequestBody
   )
 
-  private val hateoasLinks = List(
-    Link(href = s"/individuals/income-received/savings/$nino/$taxYear", method = PUT, rel = "create-and-amend-savings-income"),
-    Link(href = s"/individuals/income-received/savings/$nino/$taxYear", method = GET, rel = "self"),
-    Link(href = s"/individuals/income-received/savings/$nino/$taxYear", method = DELETE, rel = "delete-savings-income")
-  )
-
-  private val responseBodyJson: JsValue = Json.parse(
-    s"""
-      |{
-      |   "links":[
-      |      {
-      |         "href":"/individuals/income-received/savings/$nino/$taxYear",
-      |         "rel":"create-and-amend-savings-income",
-      |         "method":"PUT"
-      |      },
-      |      {
-      |         "href":"/individuals/income-received/savings/$nino/$taxYear",
-      |         "rel":"self",
-      |         "method":"GET"
-      |      },
-      |      {
-      |         "href":"/individuals/income-received/savings/$nino/$taxYear",
-      |         "rel":"delete-savings-income",
-      |         "method":"DELETE"
-      |      }
-      |   ]
-      |}
-    """.stripMargin
-  )
-
   "CreateAmendSavingsController" should {
     "return OK" when {
       "the request received is valid" in new Test {
@@ -157,15 +124,11 @@ class CreateAmendSavingsControllerSpec
           .createAmendSaving(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
 
-        MockHateoasFactory
-          .wrap((), CreateAndAmendSavingsIncomeHateoasData(nino, taxYear))
-          .returns(HateoasWrapper((), hateoasLinks))
-
         runOkTestWithAudit(
           expectedStatus = OK,
           maybeAuditRequestBody = Some(requestBodyJson),
-          maybeExpectedResponseBody = Some(responseBodyJson),
-          maybeAuditResponseBody = Some(responseBodyJson)
+          maybeExpectedResponseBody = None,
+          maybeAuditResponseBody = None
         )
       }
     }
@@ -201,7 +164,6 @@ class CreateAmendSavingsControllerSpec
       parser = mockCreateAmendSavingsRequestParser,
       service = mockCreateAmendSavingsService,
       auditService = mockAuditService,
-      hateoasFactory = mockHateoasFactory,
       cc = cc,
       idGenerator = mockIdGenerator
     )

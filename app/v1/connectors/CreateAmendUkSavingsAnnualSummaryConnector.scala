@@ -16,7 +16,7 @@
 
 package v1.connectors
 
-import api.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
+import api.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import api.models.domain.{Nino, TaxYear}
 import config.AppConfig
@@ -39,12 +39,17 @@ class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient
 
     implicit val successCode: SuccessCode = SuccessCode(Status.OK)
 
+    val path = s"income-tax/nino/${nino.nino}/income-source/savings/annual/${taxYear.asDownstream}"
+
     val downstreamUri =
       if (taxYear.useTaxYearSpecificApi) {
         TaxYearSpecificIfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/savings/annual")
+      } else if (featureSwitches.isDesIf_MigrationEnabled) {
+        IfsUri[Unit](path)
       } else {
-        DesUri[Unit](s"income-tax/nino/${nino.nino}/income-source/savings/annual/${taxYear.asDownstream}")
+        DesUri[Unit](path)
       }
+
     post(
       uri = downstreamUri,
       body = body

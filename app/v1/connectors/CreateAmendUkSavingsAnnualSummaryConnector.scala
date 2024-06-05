@@ -39,15 +39,12 @@ class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient
 
     implicit val successCode: SuccessCode = SuccessCode(Status.OK)
 
-    val path = s"income-tax/nino/${nino.nino}/income-source/savings/annual/${taxYear.asDownstream}"
-
     val downstreamUri =
       if (taxYear.useTaxYearSpecificApi) {
         TaxYearSpecificIfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/savings/annual")
-      } else if (featureSwitches.isDesIf_MigrationEnabled) {
-        IfsUri[Unit](path)
-      } else {
-        DesUri[Unit](path)
+      } else{
+        val path = s"income-tax/nino/${nino.nino}/income-source/savings/annual/${taxYear.asDownstream}"
+        if (featureSwitches.isDesIf_MigrationEnabled) IfsUri[Unit](path) else DesUri[Unit](path)
       }
 
     post(

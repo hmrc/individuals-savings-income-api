@@ -21,32 +21,33 @@ import support.UnitSpec
 
 class FeatureSwitchesSpec extends UnitSpec {
 
-  "a feature switch" should {
-    "be true" when {
+  def aFeatureSwitchFor(featureName: String, switch: FeatureSwitches => Boolean): Unit =
+    s"a feature switch for $featureName" should {
+      "be true" when {
+        "absent from the config" in {
+          val configuration = Configuration.empty
+          val featureSwitches = FeatureSwitches(configuration)
+          switch(featureSwitches) shouldBe true
+        }
 
-      "absent from the config" in {
-        val configuration   = Configuration.empty
-        val featureSwitches = FeatureSwitches(configuration)
-        featureSwitches.isDesIf_MigrationEnabled shouldBe true
-
+        "enabled" in {
+          val configuration = Configuration(featureName + ".enabled" -> true)
+          val featureSwitches = FeatureSwitches(configuration)
+          switch(featureSwitches) shouldBe true
+        }
       }
 
-      "enabled" in {
-        val configuration = Configuration(
-          "desIf_Migration.enabled"            -> true)
-        val featureSwitches = FeatureSwitches(configuration)
-        featureSwitches.isDesIf_MigrationEnabled shouldBe true
-      }
-    }
-
-    "be false" when {
-      "disabled" in {
-        val configuration = Configuration(
-          "desIf_Migration.enabled"            -> false)
-        val featureSwitches = FeatureSwitches(configuration)
-        featureSwitches.isDesIf_MigrationEnabled shouldBe false
+      "be false" when {
+        "disabled" in {
+          val configuration = Configuration(featureName + ".enabled" -> false)
+          val featureSwitches = FeatureSwitches(configuration)
+          switch(featureSwitches) shouldBe false
+        }
       }
     }
+
+  "isDesIf_MigrationEnabled" should {
+    behave like aFeatureSwitchFor("desIf_Migration", _.isDesIf_MigrationEnabled)
   }
 
 }

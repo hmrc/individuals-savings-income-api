@@ -31,7 +31,6 @@ class FeatureSwitchesImpl(featureSwitchConfig: Configuration) extends FeatureSwi
 
   @Inject
   def this(appConfig: AppConfig) = this(appConfig.featureSwitches)
-
   val isDesIf_MigrationEnabled: Boolean  = isEnabled("desIf_Migration.enabled")
 
   private def isEnabled(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)

@@ -33,7 +33,7 @@ trait DownstreamResponseMappingSupport {
         RuleIncorrectGovTestScenarioError
       }
       case "INVALID_CORRELATION_ID" | "INVALID_CORRELATIONID" => {
-        logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - An internal server error occurred")
+        logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - An invalid correlation id error occurred")
         InternalError
       }
       case code => {

@@ -26,8 +26,9 @@ object ResolveSavingsAccountId extends ResolverSupport {
 
   private val savingsAccountIdRegex = "^[A-Za-z0-9]{15}$".r
 
-  val resolver: Resolver[String, SavingsAccountId] =
+  val resolver: Resolver[String, SavingsAccountId] = {
     ResolveStringPattern(savingsAccountIdRegex, SavingsAccountIdFormatError).resolver.map(SavingsAccountId)
+  }
 
   def apply(value: String): Validated[Seq[MtdError], SavingsAccountId] = resolver(value)
 }

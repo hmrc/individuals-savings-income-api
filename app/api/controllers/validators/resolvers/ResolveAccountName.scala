@@ -16,19 +16,18 @@
 
 package api.controllers.validators.resolvers
 
-
 import api.models.domain.AccountName
-import api.models.errors.AccountNameFormatError
+import api.models.errors.AccountNameFormatErrorNew
 import cats.data.Validated
 import shared.controllers.validators.resolvers.{ResolveStringPattern, ResolverSupport}
 import shared.models.errors.MtdError
 
 object ResolveAccountName extends ResolverSupport {
 
-  private val accountNameRegex = "^[A-Za-z0-9 &'\\(\\)\\*,\\-\\./@£]{1,32}$".r
+  private val accountNameRegex = "^[A-Za-z0-9 &'()*,\\-./@£]{1,32}$".r
 
   val resolver: Resolver[String, AccountName] =
-    ResolveStringPattern(accountNameRegex, AccountNameFormatError).resolver.map(AccountName)
+    ResolveStringPattern(accountNameRegex, AccountNameFormatErrorNew).resolver.map(AccountName)
 
   def apply(value: String): Validated[Seq[MtdError], AccountName] = resolver(value)
 

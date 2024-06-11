@@ -16,13 +16,18 @@
 
 package v1.services
 
-import api.controllers.EndpointLogContext
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
+import api.models.domain.SavingsAccountId
+import shared.controllers.EndpointLogContext
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.ServiceSpec
 import v1.mocks.connectors.MockCreateAmendUkSavingsAnnualSummaryConnector
-import v1.models.request.createAmendUkSavingsAnnualSummary.{CreateAmendUkSavingsAnnualSummaryBody, CreateAmendUkSavingsAnnualSummaryRequest, DownstreamCreateAmendUkSavingsAnnualSummaryBody}
+import v1.models.request.createAmendUkSavingsAnnualSummary.{
+  CreateAmendUkSavingsAnnualSummaryBody,
+  CreateAmendUkSavingsAnnualSummaryRequestData,
+  DownstreamCreateAmendUkSavingsAnnualSummaryBody
+}
 
 import scala.concurrent.Future
 
@@ -32,10 +37,10 @@ class CreateAmendUkSavingsAnnualSummaryServiceSpec extends ServiceSpec {
   private val taxYear                  = TaxYear.fromMtd("2019-20")
   private val savingsAccountId: String = "ABC1234567890"
 
-  private val request = CreateAmendUkSavingsAnnualSummaryRequest(
+  private val request = CreateAmendUkSavingsAnnualSummaryRequestData(
     nino = nino,
     taxYear = taxYear,
-    savingsAccountId,
+    SavingsAccountId(savingsAccountId),
     body = CreateAmendUkSavingsAnnualSummaryBody(None, None)
   )
 
@@ -76,7 +81,7 @@ class CreateAmendUkSavingsAnnualSummaryServiceSpec extends ServiceSpec {
 
         val errors = List(
           ("INVALID_NINO", NinoFormatError),
-          ("INVALID_TAXYEAR", TaxYearFormatError), //remove once DES to IFS migration complete
+          ("INVALID_TAXYEAR", TaxYearFormatError), // remove once DES to IFS migration complete
           ("INVALID_TYPE", InternalError),
           ("INVALID_PAYLOAD", InternalError),
           ("NOT_FOUND_INCOME_SOURCE", NotFoundError),

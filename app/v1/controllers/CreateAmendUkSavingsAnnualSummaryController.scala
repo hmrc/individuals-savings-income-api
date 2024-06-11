@@ -16,28 +16,33 @@
 
 package v1.controllers
 
-import api.controllers._
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import config.AppConfig
-import play.api.libs.json.JsValue
-import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
-import utils.IdGenerator
-import v1.controllers.requestParsers.CreateAmendUkSavingsAccountAnnualSummaryRequestParser
-import v1.models.request.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualSummaryRawData
+import shared.controllers._
+import shared.config.AppConfig
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Action, ControllerComponents}
+import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import shared.models.auth.UserDetails
+import shared.models.errors.ErrorWrapper
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.IdGenerator
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.audit.http.connector.AuditResult
+import v1.controllers.validators.CreateAmendUkSavingsAnnualSummaryValidatorFactory
+import v1.models.response.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualSummaryResponse
 import v1.services.CreateAmendUkSavingsAnnualSummaryService
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CreateAmendUkSavingsAnnualSummaryController @Inject() (val authService: EnrolmentsAuthService,
                                                              val lookupService: MtdIdLookupService,
-                                                             parser: CreateAmendUkSavingsAccountAnnualSummaryRequestParser,
+                                                             validatorFactory: CreateAmendUkSavingsAnnualSummaryValidatorFactory,
                                                              service: CreateAmendUkSavingsAnnualSummaryService,
                                                              auditService: AuditService,
                                                              cc: ControllerComponents,
                                                              val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
-    extends AuthorisedController(cc) {
+  extends AuthorisedController(cc) {
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
@@ -49,27 +54,55 @@ class CreateAmendUkSavingsAnnualSummaryController @Inject() (val authService: En
     authorisedAction(nino).async(parse.json) { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData = CreateAmendUkSavingsAnnualSummaryRawData(
-        nino = nino,
-        taxYear = taxYear,
-        savingsAccountId = savingsAccountId,
-        body = AnyContentAsJson(request.body)
-      )
+      val validator = validatorFactory.validator(nino, taxYear, savingsAccountId, request.body)
 
       val requestHandler = RequestHandler
-        .withParser(parser)
-        .withService(service.createAmend)
+        .withValidator(validator)
+        .withService { req =>
+          service.createAmend(req)
+        }
+        .withAuditing(auditHandler(nino, taxYear, request))
         .withNoContentResult(OK)
-        .withAuditing(AuditHandler.flattenedAuditing(
-          auditService = auditService,
-          auditType = "createAmendUkSavingsAnnualSummary",
-          transactionName = "create-and-amend-uk-savings-account-annual-summary",
-          params = Map("versionNumber" -> "1.0", "nino" -> nino, "taxYear" -> taxYear, "savingsAccountId" -> savingsAccountId),
-          requestBody = Some(request.body),
-          includeResponse = true
-        ))
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
     }
 
+  private def auditHandler(nino: String, taxYear: String, request: UserRequest[JsValue]): AuditHandler = {
+    new AuditHandler() {
+      override def performAudit(userDetails: UserDetails, httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]])(implicit
+                                                                                                                            ctx: RequestContext,
+                                                                                                                            ec: ExecutionContext): Unit = {
+
+        response match {
+          case Left(err: ErrorWrapper) =>
+            auditSubmission(
+              GenericAuditDetail(
+                request.userDetails,
+                "1.0",
+                Map("nino" -> nino, "taxYear" -> taxYear),
+                Some(request.body),
+                ctx.correlationId,
+                AuditResponse(httpStatus = httpStatus, response = Left(err.auditErrors))
+              ))
+
+          case Right(_: Option[JsValue]) =>
+            auditSubmission(
+              GenericAuditDetail(
+                request.userDetails,
+                "1.0",
+                Map("nino" -> nino, "taxYear" -> taxYear),
+                Some(request.body),
+                ctx.correlationId,
+                AuditResponse(httpStatus = httpStatus, response =
+                  Right(Some(Json.toJson(CreateAmendUkSavingsAnnualSummaryResponse(nino, taxYear)))))
+              ))
+        }
+      }
+    }
+  }
+
+  private def auditSubmission(details: GenericAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
+    val event = AuditEvent("CreateAmendSavings", "Create-Amend-Savings", details)
+    auditService.auditEvent(event)
+  }
 }

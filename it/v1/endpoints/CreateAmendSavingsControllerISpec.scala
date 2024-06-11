@@ -41,7 +41,7 @@ class CreateAmendSavingsControllerISpec extends IntegrationBaseSpec {
         }
 
         val response: WSResponse = await(request().put(requestBodyJson))
-        response.status shouldBe NO_CONTENT
+        response.status shouldBe OK
       }
 
       "any valid request is made for Tax Year Specific (TYS)" in new TysIfsTest {
@@ -54,7 +54,7 @@ class CreateAmendSavingsControllerISpec extends IntegrationBaseSpec {
         }
 
         val response: WSResponse = await(request().put(requestBodyJson))
-        response.status shouldBe NO_CONTENT
+        response.status shouldBe OK
       }
     }
 

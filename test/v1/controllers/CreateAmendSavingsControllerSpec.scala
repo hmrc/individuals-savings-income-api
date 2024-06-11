@@ -121,7 +121,7 @@ class CreateAmendSavingsControllerSpec
           .createAmendSaving(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
 
-        runOkTest(expectedStatus = NO_CONTENT)
+        runOkTest(expectedStatus = OK)
       }
     }
 

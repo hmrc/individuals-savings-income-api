@@ -18,21 +18,16 @@ package v1.controllers
 
 import shared.controllers._
 import shared.config.AppConfig
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import shared.models.auth.UserDetails
-import shared.models.errors.ErrorWrapper
+import shared.routing.Version1
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.IdGenerator
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import v1.controllers.validators.CreateAmendUkSavingsAnnualSummaryValidatorFactory
-import v1.models.response.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualSummaryResponse
 import v1.services.CreateAmendUkSavingsAnnualSummaryService
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class CreateAmendUkSavingsAnnualSummaryController @Inject() (val authService: EnrolmentsAuthService,
@@ -61,48 +56,17 @@ class CreateAmendUkSavingsAnnualSummaryController @Inject() (val authService: En
         .withService { req =>
           service.createAmend(req)
         }
-        .withAuditing(auditHandler(nino, taxYear, request))
+        .withAuditing(AuditHandler(
+          auditService = auditService,
+          auditType = "CreateAmendUkSavingsAnnualSummary",
+          transactionName = "create-amend-uk-savings-annual-summary",
+          params = Map("nino" -> nino, "taxYear" -> taxYear),
+          requestBody = Some(request.body),
+          includeResponse = true,
+          apiVersion = Version1
+        ))
         .withNoContentResult(OK)
 
       requestHandler.handleRequest()
     }
-
-  private def auditHandler(nino: String, taxYear: String, request: UserRequest[JsValue]): AuditHandler = {
-    new AuditHandler() {
-      override def performAudit(userDetails: UserDetails, httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]])(implicit
-                                                                                                                            ctx: RequestContext,
-                                                                                                                            ec: ExecutionContext): Unit = {
-
-        response match {
-          case Left(err: ErrorWrapper) =>
-            auditSubmission(
-              GenericAuditDetail(
-                request.userDetails,
-                "1.0",
-                Map("nino" -> nino, "taxYear" -> taxYear),
-                Some(request.body),
-                ctx.correlationId,
-                AuditResponse(httpStatus = httpStatus, response = Left(err.auditErrors))
-              ))
-
-          case Right(_: Option[JsValue]) =>
-            auditSubmission(
-              GenericAuditDetail(
-                request.userDetails,
-                "1.0",
-                Map("nino" -> nino, "taxYear" -> taxYear),
-                Some(request.body),
-                ctx.correlationId,
-                AuditResponse(httpStatus = httpStatus, response =
-                  Right(Some(Json.toJson(CreateAmendUkSavingsAnnualSummaryResponse(nino, taxYear)))))
-              ))
-        }
-      }
-    }
-  }
-
-  private def auditSubmission(details: GenericAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
-    val event = AuditEvent("CreateAmendSavings", "Create-Amend-Savings", details)
-    auditService.auditEvent(event)
-  }
 }

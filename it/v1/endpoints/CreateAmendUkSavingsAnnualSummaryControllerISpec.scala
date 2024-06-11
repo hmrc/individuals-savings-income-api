@@ -207,7 +207,7 @@ class CreateAmendUkSavingsAnnualSummaryControllerISpec extends IntegrationBaseSp
   private trait TysIfsTest extends Test {
     def taxYear: String           = "2023-24"
     def downstreamTaxYear: String = "23-24"
-    def downstreamUri: String     = s"/income-tax/${downstreamTaxYear}/$nino/income-source/savings/annual"
+    def downstreamUri: String     = s"/income-tax/$downstreamTaxYear/$nino/income-source/savings/annual"
   }
 
   private trait NonTysTest extends Test {

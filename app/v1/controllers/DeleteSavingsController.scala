@@ -19,7 +19,7 @@ package v1.controllers
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import shared.config.AppConfig
 import shared.controllers._
-import shared.routing.Version1
+import shared.routing.Version
 import shared.services._
 import shared.utils.IdGenerator
 import v1.controllers.requestParsers.validators.DeleteSavingsValidatorFactory
@@ -58,7 +58,7 @@ class DeleteSavingsController @Inject() (val authService: EnrolmentsAuthService,
           AuditHandler(
             auditService,
             auditType = "DeleteSavingsIncome",
-            apiVersion = Version1,
+            apiVersion = Version(request),
             transactionName = "delete-savings-income",
             params = Map("nino" -> nino, "taxYear" -> taxYear)
           )

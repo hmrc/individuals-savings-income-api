@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveUkSavingsAnnualSummary
+package mocks
 
-import play.api.libs.json.Json
-import shared.UnitSpec
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import utils.CurrentDateTime
 
-class RetrieveUkSavingsAnnualSummaryResponseSpec extends UnitSpec with MockAppConfig {
+import java.time.LocalDate
 
-  "writes" must {
-    "write as MTD JSON" in {
-      Json.toJson(RetrieveUkSavingsAnnualSummaryResponse(taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12))) shouldBe
-        Json.parse("""{
-          |  "taxedUkInterest": 1.12,
-          |  "untaxedUkInterest": 2.12
-          |}""".stripMargin)
-    }
+trait MockCurrentDateTime extends MockFactory {
+
+  val mockCurrentDateTime: CurrentDateTime = mock[CurrentDateTime]
+
+  object MockCurrentDateTime {
+    def getLocalDate: CallHandler[LocalDate] = (() => mockCurrentDateTime.getLocalDate).expects()
   }
-
 
 }

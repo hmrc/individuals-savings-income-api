@@ -16,14 +16,13 @@
 
 package v1.controllers.validators
 
-import shared.config.MockAppConfig
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+import shared.UnitSpec
 import v1.models.request.amendSavings.{CreateAmendSavingsRequestBody, CreateAmendSavingsRequestData}
 
-class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
+class CreateAmendSavingsValidatorFactorySpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 

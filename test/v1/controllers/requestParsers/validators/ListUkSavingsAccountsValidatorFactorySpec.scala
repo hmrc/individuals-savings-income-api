@@ -18,13 +18,12 @@ package v1.controllers.requestParsers.validators
 
 
 import shared.UnitSpec
-import shared.config.MockAppConfig
 import shared.models.domain.Nino
 import shared.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, SavingsAccountIdFormatError}
 import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
 
 
-class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec with MockAppConfig {
+class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
@@ -32,7 +31,7 @@ class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec with MockAppCon
   private val validSavingsAccountId = "SAVKB2UVwUTBQGJ"
   private val parsedNino    = Nino(validNino)
 
-  val validator = new ListUkSavingsAccountsValidatorFactory(mockAppConfig)
+  val validator = new ListUkSavingsAccountsValidatorFactory()
 
 
   "running a validation" should {

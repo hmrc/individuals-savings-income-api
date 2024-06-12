@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import api.models.domain.SavingsAccountId
+import models.domain.SavingsAccountId
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}

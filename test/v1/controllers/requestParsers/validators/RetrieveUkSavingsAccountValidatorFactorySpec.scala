@@ -16,9 +16,7 @@
 
 package v1.controllers.requestParsers.validators
 
-import api.mocks.MockCurrentDateTime
-import config.AppConfig
-import mocks.MockAppConfig
+import mocks.MockCurrentDateTime
 import shared.UnitSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
@@ -28,7 +26,7 @@ import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualS
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockAppConfig  {
+class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec  {
 
   private implicit val correlationId: String = "1234"
   private val validNino             = "AA123456A"
@@ -37,21 +35,17 @@ class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockApp
   private val parsedNino = Nino(validNino)
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
 
-  class Test extends MockCurrentDateTime with MockAppConfig {
+  class Test extends MockCurrentDateTime {
 
     implicit val dateTimeProvider: CurrentDateTime = mockCurrentDateTime
     val dateTimeFormatter: DateTimeFormatter       = DateTimeFormatter.ISO_LOCAL_DATE
 
-    implicit val appConfig: AppConfig = mockAppConfig
 
     val validator = new RetrieveUkSavingsAccountValidatorFactory()
 
     MockCurrentDateTime.getLocalDate
       .returns(LocalDate.parse("2022-07-11", dateTimeFormatter))
       .anyNumberOfTimes()
-
-    MockedAppConfig.minimumPermittedTaxYear
-      .returns(2021)
 
   }
 

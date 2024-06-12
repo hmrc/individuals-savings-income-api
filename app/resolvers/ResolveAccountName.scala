@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveUkSavingsAnnualSummary
+package resolvers
 
-import play.api.libs.json.Json
-import shared.UnitSpec
+import cats.data.Validated
+import models.domain.AccountName
+import models.errors.AccountNameFormatErrorNew
+import shared.controllers.validators.resolvers.{ResolveStringPattern, ResolverSupport}
+import shared.models.errors.MtdError
 
-class RetrieveUkSavingsAnnualSummaryResponseSpec extends UnitSpec with MockAppConfig {
+object ResolveAccountName extends ResolverSupport {
 
-  "writes" must {
-    "write as MTD JSON" in {
-      Json.toJson(RetrieveUkSavingsAnnualSummaryResponse(taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12))) shouldBe
-        Json.parse("""{
-          |  "taxedUkInterest": 1.12,
-          |  "untaxedUkInterest": 2.12
-          |}""".stripMargin)
-    }
-  }
+  private val accountNameRegex = "^[A-Za-z0-9 &'()*,\\-./@£]{1,32}$".r
 
+  val resolver: Resolver[String, AccountName] =
+    ResolveStringPattern(accountNameRegex, AccountNameFormatErrorNew).resolver.map(AccountName)
+
+  def apply(value: String): Validated[Seq[MtdError], AccountName] = resolver(value)
 
 }

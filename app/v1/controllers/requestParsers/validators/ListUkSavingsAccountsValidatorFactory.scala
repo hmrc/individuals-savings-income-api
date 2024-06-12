@@ -28,7 +28,7 @@ import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class ListUkSavingsAccountsValidatorFactory @Inject()(appConfig: AppConfig) {
+class ListUkSavingsAccountsValidatorFactory @Inject() {
 
   def validator(nino: String, savingsAccountId: Option[String]): Validator[ListUkSavingsAccountsRequestData] =
     new Validator[ListUkSavingsAccountsRequestData] {

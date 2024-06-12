@@ -18,12 +18,11 @@ package v1.controllers.requestParsers.validators
 
 import shared.models.errors._
 import config.AppConfig
-import mocks.MockAppConfig
 import shared.models.domain.{Nino, TaxYear}
-import support.UnitSpec
+import shared.UnitSpec
 import v1.models.request.deleteSavings.DeleteSavingsRequestData
 
-class DeleteSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
+class DeleteSavingsValidatorFactorySpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
   private val validNino                      = "AA123456A"
@@ -32,9 +31,7 @@ class DeleteSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
   private val parsedNino    = Nino(validNino)
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
 
-  implicit val appConfig: AppConfig = mockAppConfig
-
-  val validatorFactory = new DeleteSavingsValidatorFactory(appConfig)
+  val validatorFactory = new DeleteSavingsValidatorFactory()
 
   private def validator(nino: String, taxYear: String) = validatorFactory.validator(nino, taxYear)
 

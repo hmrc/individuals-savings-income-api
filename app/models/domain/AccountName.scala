@@ -14,22 +14,8 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveUkSavingsAnnualSummary
+package models.domain
 
-import play.api.libs.json.Json
-import shared.UnitSpec
-
-class RetrieveUkSavingsAnnualSummaryResponseSpec extends UnitSpec with MockAppConfig {
-
-  "writes" must {
-    "write as MTD JSON" in {
-      Json.toJson(RetrieveUkSavingsAnnualSummaryResponse(taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12))) shouldBe
-        Json.parse("""{
-          |  "taxedUkInterest": 1.12,
-          |  "untaxedUkInterest": 2.12
-          |}""".stripMargin)
-    }
-  }
-
-
+case class AccountName(accountName: String) {
+  override def toString: String = accountName
 }

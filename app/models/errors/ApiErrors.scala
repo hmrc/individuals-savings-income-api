@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveUkSavingsAnnualSummary
+package models.errors
 
-import play.api.libs.json.Json
-import shared.UnitSpec
+import play.api.http.Status.BAD_REQUEST
 
-class RetrieveUkSavingsAnnualSummaryResponseSpec extends UnitSpec with MockAppConfig {
+import shared.models.errors.MtdError
 
-  "writes" must {
-    "write as MTD JSON" in {
-      Json.toJson(RetrieveUkSavingsAnnualSummaryResponse(taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12))) shouldBe
-        Json.parse("""{
-          |  "taxedUkInterest": 1.12,
-          |  "untaxedUkInterest": 2.12
-          |}""".stripMargin)
-    }
-  }
+object AccountNameFormatErrorNew extends MtdError("FORMAT_ACCOUNT_NAME", "The provided account name is invalid", BAD_REQUEST)
 
+object SavingsAccountIdFormatErrorNew
+    extends MtdError("FORMAT_SAVINGS_ACCOUNT_ID", "The format of the supplied savings account ID is not valid", BAD_REQUEST)
 
-}
+object DateFormatErrorNew extends MtdError("FORMAT_DATE", "The field should be in the format YYYY-MM-DD", BAD_REQUEST)

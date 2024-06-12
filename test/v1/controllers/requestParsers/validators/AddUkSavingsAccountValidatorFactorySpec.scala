@@ -19,7 +19,7 @@ package v1.controllers.requestParsers.validators
 import play.api.libs.json.{JsObject, JsValue, Json}
 import shared.models.domain.Nino
 import shared.models.errors._
-import support.UnitSpec
+import shared.UnitSpec
 import v1.models.request.addUkSavingsAccount.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
 
 class AddUkSavingsAccountValidatorFactorySpec extends UnitSpec {

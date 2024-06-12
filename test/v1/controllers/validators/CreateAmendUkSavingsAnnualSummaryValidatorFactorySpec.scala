@@ -16,15 +16,14 @@
 
 package v1.controllers.validators
 
-import api.models.domain.SavingsAccountId
-import shared.config.MockAppConfig
+import models.domain.SavingsAccountId
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+import shared.UnitSpec
 import v1.models.request.createAmendUkSavingsAnnualSummary.{CreateAmendUkSavingsAnnualSummaryBody, CreateAmendUkSavingsAnnualSummaryRequestData}
 
-class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec with MockAppConfig {
+class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 

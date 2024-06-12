@@ -89,12 +89,6 @@ object CreateAmendSavingsRulesValidator extends RulesValidator[CreateAmendSaving
       resolveParsedNumber(value, path)
     }
 
-//    val validatedOptionalBoolean = List(
-//      (foreignTaxCreditRelief, s"/foreignInterest/$index/foreignTaxCreditRelief")
-//    ).traverse_ { case (value, path) =>
-//      ResolveBoolean(value.toString, BadRequestError)
-//    }
-
     val validatedCountryCode = List(
       (countryCode, s"/foreignInterest/$index/countryCode")
     ).traverse_ { case (value, path) =>
@@ -104,7 +98,6 @@ object CreateAmendSavingsRulesValidator extends RulesValidator[CreateAmendSaving
     combine(
       validatedMandatoryDecimalNumbers,
       validatedOptionalDecimalNumbers,
-      //validatedOptionalBoolean,
       validatedCountryCode
     )
   }

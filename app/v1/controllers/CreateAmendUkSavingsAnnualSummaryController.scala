@@ -20,7 +20,7 @@ import shared.controllers._
 import shared.config.AppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import shared.routing.Version1
+import shared.routing.Version
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.IdGenerator
 import v1.controllers.validators.CreateAmendUkSavingsAnnualSummaryValidatorFactory
@@ -53,9 +53,7 @@ class CreateAmendUkSavingsAnnualSummaryController @Inject() (val authService: En
 
       val requestHandler = RequestHandler
         .withValidator(validator)
-        .withService { req =>
-          service.createAmend(req)
-        }
+        .withService(req => service.createAmend(req))
         .withAuditing(AuditHandler(
           auditService = auditService,
           auditType = "CreateAmendUkSavingsAnnualSummary",
@@ -63,7 +61,7 @@ class CreateAmendUkSavingsAnnualSummaryController @Inject() (val authService: En
           params = Map("nino" -> nino, "taxYear" -> taxYear),
           requestBody = Some(request.body),
           includeResponse = true,
-          apiVersion = Version1
+          apiVersion = Version(request)
         ))
         .withNoContentResult(OK)
 

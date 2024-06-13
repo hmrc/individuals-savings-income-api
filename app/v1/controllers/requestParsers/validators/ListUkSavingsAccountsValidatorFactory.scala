@@ -19,7 +19,6 @@ package v1.controllers.requestParsers.validators
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import cats.implicits.catsSyntaxTuple2Semigroupal
-import shared.config.AppConfig
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.ResolveNino
 import shared.models.errors.{MtdError, SavingsAccountIdFormatError}

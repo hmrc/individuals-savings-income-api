@@ -16,12 +16,13 @@
 
 package v1.controllers.requestParsers.validators
 
+import config.{MockSavingsAppConfig, SavingsAppConfig}
 import shared.UnitSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
 
-class RetrieveSavingsValidatorFactorySpec extends UnitSpec {
+class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAppConfig{
 
   private implicit val correlationId: String = "1234"
 
@@ -30,7 +31,8 @@ class RetrieveSavingsValidatorFactorySpec extends UnitSpec {
   private val parsedNino    = Nino(validNino)
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
 
-  val validator = new RetrieveSavingsValidatorFactory()
+  implicit val savingsAppConfig: SavingsAppConfig = mockSavingsAppConfig
+  val validator = new RetrieveSavingsValidatorFactory(savingsAppConfig)
 
 
   "running a validation" should {

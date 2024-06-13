@@ -16,13 +16,13 @@
 
 package v1.controllers.requestParsers.validators
 
+import config.{MockSavingsAppConfig, SavingsAppConfig}
 import shared.models.errors._
-import config.AppConfig
 import shared.models.domain.{Nino, TaxYear}
 import shared.UnitSpec
 import v1.models.request.deleteSavings.DeleteSavingsRequestData
 
-class DeleteSavingsValidatorFactorySpec extends UnitSpec {
+class DeleteSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAppConfig{
 
   private implicit val correlationId: String = "1234"
   private val validNino                      = "AA123456A"
@@ -31,13 +31,10 @@ class DeleteSavingsValidatorFactorySpec extends UnitSpec {
   private val parsedNino    = Nino(validNino)
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
 
-  val validatorFactory = new DeleteSavingsValidatorFactory()
+  implicit val savingsAppConfig: SavingsAppConfig = mockSavingsAppConfig
+  val validatorFactory = new DeleteSavingsValidatorFactory(mockSavingsAppConfig)
 
   private def validator(nino: String, taxYear: String) = validatorFactory.validator(nino, taxYear)
-
-  MockedAppConfig.minimumPermittedTaxYear
-    .returns(2021)
-    .anyNumberOfTimes()
 
   "running a validation" should {
     "return no errors" when {

@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package api.stubs
+package config
 
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.Status._
-import support.WireMockMethods
+import com.google.inject.AbstractModule
+import definition.SavingsApiDefinitionFactory
+import routing.SavingsVersionRoutingMapImpl
+import shared.definition.ApiDefinitionFactory
+import shared.routing.VersionRoutingMap
 
-object AuditStub extends WireMockMethods {
+class DIModule extends AbstractModule {
 
-  private val auditUri: String = s"/write/audit.*"
-
-  def audit(): StubMapping = {
-    when(method = POST, uri = auditUri)
-      .thenReturn(status = NO_CONTENT)
+  override def configure(): Unit = {
+    bind(classOf[ApiDefinitionFactory]).to(classOf[SavingsApiDefinitionFactory]).asEagerSingleton()
+    bind(classOf[VersionRoutingMap]).to(classOf[SavingsVersionRoutingMapImpl]).asEagerSingleton()
   }
 
 }

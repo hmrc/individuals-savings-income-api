@@ -18,6 +18,7 @@ package v1.controllers.requestParsers.validators
 
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple2Semigroupal
+import config.SavingsAppConfig
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
@@ -26,9 +27,9 @@ import v1.models.request.deleteSavings.DeleteSavingsRequestData
 
 import javax.inject._
 
-class DeleteSavingsValidatorFactory @Inject() {
+class DeleteSavingsValidatorFactory @Inject() (savingsAppConfig: SavingsAppConfig){
 
-  private lazy val minimumTaxYear = 2021
+  private lazy val minimumTaxYear = savingsAppConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
 
   def validator(nino: String, taxYear: String): Validator[DeleteSavingsRequestData] = new Validator[DeleteSavingsRequestData] {

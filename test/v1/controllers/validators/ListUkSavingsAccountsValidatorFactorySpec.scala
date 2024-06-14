@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers.validators
-
+package v1.controllers.validators
 
 import models.domain.SavingsAccountId
 import shared.UnitSpec

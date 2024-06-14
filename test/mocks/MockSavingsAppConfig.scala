@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package config
+package mocks
 
+import config.SavingsAppConfig
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 

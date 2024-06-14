@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers.validators
+package v1.controllers.validators
 
-import config.{MockSavingsAppConfig, SavingsAppConfig}
-import shared.models.errors._
-import shared.models.domain.{Nino, TaxYear}
+import config.SavingsAppConfig
+import mocks.MockSavingsAppConfig
 import shared.UnitSpec
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
 import v1.models.request.deleteSavings.DeleteSavingsRequestData
 
 class DeleteSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAppConfig{

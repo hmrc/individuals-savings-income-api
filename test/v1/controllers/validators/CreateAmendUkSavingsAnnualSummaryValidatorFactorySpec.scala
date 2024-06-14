@@ -16,7 +16,8 @@
 
 package v1.controllers.validators
 
-import config.{MockSavingsAppConfig, SavingsAppConfig}
+import config.SavingsAppConfig
+import mocks.MockSavingsAppConfig
 import models.domain.SavingsAccountId
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers.validators
+package v1.controllers.validators
 
-import config.{MockSavingsAppConfig, SavingsAppConfig}
-import mocks.MockCurrentDateTime
+import config.SavingsAppConfig
+import mocks.{MockCurrentDateTime, MockSavingsAppConfig}
 import models.domain.SavingsAccountId
 import shared.UnitSpec
 import shared.models.domain.{Nino, TaxYear}

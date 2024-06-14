@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers.validators
+package v1.controllers.validators
 
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}

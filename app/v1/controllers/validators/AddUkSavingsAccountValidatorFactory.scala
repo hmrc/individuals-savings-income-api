@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers.validators
+package v1.controllers.validators
 
 import cats.data.Validated
 import cats.implicits.{catsSyntaxTuple2Semigroupal, toFoldableOps}
 import play.api.libs.json.JsValue
+import resolvers.ResolveAccountName
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject}
 import shared.models.errors.MtdError
-import resolvers.ResolveAccountName
 import v1.models.request.addUkSavingsAccount.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
 
 import javax.inject.Inject

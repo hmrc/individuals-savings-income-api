@@ -17,6 +17,7 @@
 package v1.controllers.requestParsers.validators
 
 
+import models.domain.SavingsAccountId
 import shared.UnitSpec
 import shared.models.domain.Nino
 import shared.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, SavingsAccountIdFormatError}
@@ -28,7 +29,7 @@ class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec {
   private implicit val correlationId: String = "1234"
 
   private val validNino             = "AA123456A"
-  private val validSavingsAccountId = "SAVKB2UVwUTBQGJ"
+  private val validSavingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
   private val parsedNino    = Nino(validNino)
 
   val validator = new ListUkSavingsAccountsValidatorFactory()
@@ -37,14 +38,14 @@ class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec {
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        val result = validator.validator(validNino, Some(validSavingsAccountId)).validateAndWrapResult()
+        val result = validator.validator(validNino, Some(validSavingsAccountId.toString)).validateAndWrapResult()
         result shouldBe Right(ListUkSavingsAccountsRequestData(parsedNino, Some(validSavingsAccountId)))
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        val result = validator.validator("A12344A", Some(validSavingsAccountId)).validateAndWrapResult()
+        val result = validator.validator("A12344A", Some(validSavingsAccountId.toString)).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, NinoFormatError)
         )

@@ -22,7 +22,7 @@ import play.api.libs.json.JsValue
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject}
 import shared.models.errors.MtdError
-import v1.controllers.requestParsers.validators.resolvers.ResolveAccountName
+import resolvers.ResolveAccountName
 import v1.models.request.addUkSavingsAccount.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
 
 import javax.inject.Inject

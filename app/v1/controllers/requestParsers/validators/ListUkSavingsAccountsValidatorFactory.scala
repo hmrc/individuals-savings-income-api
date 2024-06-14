@@ -19,6 +19,8 @@ package v1.controllers.requestParsers.validators
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import cats.implicits.catsSyntaxTuple2Semigroupal
+import models.domain.SavingsAccountId
+//import resolvers.ResolveOptionalSavingsAccountId
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.ResolveNino
 import shared.models.errors.{MtdError, SavingsAccountIdFormatError}
@@ -35,16 +37,16 @@ class ListUkSavingsAccountsValidatorFactory @Inject() {
       def validate: Validated[Seq[MtdError], ListUkSavingsAccountsRequestData] =
         (
           ResolveNino(nino),
-          resolveSavingsAccountId(savingsAccountId)
+          resolveOptionalSavingsAccountId(savingsAccountId)
           ).mapN(ListUkSavingsAccountsRequestData)
 
     }
 
-  private def resolveSavingsAccountId(maybeid: Option[String]): Validated[Seq[MtdError], Option[String]] = {
+  private def resolveOptionalSavingsAccountId(maybeid: Option[String]): Validated[Seq[MtdError], Option[SavingsAccountId]] = {
     val regex = "^[A-Za-z0-9]{15}$"
     maybeid
       .map { id =>
-        if (id.matches(regex)) Valid(Some(id)) else Invalid(Seq[MtdError](SavingsAccountIdFormatError))
+        if (id.matches(regex)) Valid(Some(SavingsAccountId(id))) else Invalid(Seq[MtdError](SavingsAccountIdFormatError))
       }
       .getOrElse(Valid(None))
   }

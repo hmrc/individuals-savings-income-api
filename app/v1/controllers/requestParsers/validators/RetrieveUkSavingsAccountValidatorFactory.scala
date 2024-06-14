@@ -18,13 +18,13 @@ package v1.controllers.requestParsers.validators
 
 
 import cats.data.Validated
-import cats.data.Validated.{Invalid, Valid}
 import cats.implicits.catsSyntaxTuple3Semigroupal
 import config.SavingsAppConfig
+import resolvers.ResolveSavingsAccountId
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
-import shared.models.errors.{MtdError, SavingsAccountIdFormatError}
+import shared.models.errors.MtdError
 import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRequestData
 
 import javax.inject.{Inject, Singleton}
@@ -42,13 +42,9 @@ class RetrieveUkSavingsAccountValidatorFactory @Inject() (savingsAppConfig: Savi
         (
           ResolveNino(nino),
           resolveTaxYear(taxYear),
-          resolveSavingsAccountId(savingsAccountId)
+          ResolveSavingsAccountId(savingsAccountId)
           ).mapN(RetrieveUkSavingsAnnualSummaryRequestData)
     }
 
-  private def resolveSavingsAccountId(id: String): Validated[Seq[MtdError], String] = {
-    val regex = "^[A-Za-z0-9]{15}$"
-        if (id.matches(regex)) Valid(id) else Invalid(Seq[MtdError](SavingsAccountIdFormatError))
-  }
 
 }

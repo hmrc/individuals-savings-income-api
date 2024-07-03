@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.createAmendSavings
 
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import v1.models.request.amendSavings.{CreateAmendSavingsRequestData, CreateAmendSavingsRequestBody}
+import v1.createAmendSavings.model.request.{CreateAmendSavingsRequestData, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
 
 import scala.concurrent.Future
 
@@ -49,9 +49,9 @@ class CreateAmendSavingsConnectorSpec extends ConnectorSpec {
     def nino: String     = "AA111111A"
     def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
-    val requestBody: CreateAmendSavingsRequestBody = CreateAmendSavingsRequestBody(securities = None, foreignInterest = None)
+    val requestBody: Def1_CreateAmendSavingsRequestBody = Def1_CreateAmendSavingsRequestBody(securities = None, foreignInterest = None)
 
-    val request: CreateAmendSavingsRequestData = CreateAmendSavingsRequestData(
+    val request: CreateAmendSavingsRequestData = Def1_CreateAmendSavingsRequestData(
       nino = Nino(nino),
       taxYear = taxYear,
       body = requestBody

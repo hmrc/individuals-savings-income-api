@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.createAmendSavings
 
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.Result
+import shared.config.MockAppConfig
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.audit.GenericAuditDetailFixture.nino
 import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import shared.models.auth.UserDetails
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
-import shared.config.MockAppConfig
-import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.Result
-import shared.models.audit.GenericAuditDetailFixture.nino
-import shared.models.auth.UserDetails
 import shared.services.MockMtdIdLookupService
-import v1.mocks.services.MockCreateAmendSavingsService
-import v1.mocks.validators.MockCreateAmendSavingsValidatorFactory
-import v1.models.request.amendSavings._
+import v1.createAmendSavings.def1.model.request.{AmendForeignInterestItem, AmendSecurities}
+import v1.createAmendSavings.model.request.{CreateAmendSavingsRequestData, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -101,12 +100,12 @@ class CreateAmendSavingsControllerSpec
     )
   )
 
-  private val amendSavingsRequestBody: CreateAmendSavingsRequestBody = CreateAmendSavingsRequestBody(
+  private val amendSavingsRequestBody: Def1_CreateAmendSavingsRequestBody = Def1_CreateAmendSavingsRequestBody(
     securities = Some(security),
     foreignInterest = Some(foreignInterests)
   )
 
-  private val requestData: CreateAmendSavingsRequestData = CreateAmendSavingsRequestData(
+  private val requestData: CreateAmendSavingsRequestData = Def1_CreateAmendSavingsRequestData(
     nino = Nino(nino),
     taxYear = TaxYear.fromMtd(taxYear),
     body = amendSavingsRequestBody

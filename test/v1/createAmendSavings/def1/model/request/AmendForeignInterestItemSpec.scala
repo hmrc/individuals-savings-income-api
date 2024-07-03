@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.request.amendSavings
+package v1.createAmendSavings.def1.model.request
 
 import play.api.libs.json.{JsError, JsValue, Json}
 import shared.UnitSpec

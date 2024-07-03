@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.createAmendSavings
 
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
@@ -23,8 +23,6 @@ import shared.controllers._
 import shared.routing.Version
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.{IdGenerator, Logging}
-import v1.controllers.validators.CreateAmendSavingsValidatorFactory
-import v1.services.CreateAmendSavingsService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext

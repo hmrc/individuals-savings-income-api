@@ -14,37 +14,31 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.createAmendSavings.def1
 
 import cats.data.Validated
-import cats.implicits._
+import cats.implicits.catsSyntaxTuple3Semigroupal
 import play.api.libs.json.JsValue
 import shared.config.AppConfig
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v1.controllers.validators.CreateAmendSavingsRulesValidator.validateBusinessRules
-import v1.models.request.amendSavings.{CreateAmendSavingsRequestBody, CreateAmendSavingsRequestData}
+import v1.createAmendSavings.def1.Def1_CreateAmendSavingsRulesValidator.validateBusinessRules
+import v1.createAmendSavings.model.request.{CreateAmendSavingsRequestData, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
 
-import javax.inject.{Inject, Singleton}
+class Def1_CreateAmendSavingsValidator(nino: String, taxYear: String, body: JsValue)(appConfig: AppConfig)
+    extends Validator[CreateAmendSavingsRequestData] {
 
-@Singleton
-class CreateAmendSavingsValidatorFactory @Inject() (appConfig: AppConfig) {
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
-  private val resolveJson         = new ResolveNonEmptyJsonObject[CreateAmendSavingsRequestBody]()
+  private val resolveJson         = new ResolveNonEmptyJsonObject[Def1_CreateAmendSavingsRequestBody]()
 
-  def validator(nino: String, taxYear: String, body: JsValue): Validator[CreateAmendSavingsRequestData] =
-    new Validator[CreateAmendSavingsRequestData] {
-
-      def validate: Validated[Seq[MtdError], CreateAmendSavingsRequestData] =
-        (
-          ResolveNino(nino),
-          resolveTaxYear(taxYear),
-          resolveJson(body)
-        ).mapN(CreateAmendSavingsRequestData) andThen validateBusinessRules
-
-    }
+  def validate: Validated[Seq[MtdError], CreateAmendSavingsRequestData] =
+    (
+      ResolveNino(nino),
+      resolveTaxYear(taxYear),
+      resolveJson(body)
+    ).mapN(Def1_CreateAmendSavingsRequestData) andThen validateBusinessRules
 
 }

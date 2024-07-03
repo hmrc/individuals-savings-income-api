@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.createAmendSavings
 
+import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
-import shared.config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v1.models.request.amendSavings.CreateAmendSavingsRequestData
+import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -33,8 +33,8 @@ class CreateAmendSavingsConnector @Inject() (val http: HttpClient, val appConfig
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    import shared.connectors.httpparsers.StandardDownstreamHttpParser._
     import request._
+    import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 
     val downstreamUri =
       if (taxYear.useTaxYearSpecificApi) {

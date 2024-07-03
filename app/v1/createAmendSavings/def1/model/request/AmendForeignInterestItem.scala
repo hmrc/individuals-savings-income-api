@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.request.amendSavings
+package v1.createAmendSavings.def1.model.request
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._

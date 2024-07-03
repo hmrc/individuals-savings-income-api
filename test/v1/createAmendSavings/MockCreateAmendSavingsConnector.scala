@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package v1.mocks.services
+package v1.createAmendSavings
 
-import shared.controllers.RequestContext
-import shared.services.ServiceOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v1.models.request.amendSavings.CreateAmendSavingsRequestData
-import v1.services.CreateAmendSavingsService
+import shared.connectors.DownstreamOutcome
+import uk.gov.hmrc.http.HeaderCarrier
+import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockCreateAmendSavingsService extends MockFactory {
+trait MockCreateAmendSavingsConnector extends MockFactory {
 
-  val mockCreateAmendSavingsService: CreateAmendSavingsService = mock[CreateAmendSavingsService]
+  val mockCreateAmendSavingsConnector: CreateAmendSavingsConnector = mock[CreateAmendSavingsConnector]
 
-  object MockCreateAmendSavingsService {
+  object MockCreateAmendSavingsConnector {
 
-    def createAmendSaving(requestData: CreateAmendSavingsRequestData): CallHandler[Future[ServiceOutcome[Unit]]] = {
-      (mockCreateAmendSavingsService
-        .createAmendSaving(_: CreateAmendSavingsRequestData)(_: RequestContext, _: ExecutionContext))
-        .expects(requestData, *, *)
+    def createAmendSaving(request: CreateAmendSavingsRequestData): CallHandler[Future[DownstreamOutcome[Unit]]] = {
+      (mockCreateAmendSavingsConnector
+        .createAmendSavings(_: CreateAmendSavingsRequestData)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .expects(request, *, *, *)
     }
 
   }

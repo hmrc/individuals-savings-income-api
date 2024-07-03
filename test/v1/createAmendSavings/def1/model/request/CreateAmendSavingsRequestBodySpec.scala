@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.request.amendSavings
+package v1.createAmendSavings.def1.model.request
 
 import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 import shared.UnitSpec
+import v1.createAmendSavings.model.request.Def1_CreateAmendSavingsRequestBody
 
-class CreateCreateAmendSavingsRequestBodySpec extends UnitSpec {
+class CreateAmendSavingsRequestBodySpec extends UnitSpec {
 
   val mtdJson: JsValue = Json.parse(
     """
@@ -61,8 +62,8 @@ class CreateCreateAmendSavingsRequestBodySpec extends UnitSpec {
       foreignTaxCreditRelief = Some(true)
     )
 
-  val requestBodyModel: CreateAmendSavingsRequestBody =
-    CreateAmendSavingsRequestBody(
+  val requestBodyModel: Def1_CreateAmendSavingsRequestBody =
+    Def1_CreateAmendSavingsRequestBody(
       securities = Some(securitiesModel),
       foreignInterest = Some(Seq(foreignInterestItemModel))
     )
@@ -118,19 +119,19 @@ class CreateCreateAmendSavingsRequestBodySpec extends UnitSpec {
   "AmendSavingsRequestBody" when {
     "read from valid JSON" should {
       "produce the expected AmendSavingsRequestBody object" in {
-        mtdJson.as[CreateAmendSavingsRequestBody] shouldBe requestBodyModel
+        mtdJson.as[Def1_CreateAmendSavingsRequestBody] shouldBe requestBodyModel
       }
     }
 
     "read from invalid JSON" should {
       "produce a JsError" in {
-        invalidJson.validate[CreateAmendSavingsRequestBody] shouldBe a[JsError]
+        invalidJson.validate[Def1_CreateAmendSavingsRequestBody] shouldBe a[JsError]
       }
     }
 
     "read from empty JSON" should {
       "produce an empty AmendSavingsRequestBody object" in {
-        emptyJson.as[CreateAmendSavingsRequestBody] shouldBe CreateAmendSavingsRequestBody.empty
+        emptyJson.as[Def1_CreateAmendSavingsRequestBody] shouldBe Def1_CreateAmendSavingsRequestBody.empty
       }
     }
 
@@ -142,7 +143,7 @@ class CreateCreateAmendSavingsRequestBodySpec extends UnitSpec {
 
     "written from an empty object" should {
       "produce empty JSON" in {
-        Json.toJson(CreateAmendSavingsRequestBody.empty) shouldBe emptyJson
+        Json.toJson(Def1_CreateAmendSavingsRequestBody.empty) shouldBe emptyJson
       }
     }
   }

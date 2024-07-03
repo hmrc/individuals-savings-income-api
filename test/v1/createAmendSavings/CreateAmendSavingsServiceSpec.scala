@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package v1.services
+package v1.createAmendSavings
 
 import shared.controllers.EndpointLogContext
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v1.mocks.connectors.MockCreateAmendSavingsConnector
-import v1.models.request.amendSavings.{CreateAmendSavingsRequestData, CreateAmendSavingsRequestBody}
+import v1.createAmendSavings.model.request.{Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
 
 import scala.concurrent.Future
 
@@ -75,10 +74,10 @@ class CreateAmendSavingsServiceSpec extends ServiceSpec {
     private val nino    = "AA112233A"
     private val taxYear = "2019-20"
 
-    val request = CreateAmendSavingsRequestData(
+    val request = Def1_CreateAmendSavingsRequestData(
       nino = Nino(nino),
       taxYear = TaxYear.fromMtd(taxYear),
-      body = CreateAmendSavingsRequestBody(securities = None, foreignInterest = None)
+      body = Def1_CreateAmendSavingsRequestBody(securities = None, foreignInterest = None)
     )
 
     implicit val logContext: EndpointLogContext = EndpointLogContext("c", "ep")

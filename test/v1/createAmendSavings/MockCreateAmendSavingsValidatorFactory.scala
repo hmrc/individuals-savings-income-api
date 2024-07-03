@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.mocks.validators
+package v1.createAmendSavings
 
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
@@ -23,8 +23,7 @@ import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.JsValue
 import shared.controllers.validators.Validator
 import shared.models.errors.MtdError
-import v1.controllers.validators.CreateAmendSavingsValidatorFactory
-import v1.models.request.amendSavings.CreateAmendSavingsRequestData
+import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
 trait MockCreateAmendSavingsValidatorFactory extends MockFactory {
 

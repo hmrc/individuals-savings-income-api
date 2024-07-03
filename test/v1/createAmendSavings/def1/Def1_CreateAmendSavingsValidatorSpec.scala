@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.createAmendSavings.def1
 
 import play.api.libs.json.{JsValue, Json}
 import shared.UnitSpec
-import shared.config.{AppConfig, MockAppConfig}
+import shared.config.MockAppConfig
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
-import v1.models.request.amendSavings.{CreateAmendSavingsRequestBody, CreateAmendSavingsRequestData}
+import v1.createAmendSavings.model.request.{CreateAmendSavingsRequestData, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
 
-class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
+class Def1_CreateAmendSavingsValidatorSpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
 
@@ -131,20 +131,16 @@ class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig
 
   private val parsedNino    = Nino(validNino)
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
-  private val parsedBody    = validRequestBodyJson.as[CreateAmendSavingsRequestBody]
-
-  implicit val appConfig: AppConfig = mockAppConfig
-
-  val validatorFactory = new CreateAmendSavingsValidatorFactory(mockAppConfig)
+  private val parsedBody    = validRequestBodyJson.as[Def1_CreateAmendSavingsRequestBody]
 
   private def validator(nino: String, taxYear: String, body: JsValue) =
-    validatorFactory.validator(nino, taxYear, body)
+    new Def1_CreateAmendSavingsValidator(nino, taxYear, body)(mockAppConfig)
 
   "validator" should {
     "return the parsed domain object" when {
       "a valid request is supplied" in {
         val result = validator(validNino, validTaxYear, validRequestBodyJson).validateAndWrapResult()
-        result shouldBe Right(CreateAmendSavingsRequestData(parsedNino, parsedTaxYear, parsedBody))
+        result shouldBe Right(Def1_CreateAmendSavingsRequestData(parsedNino, parsedTaxYear, parsedBody))
       }
     }
 

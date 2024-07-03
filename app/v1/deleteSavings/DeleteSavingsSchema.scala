@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package config
+package v1.deleteSavings
 
-import javax.inject.{Inject, Singleton}
+sealed trait DeleteSavingsSchema
 
-@Singleton
-class SavingsAppConfig @Inject() {
-  val minimumPermittedTaxYear: Int                     = 2020
-  val ukSavingsAccountAnnualSummaryMinimumTaxYear: Int = 2018
+object DeleteSavingsSchema {
+  case object Def1 extends DeleteSavingsSchema
 }

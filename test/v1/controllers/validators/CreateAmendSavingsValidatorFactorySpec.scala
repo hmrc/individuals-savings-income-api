@@ -16,22 +16,21 @@
 
 package v1.controllers.validators
 
-import config.SavingsAppConfig
-import mocks.MockSavingsAppConfig
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
 import play.api.libs.json.{JsValue, Json}
 import shared.UnitSpec
+import shared.config.{AppConfig, MockAppConfig}
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
 import v1.models.request.amendSavings.{CreateAmendSavingsRequestBody, CreateAmendSavingsRequestData}
 
-class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAppConfig{
+class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
 
   private val validNino    = "AA123456A"
   private val validTaxYear = "2020-21"
 
-  private val validValue   = 1000.12
+  private val validValue = 1000.12
 
   private val validRequestBodyJson: JsValue = Json.parse(
     s"""
@@ -134,9 +133,9 @@ class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAp
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
   private val parsedBody    = validRequestBodyJson.as[CreateAmendSavingsRequestBody]
 
-  implicit val savingsAppConfig: SavingsAppConfig = mockSavingsAppConfig
+  implicit val appConfig: AppConfig = mockAppConfig
 
-  val validatorFactory = new CreateAmendSavingsValidatorFactory(savingsAppConfig)
+  val validatorFactory = new CreateAmendSavingsValidatorFactory(mockAppConfig)
 
   private def validator(nino: String, taxYear: String, body: JsValue) =
     validatorFactory.validator(nino, taxYear, body)
@@ -211,10 +210,11 @@ class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAp
         result shouldBe Left(
           ErrorWrapper(
             correlationId,
-            RuleIncorrectOrEmptyBodyError.withPaths(Seq(
-              "/securities/grossAmount",
-              "/securities/taxTakenOff"
-            ))
+            RuleIncorrectOrEmptyBodyError.withPaths(
+              Seq(
+                "/securities/grossAmount",
+                "/securities/taxTakenOff"
+              ))
           )
         )
       }
@@ -226,10 +226,11 @@ class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAp
         result shouldBe Left(
           ErrorWrapper(
             correlationId,
-            RuleIncorrectOrEmptyBodyError.withPaths(Seq(
-              "/foreignInterest/0/countryCode",
-              "/foreignInterest/0/taxableAmount"
-            ))
+            RuleIncorrectOrEmptyBodyError.withPaths(
+              Seq(
+                "/foreignInterest/0/countryCode",
+                "/foreignInterest/0/taxableAmount"
+              ))
           )
         )
       }
@@ -269,9 +270,10 @@ class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAp
           ErrorWrapper(
             correlationId,
             ValueFormatError.copy(
-              paths = Some(Seq(
-                "/foreignInterest/0/taxTakenOff"
-              ))
+              paths = Some(
+                Seq(
+                  "/foreignInterest/0/taxTakenOff"
+                ))
             )
           ))
       }
@@ -298,4 +300,5 @@ class CreateAmendSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAp
       }
     }
   }
+
 }

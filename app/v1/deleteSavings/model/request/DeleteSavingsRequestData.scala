@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package mocks
+package v1.deleteSavings.model.request
 
-import config.SavingsAppConfig
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
+import shared.models.domain.{Nino, TaxYear}
+import v1.deleteSavings.DeleteSavingsSchema
 
-trait MockSavingsAppConfig extends MockFactory {
+sealed trait DeleteSavingsRequestData {
+  def nino: Nino
+  def taxYear: TaxYear
+  val schema: DeleteSavingsSchema
+}
 
-  implicit val mockSavingsAppConfig: SavingsAppConfig = mock[SavingsAppConfig]
-
-  object MockedSavingsAppConfig {
-
-    def minimumPermittedTaxYear: CallHandler[Int] = (() => mockSavingsAppConfig.minimumPermittedTaxYear).expects()
-
-    def ukSavingsAccountAnnualSummaryMinimumTaxYear: CallHandler[Int] = (() => mockSavingsAppConfig.ukSavingsAccountAnnualSummaryMinimumTaxYear).expects()
-  }
+case class Def1_DeleteSavingsRequestData(nino: Nino, taxYear: TaxYear) extends DeleteSavingsRequestData {
+  override val schema: DeleteSavingsSchema = DeleteSavingsSchema.Def1
 }

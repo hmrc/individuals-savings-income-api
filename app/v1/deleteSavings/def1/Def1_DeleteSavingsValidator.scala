@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.deleteSavings.def1
 
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple2Semigroupal
-import config.SavingsAppConfig
+import shared.config.AppConfig
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v1.models.request.deleteSavings.DeleteSavingsRequestData
+import v1.deleteSavings.model.request.{Def1_DeleteSavingsRequestData, DeleteSavingsRequestData}
 
-import javax.inject._
+class Def1_DeleteSavingsValidator(nino: String, taxYear: String)(appConfig: AppConfig) extends Validator[DeleteSavingsRequestData] {
 
-class DeleteSavingsValidatorFactory @Inject() (savingsAppConfig: SavingsAppConfig){
-
-  private lazy val minimumTaxYear = savingsAppConfig.minimumPermittedTaxYear
+  private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
 
-  def validator(nino: String, taxYear: String): Validator[DeleteSavingsRequestData] = new Validator[DeleteSavingsRequestData] {
-
-    def validate: Validated[Seq[MtdError], DeleteSavingsRequestData] = (ResolveNino(nino), resolveTaxYear(taxYear))
-      .mapN(DeleteSavingsRequestData)
-
-  }
+  def validate: Validated[Seq[MtdError], DeleteSavingsRequestData] = (ResolveNino(nino), resolveTaxYear(taxYear))
+    .mapN(Def1_DeleteSavingsRequestData)
 
 }

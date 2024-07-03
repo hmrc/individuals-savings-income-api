@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.deleteSavings
 
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import v1.models.request.deleteSavings.DeleteSavingsRequestData
+import v1.deleteSavings.model.request.{Def1_DeleteSavingsRequestData, DeleteSavingsRequestData}
 
 import scala.concurrent.Future
 
@@ -61,7 +61,7 @@ class DeleteSavingsConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    lazy val request: DeleteSavingsRequestData = DeleteSavingsRequestData(Nino("AA111111A"), TaxYear.fromMtd(taxYear))
+    lazy val request: DeleteSavingsRequestData = Def1_DeleteSavingsRequestData(Nino("AA111111A"), TaxYear.fromMtd(taxYear))
   }
 
 }

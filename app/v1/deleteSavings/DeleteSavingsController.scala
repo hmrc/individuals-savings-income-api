@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.deleteSavings
 
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import shared.config.AppConfig
@@ -22,8 +22,6 @@ import shared.controllers._
 import shared.routing.Version
 import shared.services._
 import shared.utils.IdGenerator
-import v1.controllers.validators.DeleteSavingsValidatorFactory
-import v1.services.DeleteSavingsService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext

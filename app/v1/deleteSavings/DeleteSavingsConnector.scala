@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.deleteSavings
 
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser.readsEmpty
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v1.models.request.deleteSavings.DeleteSavingsRequestData
+import v1.deleteSavings.model.request.DeleteSavingsRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

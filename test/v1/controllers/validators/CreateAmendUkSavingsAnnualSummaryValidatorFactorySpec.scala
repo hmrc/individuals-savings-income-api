@@ -16,25 +16,24 @@
 
 package v1.controllers.validators
 
-import config.SavingsAppConfig
-import mocks.MockSavingsAppConfig
 import models.domain.SavingsAccountId
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
 import play.api.libs.json.{JsValue, Json}
 import shared.UnitSpec
+import shared.config.{AppConfig, MockAppConfig}
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
 import v1.models.request.createAmendUkSavingsAnnualSummary.{CreateAmendUkSavingsAnnualSummaryBody, CreateAmendUkSavingsAnnualSummaryRequestData}
 
-class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec with MockSavingsAppConfig{
+class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
 
-  private val validNino    = "AA123456A"
-  private val validTaxYear = "2020-21"
+  private val validNino             = "AA123456A"
+  private val validTaxYear          = "2020-21"
   private val validSavingsAccountId = "Abcdefgh1234567"
 
   private val validRequestBodyJson: JsValue = Json.parse(
-        s"""
+    s"""
           |{
           | "incomeSourceId": "ABCDE1234567890",
           | "taxedUkInterest": 31554452289.99,
@@ -91,15 +90,15 @@ class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec wit
 """.stripMargin
   )
 
-  private val parsedNino    = Nino(validNino)
-  private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
+  private val parsedNino            = Nino(validNino)
+  private val parsedTaxYear         = TaxYear.fromMtd(validTaxYear)
   private val parsedSavngsAccountId = SavingsAccountId(validSavingsAccountId)
-  private val parsedBody    = validRequestBodyJson.as[CreateAmendUkSavingsAnnualSummaryBody]
+  private val parsedBody            = validRequestBodyJson.as[CreateAmendUkSavingsAnnualSummaryBody]
 
-  implicit val savingsAppConfig: SavingsAppConfig = mockSavingsAppConfig
-  val validatorFactory = new CreateAmendUkSavingsAnnualSummaryValidatorFactory(savingsAppConfig)
+  implicit val appConfig: AppConfig = mockAppConfig
+  val validatorFactory              = new CreateAmendUkSavingsAnnualSummaryValidatorFactory(mockAppConfig)
 
-  private def validator(nino: String, taxYear: String, savingsAccountId:String, body: JsValue) =
+  private def validator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue) =
     validatorFactory.validator(nino, taxYear, savingsAccountId, body)
 
   "validator" should {
@@ -172,9 +171,10 @@ class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec wit
         result shouldBe Left(
           ErrorWrapper(
             correlationId,
-            RuleIncorrectOrEmptyBodyError.withPaths(Seq(
-              "/taxedUkInterest",
-            ))
+            RuleIncorrectOrEmptyBodyError.withPaths(
+              Seq(
+                "/taxedUkInterest"
+              ))
           )
         )
       }
@@ -228,9 +228,10 @@ class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec wit
           ErrorWrapper(
             correlationId,
             ValueFormatError.copy(
-              paths = Some(Seq(
-                "/taxedUkInterest"
-              ))
+              paths = Some(
+                Seq(
+                  "/taxedUkInterest"
+                ))
             )
           ))
       }
@@ -243,13 +244,15 @@ class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec wit
           ErrorWrapper(
             correlationId,
             ValueFormatError.copy(
-              paths = Some(Seq(
-                "/taxedUkInterest",
-                "/untaxedUkInterest"
-              ))
+              paths = Some(
+                Seq(
+                  "/taxedUkInterest",
+                  "/untaxedUkInterest"
+                ))
             )
           ))
       }
     }
   }
+
 }

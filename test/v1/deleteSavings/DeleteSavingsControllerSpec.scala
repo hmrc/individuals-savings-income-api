@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.deleteSavings
 
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
@@ -24,9 +24,7 @@ import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
-import v1.mocks.services.MockDeleteSavingsService
-import v1.mocks.validators.MockDeleteSavingsValidatorFactory
-import v1.models.request.deleteSavings.DeleteSavingsRequestData
+import v1.deleteSavings.model.request.{Def1_DeleteSavingsRequestData, DeleteSavingsRequestData}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -40,7 +38,7 @@ class DeleteSavingsControllerSpec
 
   private val taxYear = "2021-22"
 
-  private val requestData: DeleteSavingsRequestData = DeleteSavingsRequestData(
+  private val requestData: DeleteSavingsRequestData = Def1_DeleteSavingsRequestData(
     nino = Nino(validNino),
     taxYear = TaxYear.fromMtd(taxYear)
   )

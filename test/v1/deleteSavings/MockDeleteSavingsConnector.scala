@@ -14,31 +14,27 @@
  * limitations under the License.
  */
 
-package v1.mocks.services
+package v1.deleteSavings
 
-import shared.controllers.RequestContext
-import shared.services.ServiceOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v1.models.request.deleteSavings.DeleteSavingsRequestData
-import v1.services.DeleteSavingsService
+import shared.connectors.DownstreamOutcome
+import uk.gov.hmrc.http.HeaderCarrier
+import v1.deleteSavings.model.request.DeleteSavingsRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockDeleteSavingsService extends MockFactory {
+trait MockDeleteSavingsConnector extends MockFactory {
 
-  val mockDeleteSavingsService: DeleteSavingsService = mock[DeleteSavingsService]
+  val mockDeleteSavingsConnector: DeleteSavingsConnector = mock[DeleteSavingsConnector]
 
-  object MockDeleteSavingsService {
+  object MockDeleteSavingsConnector {
 
-    def deleteSavings(requestData: DeleteSavingsRequestData): CallHandler[Future[ServiceOutcome[Unit]]] = (
-      mockDeleteSavingsService
-        .deleteSavings(_: DeleteSavingsRequestData)(
-          _: RequestContext,
-          _: ExecutionContext
-        )
-      )
-      .expects(requestData, *, *)
+    def deleteSavings(requestData: DeleteSavingsRequestData): CallHandler[Future[DownstreamOutcome[Unit]]] = {
+      (mockDeleteSavingsConnector
+        .deleteSavings(_: DeleteSavingsRequestData)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .expects(requestData, *, *, *)
+    }
 
   }
 

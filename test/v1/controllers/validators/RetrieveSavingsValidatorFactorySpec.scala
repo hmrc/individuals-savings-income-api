@@ -16,25 +16,23 @@
 
 package v1.controllers.validators
 
-import config.SavingsAppConfig
-import mocks.MockSavingsAppConfig
 import shared.UnitSpec
+import shared.config.{AppConfig, MockAppConfig}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
 
-class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockSavingsAppConfig{
+class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
 
-  private val validNino    = "AA123456A"
-  private val validTaxYear = "2020-21"
+  private val validNino     = "AA123456A"
+  private val validTaxYear  = "2020-21"
   private val parsedNino    = Nino(validNino)
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
 
-  implicit val savingsAppConfig: SavingsAppConfig = mockSavingsAppConfig
-  val validator = new RetrieveSavingsValidatorFactory(savingsAppConfig)
-
+  implicit val appConfig: AppConfig = mockAppConfig
+  val validator                     = new RetrieveSavingsValidatorFactory(mockAppConfig)
 
   "running a validation" should {
     "return no errors" when {

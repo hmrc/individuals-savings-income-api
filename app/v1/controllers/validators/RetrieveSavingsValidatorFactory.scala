@@ -18,7 +18,7 @@ package v1.controllers.validators
 
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple2Semigroupal
-import config.SavingsAppConfig
+import shared.config.AppConfig
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
@@ -27,11 +27,10 @@ import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
 
 import javax.inject.{Inject, Singleton}
 
-
 @Singleton
-class RetrieveSavingsValidatorFactory @Inject() (savingsAppConfig: SavingsAppConfig){
+class RetrieveSavingsValidatorFactory @Inject() (appConfig: AppConfig) {
 
-  private lazy val minimumTaxYear = savingsAppConfig.minimumPermittedTaxYear
+  private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
 
   def validator(nino: String, taxYear: String): Validator[RetrieveSavingsRequestData] =
@@ -41,7 +40,7 @@ class RetrieveSavingsValidatorFactory @Inject() (savingsAppConfig: SavingsAppCon
         (
           ResolveNino(nino),
           resolveTaxYear(taxYear)
-          ).mapN(RetrieveSavingsRequestData)
+        ).mapN(RetrieveSavingsRequestData)
 
     }
 

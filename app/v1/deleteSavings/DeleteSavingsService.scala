@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package v1.services
+package v1.deleteSavings
 
 import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import v1.connectors.DeleteSavingsConnector
-import v1.models.request.deleteSavings.DeleteSavingsRequestData
+import v1.deleteSavings.model.request.DeleteSavingsRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

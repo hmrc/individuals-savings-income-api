@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.request.deleteSavings
+package v1.deleteSavings
 
-import shared.models.domain.{Nino, TaxYear}
+import shared.config.AppConfig
+import shared.controllers.validators.Validator
+import v1.deleteSavings.def1.Def1_DeleteSavingsValidator
+import v1.deleteSavings.model.request.DeleteSavingsRequestData
 
+import javax.inject._
 
-case class DeleteSavingsRequestData(nino: Nino, taxYear: TaxYear)
+class DeleteSavingsValidatorFactory @Inject() (appConfig: AppConfig) {
+
+  def validator(nino: String, taxYear: String): Validator[DeleteSavingsRequestData] = new Def1_DeleteSavingsValidator(nino, taxYear)(appConfig)
+
+}

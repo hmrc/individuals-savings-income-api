@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package v1.services
+package v1.retrieveSavings
 
 import shared.controllers.EndpointLogContext
 import shared.models.domain.{Nino, TaxYear, Timestamp}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v1.mocks.connectors.MockRetrieveSavingsConnector
-import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
-import v1.models.response.retrieveSavings.RetrieveSavingsResponse
+import v1.retrieveSavings.model.request.Def1_RetrieveSavingsRequestData
+import v1.retrieveSavings.model.response.Def1_RetrieveSavingsResponse
 
 import scala.concurrent.Future
 
@@ -77,12 +76,12 @@ class RetrieveSavingsServiceSpec extends ServiceSpec {
     private val nino    = Nino("AA112233A")
     private val taxYear = TaxYear.fromMtd("2019-20")
 
-    val request: RetrieveSavingsRequestData = RetrieveSavingsRequestData(
+    val request: Def1_RetrieveSavingsRequestData = Def1_RetrieveSavingsRequestData(
       nino = nino,
       taxYear = taxYear
     )
 
-    val response: RetrieveSavingsResponse = RetrieveSavingsResponse(
+    val response: Def1_RetrieveSavingsResponse = Def1_RetrieveSavingsResponse(
       submittedOn = Timestamp("2019-04-04T01:01:01.000Z"),
       securities = None,
       foreignInterest = None

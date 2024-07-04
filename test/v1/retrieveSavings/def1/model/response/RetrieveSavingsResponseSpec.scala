@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveSavings
+package v1.retrieveSavings.def1.model.response
 
 import play.api.libs.json.{JsError, JsValue, Json}
-import shared.models.domain.Timestamp
 import shared.UnitSpec
+import shared.models.domain.Timestamp
+import v1.retrieveSavings.model.response.Def1_RetrieveSavingsResponse
 
 class RetrieveSavingsResponseSpec extends UnitSpec {
 
@@ -63,8 +64,8 @@ class RetrieveSavingsResponseSpec extends UnitSpec {
       foreignTaxCreditRelief = Some(true)
     )
 
-  private val model: RetrieveSavingsResponse =
-    RetrieveSavingsResponse(
+  private val model: Def1_RetrieveSavingsResponse =
+    Def1_RetrieveSavingsResponse(
       submittedOn = Timestamp("2019-04-04T01:01:01.000Z"),
       securities = Some(securitiesModel),
       foreignInterest = Some(Seq(foreignInterestsItemModel))
@@ -87,8 +88,8 @@ class RetrieveSavingsResponseSpec extends UnitSpec {
       foreignTaxCreditRelief = Some(true)
     )
 
-  private val minimumModel: RetrieveSavingsResponse =
-    RetrieveSavingsResponse(
+  private val minimumModel: Def1_RetrieveSavingsResponse =
+    Def1_RetrieveSavingsResponse(
       submittedOn = Timestamp("2019-04-04T01:01:01.000Z"),
       securities = Some(minimumSecuritiesModel),
       foreignInterest = Some(Seq(minimumForeignInterestsItemModel))
@@ -164,19 +165,19 @@ class RetrieveSavingsResponseSpec extends UnitSpec {
   "RetrieveSavingsResponse" when {
     "read from valid JSON" should {
       "produce the expected RetrieveSavingsResponse model" in {
-        desResponse.as[RetrieveSavingsResponse] shouldBe model
+        desResponse.as[Def1_RetrieveSavingsResponse] shouldBe model
       }
     }
 
     "read from invalid JSON" should {
       "produce a JsError" in {
-        desResponseInvalid.validate[RetrieveSavingsResponse] shouldBe a[JsError]
+        desResponseInvalid.validate[Def1_RetrieveSavingsResponse] shouldBe a[JsError]
       }
     }
 
     "read from a JSON with only mandatory fields" should {
       "produce the expected RetrieveSavingsResponse model" in {
-        minimumFieldsJson.as[RetrieveSavingsResponse] shouldBe minimumModel
+        minimumFieldsJson.as[Def1_RetrieveSavingsResponse] shouldBe minimumModel
       }
     }
 

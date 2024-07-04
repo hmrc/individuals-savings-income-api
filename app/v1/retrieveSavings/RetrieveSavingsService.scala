@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package v1.services
-
+package v1.retrieveSavings
 
 import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import v1.connectors.RetrieveSavingsConnector
-import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
-import v1.models.response.retrieveSavings.RetrieveSavingsResponse
+import v1.retrieveSavings.model.request.RetrieveSavingsRequestData
+import v1.retrieveSavings.model.response.RetrieveSavingsResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

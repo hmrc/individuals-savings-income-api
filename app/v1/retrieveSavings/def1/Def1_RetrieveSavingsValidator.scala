@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.retrieveSavings.def1
 
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple2Semigroupal
@@ -23,25 +23,17 @@ import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
+import v1.retrieveSavings.model.request.{Def1_RetrieveSavingsRequestData, RetrieveSavingsRequestData}
 
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class RetrieveSavingsValidatorFactory @Inject() (appConfig: AppConfig) {
+class Def1_RetrieveSavingsValidator(nino: String, taxYear: String)(appConfig: AppConfig) extends Validator[RetrieveSavingsRequestData] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
 
-  def validator(nino: String, taxYear: String): Validator[RetrieveSavingsRequestData] =
-    new Validator[RetrieveSavingsRequestData] {
-
-      def validate: Validated[Seq[MtdError], RetrieveSavingsRequestData] =
-        (
-          ResolveNino(nino),
-          resolveTaxYear(taxYear)
-        ).mapN(RetrieveSavingsRequestData)
-
-    }
+  def validate: Validated[Seq[MtdError], RetrieveSavingsRequestData] =
+    (
+      ResolveNino(nino),
+      resolveTaxYear(taxYear)
+    ).mapN(Def1_RetrieveSavingsRequestData)
 
 }

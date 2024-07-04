@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package v1.mocks.connectors
-
+package v1.retrieveSavings
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.connectors.DownstreamOutcome
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.connectors.RetrieveSavingsConnector
-import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
-import v1.models.response.retrieveSavings.RetrieveSavingsResponse
+import v1.retrieveSavings.model.request.RetrieveSavingsRequestData
+import v1.retrieveSavings.model.response.RetrieveSavingsResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 

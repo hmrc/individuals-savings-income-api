@@ -14,24 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveSavings
-
+package v1.retrieveSavings.def1.model.response
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import shared.models.domain.Timestamp
-import utils.JsonUtils
 
-case class RetrieveSavingsResponse(submittedOn: Timestamp, securities: Option[Securities], foreignInterest: Option[Seq[ForeignInterestItem]])
+case class Securities(taxTakenOff: Option[BigDecimal], grossAmount: BigDecimal, netAmount: Option[BigDecimal])
 
-object RetrieveSavingsResponse extends JsonUtils {
+object Securities {
 
-  implicit val reads: Reads[RetrieveSavingsResponse] = (
-    (JsPath \ "submittedOn").read[Timestamp] and
-      (JsPath \ "securities").readNullable[Securities] and
-      (JsPath \ "foreignInterest").readNullable[Seq[ForeignInterestItem]].mapEmptySeqToNone
-  )(RetrieveSavingsResponse.apply _)
+  implicit val reads: Reads[Securities] = (
+    (JsPath \ "taxTakenOff").readNullable[BigDecimal] and
+      (JsPath \ "grossAmount").read[BigDecimal] and
+      (JsPath \ "netAmount").readNullable[BigDecimal]
+  )(Securities.apply _)
 
-  implicit val writes: OWrites[RetrieveSavingsResponse] = Json.writes[RetrieveSavingsResponse]
-
+  implicit val writes: OWrites[Securities] = Json.writes[Securities]
 }

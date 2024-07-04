@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package v1.mocks.services
+package v1.retrieveSavings
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
 import shared.services.ServiceOutcome
-import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
-import v1.models.response.retrieveSavings.RetrieveSavingsResponse
-import v1.services.RetrieveSavingsService
+import v1.retrieveSavings.model.request.RetrieveSavingsRequestData
+import v1.retrieveSavings.model.response.RetrieveSavingsResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 

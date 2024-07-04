@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.retrieveSavings.def1
 
 import shared.UnitSpec
 import shared.config.{AppConfig, MockAppConfig}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
-import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
+import v1.retrieveSavings.model.request.Def1_RetrieveSavingsRequestData
 
-class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
+class Def1_RetrieveSavingsValidatorSpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
 
@@ -31,20 +31,20 @@ class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
   private val parsedNino    = Nino(validNino)
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
 
-  implicit val appConfig: AppConfig = mockAppConfig
-  val validator                     = new RetrieveSavingsValidatorFactory(mockAppConfig)
+  implicit val appConfig: AppConfig                    = mockAppConfig
+  private def validator(nino: String, taxYear: String) = new Def1_RetrieveSavingsValidator(nino, taxYear)(mockAppConfig)
 
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        validator.validator(validNino, validTaxYear).validateAndWrapResult() shouldBe
-          Right(RetrieveSavingsRequestData(parsedNino, parsedTaxYear))
+        validator(validNino, validTaxYear).validateAndWrapResult() shouldBe
+          Right(Def1_RetrieveSavingsRequestData(parsedNino, parsedTaxYear))
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        validator.validator("A12344A", validTaxYear).validateAndWrapResult() shouldBe
+        validator("A12344A", validTaxYear).validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, NinoFormatError)
           )
@@ -53,7 +53,7 @@ class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in {
-        validator.validator(validNino, "20178").validateAndWrapResult() shouldBe
+        validator(validNino, "20178").validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, TaxYearFormatError)
           )
@@ -62,7 +62,7 @@ class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
 
     "return RuleTaxYearRangeInvalidError error" when {
       "an invalid tax year range is supplied" in {
-        validator.validator(validNino, "2019-21").validateAndWrapResult() shouldBe
+        validator(validNino, "2019-21").validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)
           )
@@ -71,7 +71,7 @@ class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
 
     "return RuleTaxYearNotSupportedError error" when {
       "an invalid tax year is supplied" in {
-        validator.validator(validNino, "2018-19").validateAndWrapResult() shouldBe
+        validator(validNino, "2018-19").validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
           )
@@ -80,7 +80,7 @@ class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
 
     "return multiple errors" when {
       "request supplied has multiple errors" in {
-        validator.validator("A12344A", "20178").validateAndWrapResult() shouldBe
+        validator("A12344A", "20178").validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(
               correlationId,

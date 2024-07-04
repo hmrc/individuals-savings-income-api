@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveSavings
+package v1.retrieveSavings.def1.model.response
 
 import play.api.libs.json.{JsError, JsValue, Json}
 import shared.UnitSpec

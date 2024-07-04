@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers
-
+package v1.retrieveSavings
 
 import play.api.mvc.Result
 import shared.config.MockAppConfig
@@ -23,11 +22,10 @@ import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.domain.{Nino, TaxYear, Timestamp}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
-import v1.fixtures.RetrieveSavingsControllerFixture
-import v1.mocks.services.MockRetrieveSavingsService
-import v1.mocks.validators.MockRetrieveSavingsValidatorFactory
-import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
-import v1.models.response.retrieveSavings.{ForeignInterestItem, RetrieveSavingsResponse, Securities}
+import v1.retrieveSavings.def1.model.RetrieveSavingsControllerFixture
+import v1.retrieveSavings.def1.model.response.{ForeignInterestItem, Securities}
+import v1.retrieveSavings.model.request.Def1_RetrieveSavingsRequestData
+import v1.retrieveSavings.model.response.Def1_RetrieveSavingsResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -39,12 +37,10 @@ class RetrieveSavingsControllerSpec
     with MockRetrieveSavingsValidatorFactory
     with MockAppConfig {
 
-
-  val nino: String = "AA123456A"
+  val nino: String    = "AA123456A"
   private val taxYear = "2019-20"
 
-
-  private val requestData: RetrieveSavingsRequestData = RetrieveSavingsRequestData(
+  private val requestData: Def1_RetrieveSavingsRequestData = Def1_RetrieveSavingsRequestData(
     nino = Nino(nino),
     taxYear = TaxYear.fromMtd(taxYear)
   )
@@ -64,7 +60,7 @@ class RetrieveSavingsControllerSpec
     foreignTaxCreditRelief = Some(true)
   )
 
-  private val retrieveSavingsResponseModel = RetrieveSavingsResponse(
+  private val retrieveSavingsResponseModel = Def1_RetrieveSavingsResponse(
     submittedOn = Timestamp("2019-04-04T01:01:01.000Z"),
     securities = Some(fullSecuritiesItemsModel),
     foreignInterest = Some(Seq(fullForeignInterestsModel))
@@ -91,7 +87,6 @@ class RetrieveSavingsControllerSpec
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
         willUseValidator(returningErrors(Seq(ErrorWrapper(correlationId, NinoFormatError).error)))
-
 
         runErrorTest(NinoFormatError)
 

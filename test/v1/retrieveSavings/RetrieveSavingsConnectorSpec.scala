@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.retrieveSavings
 
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear, Timestamp}
 import shared.models.outcomes.ResponseWrapper
-import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
-import v1.models.response.retrieveSavings.RetrieveSavingsResponse
+import v1.retrieveSavings.model.request.{Def1_RetrieveSavingsRequestData, RetrieveSavingsRequestData}
+import v1.retrieveSavings.model.response.{Def1_RetrieveSavingsResponse, RetrieveSavingsResponse}
 
 import scala.concurrent.Future
 
@@ -65,9 +65,9 @@ class RetrieveSavingsConnectorSpec extends ConnectorSpec {
     def taxYear: TaxYear
 
     val request: RetrieveSavingsRequestData =
-      RetrieveSavingsRequestData(Nino(nino), taxYear)
+      Def1_RetrieveSavingsRequestData(Nino(nino), taxYear)
 
-    val response: RetrieveSavingsResponse = RetrieveSavingsResponse(
+    val response: Def1_RetrieveSavingsResponse = Def1_RetrieveSavingsResponse(
       submittedOn = Timestamp("2019-04-04T01:01:01.000Z"),
       securities = None,
       foreignInterest = None

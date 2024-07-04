@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.request.retrieveSavings
+package v1.retrieveSavings
 
-import shared.models.domain.{Nino, TaxYear}
+import shared.config.AppConfig
+import shared.controllers.validators.Validator
+import v1.retrieveSavings.def1.Def1_RetrieveSavingsValidator
+import v1.retrieveSavings.model.request.RetrieveSavingsRequestData
 
-case class RetrieveSavingsRequestData(nino: Nino, taxYear: TaxYear)
+import javax.inject.{Inject, Singleton}
+
+@Singleton
+class RetrieveSavingsValidatorFactory @Inject() (appConfig: AppConfig) {
+
+  def validator(nino: String, taxYear: String): Validator[RetrieveSavingsRequestData] =
+    new Def1_RetrieveSavingsValidator(nino, taxYear)(appConfig)
+
+}

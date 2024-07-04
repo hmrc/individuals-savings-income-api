@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package v1.connectors
-
+package v1.retrieveSavings
 
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser.reads
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v1.models.request.retrieveSavings.RetrieveSavingsRequestData
-import v1.models.response.retrieveSavings.RetrieveSavingsResponse
+import v1.retrieveSavings.model.request.RetrieveSavingsRequestData
+import v1.retrieveSavings.model.response.RetrieveSavingsResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,16 +31,17 @@ import scala.concurrent.{ExecutionContext, Future}
 class RetrieveSavingsConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
   def retrieveSavings(request: RetrieveSavingsRequestData)(implicit
-                                                           hc: HeaderCarrier,
-                                                           ec: ExecutionContext,
-                                                           correlationId: String): Future[DownstreamOutcome[RetrieveSavingsResponse]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[RetrieveSavingsResponse]] = {
 
     import request._
+    import schema._
 
     val downstreamUri = if (taxYear.useTaxYearSpecificApi) {
-      TaxYearSpecificIfsUri[RetrieveSavingsResponse](s"income-tax/income/savings/${taxYear.asTysDownstream}/$nino")
+      TaxYearSpecificIfsUri[DownstreamResp](s"income-tax/income/savings/${taxYear.asTysDownstream}/$nino")
     } else {
-      IfsUri[RetrieveSavingsResponse](s"income-tax/income/savings/$nino/${taxYear.asMtd}")
+      IfsUri[DownstreamResp](s"income-tax/income/savings/$nino/${taxYear.asMtd}")
     }
 
     get(downstreamUri)

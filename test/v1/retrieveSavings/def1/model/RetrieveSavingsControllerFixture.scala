@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.fixtures
+package v1.retrieveSavings.def1.model
 
 import play.api.libs.json.{JsValue, Json}
 

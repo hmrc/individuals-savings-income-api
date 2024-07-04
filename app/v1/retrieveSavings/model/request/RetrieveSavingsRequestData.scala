@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveSavings
+package v1.retrieveSavings.model.request
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import shared.models.domain.{Nino, TaxYear}
+import v1.retrieveSavings.RetrieveSavingsSchema
 
-case class Securities(taxTakenOff: Option[BigDecimal], grossAmount: BigDecimal, netAmount: Option[BigDecimal])
+sealed trait RetrieveSavingsRequestData {
+  def nino: Nino
+  def taxYear: TaxYear
 
-object Securities {
+  val schema: RetrieveSavingsSchema
+}
 
-  implicit val reads: Reads[Securities] = (
-    (JsPath \ "taxTakenOff").readNullable[BigDecimal] and
-      (JsPath \ "grossAmount").read[BigDecimal] and
-      (JsPath \ "netAmount").readNullable[BigDecimal]
-  )(Securities.apply _)
-
-  implicit val writes: OWrites[Securities] = Json.writes[Securities]
+case class Def1_RetrieveSavingsRequestData(nino: Nino, taxYear: TaxYear) extends RetrieveSavingsRequestData {
+  val schema: RetrieveSavingsSchema = RetrieveSavingsSchema.Def1
 }

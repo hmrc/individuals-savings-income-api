@@ -14,37 +14,35 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.listUkSavingsAccounts.def1
 
 import models.domain.SavingsAccountId
 import shared.UnitSpec
 import shared.models.domain.Nino
 import shared.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, SavingsAccountIdFormatError}
-import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.model.request.Def1_ListUkSavingsAccountsRequestData
 
-
-class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec {
+class Def1_ListUkSavingsAccountsValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
   private val validNino             = "AA123456A"
   private val validSavingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
-  private val parsedNino    = Nino(validNino)
+  private val parsedNino            = Nino(validNino)
 
-  val validator = new ListUkSavingsAccountsValidatorFactory()
-
+  private def validator(nino: String, savingsAccountId: Option[String]) = new Def1_ListUkSavingsAccountsValidator(nino, savingsAccountId)
 
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        val result = validator.validator(validNino, Some(validSavingsAccountId.toString)).validateAndWrapResult()
-        result shouldBe Right(ListUkSavingsAccountsRequestData(parsedNino, Some(validSavingsAccountId)))
+        val result = validator(validNino, Some(validSavingsAccountId.toString)).validateAndWrapResult()
+        result shouldBe Right(Def1_ListUkSavingsAccountsRequestData(parsedNino, Some(validSavingsAccountId)))
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        val result = validator.validator("A12344A", Some(validSavingsAccountId.toString)).validateAndWrapResult()
+        val result = validator("A12344A", Some(validSavingsAccountId.toString)).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, NinoFormatError)
         )
@@ -53,7 +51,7 @@ class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec {
 
     "return SavingsAccountIdFormatError error" when {
       "an invalid tax year is supplied" in {
-        val result = validator.validator(validNino, Some("invalid")).validateAndWrapResult()
+        val result = validator(validNino, Some("invalid")).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, SavingsAccountIdFormatError)
         )
@@ -62,7 +60,7 @@ class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec {
 
     "return multiple errors" when {
       "request supplied has multiple errors" in {
-        val result = validator.validator("not-a-nino", Some("invalid")).validateAndWrapResult()
+        val result = validator("not-a-nino", Some("invalid")).validateAndWrapResult()
 
         result shouldBe Left(
           ErrorWrapper(

@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-package v1.models.request.listUkSavingsAccounts
+package v1.listUkSavingsAccounts
 
-import models.domain.SavingsAccountId
-import shared.models.domain.Nino
+import shared.controllers.validators.Validator
+import v1.listUkSavingsAccounts.def1.Def1_ListUkSavingsAccountsValidator
+import v1.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 
-case class ListUkSavingsAccountsRequestData(nino: Nino, savingsAccountId: Option[SavingsAccountId])
+import javax.inject.Singleton
+
+@Singleton
+class ListUkSavingsAccountsValidatorFactory {
+
+  def validator(nino: String, savingsAccountId: Option[String]): Validator[ListUkSavingsAccountsRequestData] =
+    new Def1_ListUkSavingsAccountsValidator(nino, savingsAccountId)
+
+}

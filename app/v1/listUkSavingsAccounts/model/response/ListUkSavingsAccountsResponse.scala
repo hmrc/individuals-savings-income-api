@@ -1,0 +1,58 @@
+/*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package v1.listUkSavingsAccounts.model.response
+
+import play.api.libs.json._
+import shared.utils.JsonWritesUtil
+import shared.utils.JsonWritesUtil.writesFrom
+import utils.JsonUtils
+import v1.listUkSavingsAccounts.def1.model.response.Def1_UkSavingsAccount
+
+sealed trait ListUkSavingsAccountsResponse[+E]
+
+object ListUkSavingsAccountsResponse extends JsonWritesUtil {
+
+  implicit def writes[E: Writes]: OWrites[ListUkSavingsAccountsResponse[E]] = writesFrom { case a: Def1_ListUkSavingsAccountsResponse[E] =>
+    implicitly[OWrites[Def1_ListUkSavingsAccountsResponse[E]]].writes(a)
+  }
+
+}
+
+case class Def1_ListUkSavingsAccountsResponse[E](savingsAccounts: Option[Seq[E]]) extends ListUkSavingsAccountsResponse[E]
+
+object Def1_ListUkSavingsAccountsResponse extends JsonUtils {
+
+  implicit def writes[E: Writes]: OWrites[Def1_ListUkSavingsAccountsResponse[E]] = Json.writes[Def1_ListUkSavingsAccountsResponse[E]]
+
+  implicit def reads[E: Reads]: Reads[Def1_ListUkSavingsAccountsResponse[E]] =
+    JsPath
+      .readNullable[Seq[E]]
+      .mapEmptySeqToNone
+      .map(Def1_ListUkSavingsAccountsResponse(_))
+
+}
+
+trait UkSavingsAccount
+
+object UkSavingsAccount {
+
+  implicit val writes: OWrites[UkSavingsAccount] = writesFrom { case a: Def1_UkSavingsAccount =>
+    implicitly[OWrites[Def1_UkSavingsAccount]].writes(a)
+
+  }
+
+}

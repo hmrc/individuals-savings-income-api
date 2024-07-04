@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.response.listUkSavingsAccounts
+package v1.listUkSavingsAccounts.model.request
 
-import play.api.libs.json._
-import utils.JsonUtils
+import models.domain.SavingsAccountId
+import shared.models.domain.Nino
+import v1.listUkSavingsAccounts.ListUkSavingsAccountsSchema
 
-case class ListUkSavingsAccountsResponse[E](savingsAccounts: Option[Seq[E]])
+sealed trait ListUkSavingsAccountsRequestData {
+  def nino: Nino
+  def savingsAccountId: Option[SavingsAccountId]
 
-object ListUkSavingsAccountsResponse extends JsonUtils {
+  val schema: ListUkSavingsAccountsSchema
+}
 
-  implicit def writes[E: Writes]: OWrites[ListUkSavingsAccountsResponse[E]] = Json.writes[ListUkSavingsAccountsResponse[E]]
-
-  implicit def reads[E: Reads]: Reads[ListUkSavingsAccountsResponse[E]] =
-    JsPath
-      .readNullable[Seq[E]]
-      .mapEmptySeqToNone
-      .map(ListUkSavingsAccountsResponse(_))
-
+case class Def1_ListUkSavingsAccountsRequestData(nino: Nino, savingsAccountId: Option[SavingsAccountId]) extends ListUkSavingsAccountsRequestData {
+  override val schema: ListUkSavingsAccountsSchema = ListUkSavingsAccountsSchema.Def1
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-package v1.mocks.validators
-
+package v1.listUkSavingsAccounts
 
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
@@ -23,8 +22,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.validators.Validator
 import shared.models.errors.MtdError
-import v1.controllers.validators.ListUkSavingsAccountsValidatorFactory
-import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 
 trait MockListUkSavingsAccountsValidatorFactory extends MockFactory {
 
@@ -35,10 +33,9 @@ trait MockListUkSavingsAccountsValidatorFactory extends MockFactory {
     def validator(): CallHandler[Validator[ListUkSavingsAccountsRequestData]] =
       (mockListUkSavingsAccountValidator.validator(_: String, _: Option[String])).expects(*, *)
 
-
   }
-  def willUseValidator(
-                        use: Validator[ListUkSavingsAccountsRequestData]): CallHandler[Validator[ListUkSavingsAccountsRequestData]] = {
+
+  def willUseValidator(use: Validator[ListUkSavingsAccountsRequestData]): CallHandler[Validator[ListUkSavingsAccountsRequestData]] = {
     MockListUkSavingsAccountValidatorFactory
       .validator()
       .anyNumberOfTimes()

@@ -1,5 +1,5 @@
 # UK Savings Account routes go here:
-GET         /uk-accounts/:nino                                       v1.controllers.ListUkSavingsAccountsController.listUkSavingsAccounts(nino: String, savingsAccountId: Option[String])
+GET         /uk-accounts/:nino                                       v1.listUkSavingsAccounts.ListUkSavingsAccountsController.listUkSavingsAccounts(nino: String, savingsAccountId: Option[String])
 POST        /uk-accounts/:nino                                       v1.controllers.AddUkSavingsAccountController.addUkSavingsAccount(nino: String)
 
 # Additional Income endpoints

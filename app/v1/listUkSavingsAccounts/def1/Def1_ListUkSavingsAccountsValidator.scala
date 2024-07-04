@@ -14,37 +14,28 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.listUkSavingsAccounts.def1
 
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import cats.implicits.catsSyntaxTuple2Semigroupal
 import models.domain.SavingsAccountId
-//import resolvers.ResolveOptionalSavingsAccountId
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.ResolveNino
 import shared.models.errors.{MtdError, SavingsAccountIdFormatError}
-import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.model.request.{Def1_ListUkSavingsAccountsRequestData, ListUkSavingsAccountsRequestData}
 
-import javax.inject.{Inject, Singleton}
+class Def1_ListUkSavingsAccountsValidator(nino: String, savingsAccountId: Option[String]) extends Validator[ListUkSavingsAccountsRequestData] {
 
-@Singleton
-class ListUkSavingsAccountsValidatorFactory @Inject() {
+  def validate: Validated[Seq[MtdError], ListUkSavingsAccountsRequestData] =
+    (
+      ResolveNino(nino),
+      resolveOptionalSavingsAccountId(savingsAccountId)
+    ).mapN(Def1_ListUkSavingsAccountsRequestData)
 
-  def validator(nino: String, savingsAccountId: Option[String]): Validator[ListUkSavingsAccountsRequestData] =
-    new Validator[ListUkSavingsAccountsRequestData] {
-
-      def validate: Validated[Seq[MtdError], ListUkSavingsAccountsRequestData] =
-        (
-          ResolveNino(nino),
-          resolveOptionalSavingsAccountId(savingsAccountId)
-          ).mapN(ListUkSavingsAccountsRequestData)
-
-    }
-
-  private def resolveOptionalSavingsAccountId(maybeid: Option[String]): Validated[Seq[MtdError], Option[SavingsAccountId]] = {
+  private def resolveOptionalSavingsAccountId(maybeId: Option[String]): Validated[Seq[MtdError], Option[SavingsAccountId]] = {
     val regex = "^[A-Za-z0-9]{15}$"
-    maybeid
+    maybeId
       .map { id =>
         if (id.matches(regex)) Valid(Some(SavingsAccountId(id))) else Invalid(Seq[MtdError](SavingsAccountIdFormatError))
       }

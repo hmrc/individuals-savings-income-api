@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-package v1.endpoints
-
+package v1.listUkSavingsAccounts.def1
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT

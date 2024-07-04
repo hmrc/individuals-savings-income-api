@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-package v1.services
-
+package v1.listUkSavingsAccounts
 
 import models.domain.SavingsAccountId
 import shared.controllers.EndpointLogContext
@@ -23,9 +22,9 @@ import shared.models.domain.Nino
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v1.mocks.connectors.MockListUkSavingsAccountsConnector
-import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
-import v1.models.response.listUkSavingsAccounts.{ListUkSavingsAccountsResponse, UkSavingsAccount}
+import v1.listUkSavingsAccounts.def1.model.response.Def1_UkSavingsAccount
+import v1.listUkSavingsAccounts.model.request.Def1_ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.model.response.Def1_ListUkSavingsAccountsResponse
 
 import scala.concurrent.Future
 
@@ -34,14 +33,14 @@ class ListUkSavingsAccountsServiceSpec extends ServiceSpec {
   private val nino             = "AA112233A"
   private val savingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
-  private val requestData = ListUkSavingsAccountsRequestData(Nino(nino), Some(savingsAccountId))
+  private val requestData = Def1_ListUkSavingsAccountsRequestData(Nino(nino), Some(savingsAccountId))
 
-  private val validResponse = ListUkSavingsAccountsResponse(
+  private val validResponse = Def1_ListUkSavingsAccountsResponse(
     savingsAccounts = Some(
       Seq(
-        UkSavingsAccount(savingsAccountId = "000000000000001", accountName = "Bank Account 1"),
-        UkSavingsAccount(savingsAccountId = "000000000000002", accountName = "Bank Account 2"),
-        UkSavingsAccount(savingsAccountId = "000000000000003", accountName = "Bank Account 3")
+        Def1_UkSavingsAccount(savingsAccountId = "000000000000001", accountName = "Bank Account 1"),
+        Def1_UkSavingsAccount(savingsAccountId = "000000000000002", accountName = "Bank Account 2"),
+        Def1_UkSavingsAccount(savingsAccountId = "000000000000003", accountName = "Bank Account 3")
       )
     )
   )

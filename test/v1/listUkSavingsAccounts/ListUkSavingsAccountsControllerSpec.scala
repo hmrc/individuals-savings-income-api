@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.listUkSavingsAccounts
 
 import models.domain.SavingsAccountId
 import play.api.libs.json.{JsValue, Json}
@@ -24,10 +24,9 @@ import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.domain.Nino
 import shared.models.errors.{ErrorWrapper, NinoFormatError, NotFoundError}
 import shared.models.outcomes.ResponseWrapper
-import v1.mocks.services.MockListUkSavingsAccountsService
-import v1.mocks.validators.MockListUkSavingsAccountsValidatorFactory
-import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
-import v1.models.response.listUkSavingsAccounts.{ListUkSavingsAccountsResponse, UkSavingsAccount}
+import v1.listUkSavingsAccounts.def1.model.response.Def1_UkSavingsAccount
+import v1.listUkSavingsAccounts.model.request.Def1_ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.model.response.Def1_ListUkSavingsAccountsResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -39,20 +38,20 @@ class ListUkSavingsAccountsControllerSpec
     with MockListUkSavingsAccountsValidatorFactory
     with MockAppConfig {
 
-  val nino: String = "AA123456A"
+  val nino: String                       = "AA123456A"
   val savingsAccountId: SavingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
-  val requestData: ListUkSavingsAccountsRequestData = ListUkSavingsAccountsRequestData(
+  val requestData: Def1_ListUkSavingsAccountsRequestData = Def1_ListUkSavingsAccountsRequestData(
     nino = Nino(nino),
     savingsAccountId = Some(savingsAccountId)
   )
 
-  val validListUkSavingsAccountResponse: ListUkSavingsAccountsResponse[UkSavingsAccount] = ListUkSavingsAccountsResponse(
+  val validListUkSavingsAccountResponse: Def1_ListUkSavingsAccountsResponse[Def1_UkSavingsAccount] = Def1_ListUkSavingsAccountsResponse(
     Some(
       Seq(
-        UkSavingsAccount("000000000000001", "Bank Account 1"),
-        UkSavingsAccount("000000000000002", "Bank Account 2"),
-        UkSavingsAccount("000000000000003", "Bank Account 3")
+        Def1_UkSavingsAccount("000000000000001", "Bank Account 1"),
+        Def1_UkSavingsAccount("000000000000002", "Bank Account 2"),
+        Def1_UkSavingsAccount("000000000000003", "Bank Account 3")
       )
     )
   )

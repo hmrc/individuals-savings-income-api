@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.listUkSavingsAccounts
+package v1.listUkSavingsAccounts.def1.model.response
 
 import play.api.libs.json.{JsError, Json}
 import shared.UnitSpec
@@ -49,29 +49,29 @@ class UkSavingsAccountSpec extends UnitSpec {
 
   val emptyJson = Json.parse("{}")
 
-  "UkSavingsAccount" should {
-    "return a valid UkSavingsAccount model " when {
+  "Def1_UkSavingsAccount" should {
+    "return a valid Def1_UkSavingsAccount model " when {
       "a valid uk savings account json from DES is supplied" in {
-        validUkSavingsAccountFromDESJson.as[UkSavingsAccount] shouldBe
-          UkSavingsAccount("SAVKB2UVwUTBQGJ", "Shares savings account")
+        validUkSavingsAccountFromDESJson.as[Def1_UkSavingsAccount] shouldBe
+          Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", "Shares savings account")
       }
     }
 
     "return a JsError" when {
       "an invalid uk savings account json from DES is supplied" in {
-        invalidUkSavingsAccountFromDESJson.validate[UkSavingsAccount] shouldBe a[JsError]
+        invalidUkSavingsAccountFromDESJson.validate[Def1_UkSavingsAccount] shouldBe a[JsError]
       }
     }
 
     "return a JsError" when {
       "an empty json from DES is supplied" in {
-        emptyJson.validate[UkSavingsAccount] shouldBe a[JsError]
+        emptyJson.validate[Def1_UkSavingsAccount] shouldBe a[JsError]
       }
     }
 
     "return a valid MTD uk savings json" when {
-      "a valid UkSavingsAccount model is supplier" in {
-        Json.toJson(UkSavingsAccount("SAVKB2UVwUTBQGJ", "Shares savings account")) shouldBe
+      "a valid Def1_UkSavingsAccount model is supplier" in {
+        Json.toJson(Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", "Shares savings account")) shouldBe
           validUkSavigsAccountFromMTDJson
       }
     }

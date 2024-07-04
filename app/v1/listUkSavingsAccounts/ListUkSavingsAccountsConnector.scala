@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package v1.connectors
-
+package v1.listUkSavingsAccounts
 
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.DesUri
-import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser.reads
+import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
-import v1.models.response.listUkSavingsAccounts.{ListUkSavingsAccountsResponse, UkSavingsAccount}
+import v1.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,12 +35,15 @@ class ListUkSavingsAccountsConnector @Inject() (val http: HttpClient, val appCon
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]]] = {
 
+    import request._
+    import schema._
+
     val nino = request.nino.nino
 
     val incomeSourceTypeParam = "incomeSourceType" -> "interest-from-uk-banks"
 
     get(
-      DesUri[ListUkSavingsAccountsResponse[UkSavingsAccount]](s"income-tax/income-sources/nino/$nino"),
+      DesUri[DownstreamResp](s"income-tax/income-sources/nino/$nino"),
       request.savingsAccountId
         .fold(Seq(incomeSourceTypeParam))(savingsId => Seq(incomeSourceTypeParam, "incomeSourceId" -> savingsId.toString))
     )

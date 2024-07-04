@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package v1.mocks.services
+package v1.listUkSavingsAccounts
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
 import shared.services.ServiceOutcome
-import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
-import v1.models.response.listUkSavingsAccounts.{ListUkSavingsAccountsResponse, UkSavingsAccount}
-import v1.services.ListUkSavingsAccountsService
+import v1.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
 
 import scala.concurrent.{ExecutionContext, Future}
 

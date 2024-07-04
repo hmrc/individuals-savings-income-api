@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package v1.services
+package v1.listUkSavingsAccounts
 
 import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import v1.connectors.ListUkSavingsAccountsConnector
-import v1.models.request.listUkSavingsAccounts.ListUkSavingsAccountsRequestData
-import v1.models.response.listUkSavingsAccounts.{ListUkSavingsAccountsResponse, UkSavingsAccount}
+import v1.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

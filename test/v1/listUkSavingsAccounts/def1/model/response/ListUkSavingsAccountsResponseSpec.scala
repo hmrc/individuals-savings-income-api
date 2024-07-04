@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.listUkSavingsAccounts
+package v1.listUkSavingsAccounts.def1.model.response
 
 import play.api.libs.json.Json
 import shared.UnitSpec
+import v1.listUkSavingsAccounts.model.response.Def1_ListUkSavingsAccountsResponse
 
 class ListUkSavingsAccountsResponseSpec extends UnitSpec {
 
@@ -70,12 +71,12 @@ class ListUkSavingsAccountsResponseSpec extends UnitSpec {
 
   val emptyJson = Json.parse("""[]""")
 
-  val validListUkSavingsAccountResponse = ListUkSavingsAccountsResponse(
+  val validListUkSavingsAccountResponse = Def1_ListUkSavingsAccountsResponse(
     Some(
       Seq(
-        UkSavingsAccount("000000000000001", "Bank Account 1"),
-        UkSavingsAccount("000000000000002", "Bank Account 2"),
-        UkSavingsAccount("000000000000003", "Bank Account 3")
+        Def1_UkSavingsAccount("000000000000001", "Bank Account 1"),
+        Def1_UkSavingsAccount("000000000000002", "Bank Account 2"),
+        Def1_UkSavingsAccount("000000000000003", "Bank Account 3")
       )
     )
   )
@@ -83,7 +84,7 @@ class ListUkSavingsAccountsResponseSpec extends UnitSpec {
   "ListUkSavingsAccountsResponse" should {
     "return a valid ListUkSavingsAccountsResponse model " when {
       "a valid uk savings account list json from DES is supplied" in {
-        ukSavingsAccountsFromDES.as[ListUkSavingsAccountsResponse[UkSavingsAccount]] shouldBe
+        ukSavingsAccountsFromDES.as[Def1_ListUkSavingsAccountsResponse[Def1_UkSavingsAccount]] shouldBe
           validListUkSavingsAccountResponse
       }
     }
@@ -97,8 +98,8 @@ class ListUkSavingsAccountsResponseSpec extends UnitSpec {
 
     "return a valid empty ListUkSavingsAccountsResponse model " when {
       "a valid empty uk savings account list json from DES is supplied" in {
-        emptyJson.as[ListUkSavingsAccountsResponse[UkSavingsAccount]] shouldBe
-          ListUkSavingsAccountsResponse(None)
+        emptyJson.as[Def1_ListUkSavingsAccountsResponse[Def1_UkSavingsAccount]] shouldBe
+          Def1_ListUkSavingsAccountsResponse(None)
       }
     }
   }

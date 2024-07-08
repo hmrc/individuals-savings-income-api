@@ -14,29 +14,32 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.createAmendUkSavingsAnnualSummary
 
 import mocks.MockFeatureSwitches
+import models.domain.SavingsAccountId
+import play.api.libs.json.{JsObject, Json}
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import play.api.libs.json.{JsObject, Json}
-import v1.models.request.createAmendUkSavingsAnnualSummary.DownstreamCreateAmendUkSavingsAnnualSummaryBody
+import v1.createAmendUkSavingsAnnualSummary.def1.model.request.{Def1_CreateAmendUkSavingsAnnualSummaryRequestBody, Def1_CreateAmendUkSavingsAnnualSummaryRequestData, Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody}
 
 import scala.concurrent.Future
 
-class CreateAmendUkSavingsAnnualSummaryConnectorSpec extends ConnectorSpec  with MockFeatureSwitches {
+class CreateAmendUkSavingsAnnualSummaryConnectorSpec extends ConnectorSpec with MockFeatureSwitches {
 
   val nino: String = "AA111111A"
 
-  val incomeSourceId: String                = "ABCDE1234567890"
+  val savingsAccountId: SavingsAccountId    = SavingsAccountId("ABCDE1234567890")
   val taxedUkInterest: Option[BigDecimal]   = Some(31554452289.99)
   val untaxedUkInterest: Option[BigDecimal] = Some(91523009816.00)
 
   val transactionReference: String = "0000000000000001"
 
-  val body: DownstreamCreateAmendUkSavingsAnnualSummaryBody =
-    DownstreamCreateAmendUkSavingsAnnualSummaryBody(incomeSourceId, taxedUkInterest, untaxedUkInterest)
+  val requestBody: Def1_CreateAmendUkSavingsAnnualSummaryRequestBody =
+    Def1_CreateAmendUkSavingsAnnualSummaryRequestBody(taxedUkInterest, untaxedUkInterest)
+
+  val downstreamRequestBody: Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody = requestBody.asDownstreamRequestBody(savingsAccountId)
 
   private val validResponse: JsObject = Json.obj("transactionReference" -> transactionReference)
   val outcome                         = Right(ResponseWrapper(correlationId, validResponse))
@@ -48,20 +51,20 @@ class CreateAmendUkSavingsAnnualSummaryConnectorSpec extends ConnectorSpec  with
         MockFeatureSwitches.isDesIf_MigrationEnabled.returns(false)
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
         val url: String      = s"$baseUrl/income-tax/nino/$nino/income-source/savings/annual/${taxYear.asDownstream}"
-        willPost(url, body) returns Future.successful(outcome)
+        willPost(url, downstreamRequestBody) returns Future.successful(outcome)
 
-        val result: DownstreamOutcome[Unit] = await(connector.createOrAmendUKSavingsAccountSummary(Nino(nino), taxYear, request))
+        val result: DownstreamOutcome[Unit] = await(connector.createOrAmendUKSavingsAccountSummary(requestData))
         result shouldBe outcome
       }
 
-      "return a 200 status for a success scenario when desIf_Migration is enabled" in new IfsTest with Test{
+      "return a 200 status for a success scenario when desIf_Migration is enabled" in new IfsTest with Test {
 
         MockFeatureSwitches.isDesIf_MigrationEnabled.returns(true)
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-        val url: String = s"$baseUrl/income-tax/nino/$nino/income-source/savings/annual/${taxYear.asDownstream}"
-        willPost(url, body) returns Future.successful(outcome)
+        val url: String      = s"$baseUrl/income-tax/nino/$nino/income-source/savings/annual/${taxYear.asDownstream}"
+        willPost(url, downstreamRequestBody) returns Future.successful(outcome)
 
-        val result: DownstreamOutcome[Unit] = await(connector.createOrAmendUKSavingsAccountSummary(Nino(nino), taxYear, request))
+        val result: DownstreamOutcome[Unit] = await(connector.createOrAmendUKSavingsAccountSummary(requestData))
         result shouldBe outcome
       }
 
@@ -69,15 +72,15 @@ class CreateAmendUkSavingsAnnualSummaryConnectorSpec extends ConnectorSpec  with
         "return a 200 status for a success scenario " in new TysIfsTest with Test {
           def taxYear: TaxYear = TaxYear.fromMtd("2023-24")
           val url              = s"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/savings/annual"
-          willPost(url, body) returns Future.successful(outcome)
-          val result: DownstreamOutcome[Unit] = await(connector.createOrAmendUKSavingsAccountSummary(Nino(nino), taxYear, request))
+          willPost(url, downstreamRequestBody) returns Future.successful(outcome)
+          val result: DownstreamOutcome[Unit] = await(connector.createOrAmendUKSavingsAccountSummary(requestData))
           result shouldBe outcome
         }
       }
     }
   }
 
-  trait Test{
+  trait Test {
     _: ConnectorTest =>
 
     def taxYear: TaxYear
@@ -85,11 +88,12 @@ class CreateAmendUkSavingsAnnualSummaryConnectorSpec extends ConnectorSpec  with
     protected val connector: CreateAmendUkSavingsAnnualSummaryConnector =
       new CreateAmendUkSavingsAnnualSummaryConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
-    protected val request: DownstreamCreateAmendUkSavingsAnnualSummaryBody =
-      new DownstreamCreateAmendUkSavingsAnnualSummaryBody(
-        incomeSourceId = incomeSourceId,
-        taxedUkInterest = taxedUkInterest,
-        untaxedUkInterest = untaxedUkInterest
+    protected val requestData: Def1_CreateAmendUkSavingsAnnualSummaryRequestData =
+      Def1_CreateAmendUkSavingsAnnualSummaryRequestData(
+        nino = Nino(nino),
+        taxYear = taxYear,
+        savingsAccountId = savingsAccountId,
+        mtdBody = requestBody
       )
 
   }

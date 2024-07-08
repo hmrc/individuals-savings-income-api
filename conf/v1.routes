@@ -8,7 +8,7 @@ DELETE     /other/:nino/:taxYear                                          v1.del
 GET        /other/:nino/:taxYear                                          v1.retrieveSavings.RetrieveSavingsController.retrieveSaving(nino: String, taxYear: String)
 
 # UK Savings Income Annual Summary routes go here:
-PUT        /uk-accounts/:nino/:taxYear/:savingsAccountId            v1.controllers.CreateAmendUkSavingsAnnualSummaryController.createAmendUkSavingsAnnualSummary(nino: String, taxYear: String, savingsAccountId: String)
+PUT        /uk-accounts/:nino/:taxYear/:savingsAccountId            v1.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualSummaryController.createAmendUkSavingsAnnualSummary(nino: String, taxYear: String, savingsAccountId: String)
 
 # UK Savings Income Annual Summary routes:
 GET        /uk-accounts/:nino/:taxYear/:savingsAccountId             v1.controllers.RetrieveUkSavingsAccountAnnualSummaryController.retrieveUkSavingAccount(nino: String, taxYear: String, savingsAccountId: String)

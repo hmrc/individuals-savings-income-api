@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package v1.models.request.createAmendUkSavingsAnnualSummary
+package v1.createAmendUkSavingsAnnualSummary.def1.model.request
 
-import models.domain.SavingsAccountId
-import shared.models.domain.{Nino, TaxYear}
 import play.api.libs.json.Json
 import shared.UnitSpec
 
-class DownstreamCreateAmendUkSavingsAnnualSummaryBodySpec extends UnitSpec {
+class Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBodySpec extends UnitSpec {
 
-  "DownstreamCreateAmendUkSavingsAnnualSummaryBody" when {
+  "DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody" when {
     "written to JSON" must {
-      "produce expected downstream request body" in {
+      "produce expected downstream request mtdBody" in {
         Json.toJson(
-          DownstreamCreateAmendUkSavingsAnnualSummaryBody(
+          Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody(
             incomeSourceId = "someIncomeSourceId",
             taxedUkInterest = Some(10.12),
             untaxedUkInterest = Some(11.12))) shouldBe
@@ -36,22 +34,6 @@ class DownstreamCreateAmendUkSavingsAnnualSummaryBodySpec extends UnitSpec {
               |  "taxedUkInterest": 10.12,
               |  "untaxedUkInterest": 11.12
               |}""".stripMargin)
-      }
-    }
-
-    "created from an MTD request" must {
-      "work" in {
-        DownstreamCreateAmendUkSavingsAnnualSummaryBody(
-          CreateAmendUkSavingsAnnualSummaryRequestData(
-            Nino("AA121212A"),
-            TaxYear.fromMtd("2020-21"),
-            SavingsAccountId(savingsAccountId = "someSavingsAccountId"),
-            body = CreateAmendUkSavingsAnnualSummaryBody(taxedUkInterest = Some(10.12), untaxedUkInterest = Some(11.12))
-          )) shouldBe
-          DownstreamCreateAmendUkSavingsAnnualSummaryBody(
-            incomeSourceId = "someSavingsAccountId",
-            taxedUkInterest = Some(10.12),
-            untaxedUkInterest = Some(11.12))
       }
     }
   }

@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package v1.services
+package v1.createAmendUkSavingsAnnualSummary
 
+import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import cats.implicits._
-import v1.connectors.CreateAmendUkSavingsAnnualSummaryConnector
-import v1.models.request.createAmendUkSavingsAnnualSummary.{CreateAmendUkSavingsAnnualSummaryRequestData, DownstreamCreateAmendUkSavingsAnnualSummaryBody}
+import v1.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,13 +31,13 @@ class CreateAmendUkSavingsAnnualSummaryService @Inject() (connector: CreateAmend
   def createAmend(
       request: CreateAmendUkSavingsAnnualSummaryRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] =
     connector
-      .createOrAmendUKSavingsAccountSummary(request.nino, request.taxYear, DownstreamCreateAmendUkSavingsAnnualSummaryBody(request))
+      .createOrAmendUKSavingsAccountSummary(request)
       .map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
 
   private val downstreamErrorMap: Map[String, MtdError] = {
     val errors = Map(
       "INVALID_NINO"                      -> NinoFormatError,
-      "INVALID_TAXYEAR"                   -> TaxYearFormatError, //remove once DES to IFS migration complete
+      "INVALID_TAXYEAR"                   -> TaxYearFormatError, // remove once DES to IFS migration complete
       "INVALID_TYPE"                      -> InternalError,
       "INVALID_PAYLOAD"                   -> InternalError,
       "NOT_FOUND_INCOME_SOURCE"           -> NotFoundError,

@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.createAmendUkSavingsAnnualSummary
 
-import shared.controllers._
-import shared.config.AppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
+import shared.config.AppConfig
+import shared.controllers._
 import shared.routing.Version
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.IdGenerator
-import v1.controllers.validators.CreateAmendUkSavingsAnnualSummaryValidatorFactory
-import v1.services.CreateAmendUkSavingsAnnualSummaryService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext

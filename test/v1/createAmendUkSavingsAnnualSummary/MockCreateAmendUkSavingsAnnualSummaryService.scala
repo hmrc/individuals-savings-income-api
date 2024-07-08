@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package v1.mocks.services
+package v1.createAmendUkSavingsAnnualSummary
 
-import shared.controllers.RequestContext
-import shared.services.ServiceOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v1.models.request.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualSummaryRequestData
-import v1.services.CreateAmendUkSavingsAnnualSummaryService
+import shared.controllers.RequestContext
+import shared.services.ServiceOutcome
+import v1.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
 

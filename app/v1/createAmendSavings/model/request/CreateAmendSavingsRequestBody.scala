@@ -17,7 +17,7 @@
 package v1.createAmendSavings.model.request
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, OWrites, Reads}
+import play.api.libs.json._
 import shared.utils.JsonWritesUtil
 import utils.JsonUtils
 import v1.createAmendSavings.def1.model.request.{AmendForeignInterestItem, AmendSecurities}
@@ -27,7 +27,7 @@ sealed trait CreateAmendSavingsRequestBody
 object CreateAmendSavingsRequestBody extends JsonWritesUtil {
 
   implicit val writes: OWrites[CreateAmendSavingsRequestBody] = writesFrom { case a: Def1_CreateAmendSavingsRequestBody =>
-    implicitly[OWrites[Def1_CreateAmendSavingsRequestBody]].writes(a)
+    Json.toJson(a).as[JsObject]
   }
 
 }

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.createAmendUkSavingsAnnualSummary.def1
 
 import cats.data.Validated
-import cats.implicits._
+import cats.implicits.catsSyntaxTuple4Semigroupal
 import play.api.libs.json.JsValue
 import resolvers.ResolveSavingsAccountId
 import shared.config.AppConfig
@@ -25,28 +25,23 @@ import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v1.controllers.validators.CreateAmendUkSavingsAnnualRulesValidator.validateBusinessRules
-import v1.models.request.createAmendUkSavingsAnnualSummary.{CreateAmendUkSavingsAnnualSummaryBody, CreateAmendUkSavingsAnnualSummaryRequestData}
+import v1.createAmendUkSavingsAnnualSummary.def1.Def1_CreateAmendUkSavingsAnnualRulesValidator.validateBusinessRules
+import v1.createAmendUkSavingsAnnualSummary.def1.model.request.{Def1_CreateAmendUkSavingsAnnualSummaryRequestBody, Def1_CreateAmendUkSavingsAnnualSummaryRequestData}
+import v1.createAmendUkSavingsAnnualSummary.model.request._
 
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class CreateAmendUkSavingsAnnualSummaryValidatorFactory @Inject() (appConfig: AppConfig) {
+class Def1_CreateAmendUkSavingsAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue)(appConfig: AppConfig)
+    extends Validator[CreateAmendUkSavingsAnnualSummaryRequestData] {
   private lazy val minimumTaxYear = appConfig.ukSavingsAccountAnnualSummaryMinimumTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
-  private val resolveJson         = new ResolveNonEmptyJsonObject[CreateAmendUkSavingsAnnualSummaryBody]()
+  private val resolveJson         = new ResolveNonEmptyJsonObject[Def1_CreateAmendUkSavingsAnnualSummaryRequestBody]()
 
-  def validator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue): Validator[CreateAmendUkSavingsAnnualSummaryRequestData] =
-    new Validator[CreateAmendUkSavingsAnnualSummaryRequestData] {
-
-      def validate: Validated[Seq[MtdError], CreateAmendUkSavingsAnnualSummaryRequestData] =
-        (
-          ResolveNino(nino),
-          resolveTaxYear(taxYear),
-          ResolveSavingsAccountId(savingsAccountId),
-          resolveJson(body)
-        ).mapN(CreateAmendUkSavingsAnnualSummaryRequestData) andThen validateBusinessRules
-
-    }
+  def validate: Validated[Seq[MtdError], CreateAmendUkSavingsAnnualSummaryRequestData] = {
+    (
+      ResolveNino(nino),
+      resolveTaxYear(taxYear),
+      ResolveSavingsAccountId(savingsAccountId),
+      resolveJson(body)
+    ).mapN(Def1_CreateAmendUkSavingsAnnualSummaryRequestData) andThen validateBusinessRules
+  }
 
 }

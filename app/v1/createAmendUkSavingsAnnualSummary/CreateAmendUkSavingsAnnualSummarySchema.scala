@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.createAmendUkSavingsAnnualSummary
+package v1.createAmendUkSavingsAnnualSummary
 
-import play.api.libs.json.{Json, Writes}
+sealed trait CreateAmendUkSavingsAnnualSummarySchema
 
-case class CreateAmendUkSavingsAnnualSummaryResponse(nino: String, taxYear: String)
+object CreateAmendUkSavingsAnnualSummarySchema {
 
-object CreateAmendUkSavingsAnnualSummaryResponse {
-  implicit val writes: Writes[CreateAmendUkSavingsAnnualSummaryResponse] = Json.writes[CreateAmendUkSavingsAnnualSummaryResponse]
+  case object Def1 extends CreateAmendUkSavingsAnnualSummarySchema
 }

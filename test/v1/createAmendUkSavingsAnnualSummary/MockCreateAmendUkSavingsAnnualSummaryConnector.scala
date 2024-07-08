@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package v1.mocks.connectors
+package v1.createAmendUkSavingsAnnualSummary
 
-import shared.connectors.DownstreamOutcome
-import shared.models.domain.{Nino, TaxYear}
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import shared.connectors.DownstreamOutcome
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.connectors.CreateAmendUkSavingsAnnualSummaryConnector
-import v1.models.request.createAmendUkSavingsAnnualSummary.DownstreamCreateAmendUkSavingsAnnualSummaryBody
+import v1.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -32,18 +30,16 @@ trait MockCreateAmendUkSavingsAnnualSummaryConnector extends MockFactory {
 
   object MockCreateAmendUkSavingsAnnualSummaryConnector {
 
-    def createOrAmendAnnualSummary(nino: Nino,
-                                   taxYear: TaxYear,
-                                   body: DownstreamCreateAmendUkSavingsAnnualSummaryBody): CallHandler[Future[DownstreamOutcome[Unit]]] = {
+    def createOrAmendAnnualSummary(request: CreateAmendUkSavingsAnnualSummaryRequestData): CallHandler[Future[DownstreamOutcome[Unit]]] = {
       (
         mockAmendUkSavingsConnector
-          .createOrAmendUKSavingsAccountSummary(_: Nino, _: TaxYear, _: DownstreamCreateAmendUkSavingsAnnualSummaryBody)(
+          .createOrAmendUKSavingsAccountSummary(_: CreateAmendUkSavingsAnnualSummaryRequestData)(
             _: HeaderCarrier,
             _: ExecutionContext,
             _: String
           )
         )
-        .expects(nino, taxYear, body, *, *, *)
+        .expects(request, *, *, *)
     }
 
   }

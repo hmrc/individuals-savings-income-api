@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.request.createAmendUkSavingsAnnualSummary
+package v1.createAmendUkSavingsAnnualSummary.def1.model.request
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 import shared.UnitSpec
 
-class CreateAmendUkSavingsAnnualSummaryBodySpec extends UnitSpec {
+class Def1_CreateAmendUkSavingsAnnualSummaryRequestBodySpec extends UnitSpec {
 
   private val json: JsValue = Json.parse(
     """
@@ -30,33 +30,33 @@ class CreateAmendUkSavingsAnnualSummaryBodySpec extends UnitSpec {
       |""".stripMargin
   )
 
-  private val model: CreateAmendUkSavingsAnnualSummaryBody = CreateAmendUkSavingsAnnualSummaryBody(
+  private val model: Def1_CreateAmendUkSavingsAnnualSummaryRequestBody = Def1_CreateAmendUkSavingsAnnualSummaryRequestBody(
     Some(1000.99),
     Some(1001.99)
   )
 
   val emptyJson: JsValue = JsObject.empty
 
-  private val emptyModel: CreateAmendUkSavingsAnnualSummaryBody = CreateAmendUkSavingsAnnualSummaryBody(
+  private val emptyModel: Def1_CreateAmendUkSavingsAnnualSummaryRequestBody = Def1_CreateAmendUkSavingsAnnualSummaryRequestBody(
     None,
     None
   )
 
-  "CreateAmendUkSavingsAnnualSummaryBody reads" when {
+  "CreateAmendUkSavingsAnnualSummaryRequestBody reads" when {
     "reading valid JSON" should {
       "read OK" in {
-        json.as[CreateAmendUkSavingsAnnualSummaryBody] shouldBe model
+        json.as[Def1_CreateAmendUkSavingsAnnualSummaryRequestBody] shouldBe model
       }
     }
 
     "reading empty JSON" should {
       "create an empty instance" in {
-        emptyJson.as[CreateAmendUkSavingsAnnualSummaryBody] shouldBe emptyModel
+        emptyJson.as[Def1_CreateAmendUkSavingsAnnualSummaryRequestBody] shouldBe emptyModel
       }
     }
   }
 
-  "CreateAmendUkSavingsAnnualSummaryBody writes" when {
+  "CreateAmendUkSavingsAnnualSummaryRequestBody writes" when {
 
     "writing a populated instance" should {
       "produce valid JSON" in {

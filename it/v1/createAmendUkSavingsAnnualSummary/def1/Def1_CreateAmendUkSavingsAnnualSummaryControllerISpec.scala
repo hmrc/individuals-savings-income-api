@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package v1.endpoints
+package v1.createAmendUkSavingsAnnualSummary.def1
 
-import shared.models.errors._
-import shared.stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import models.errors.SavingsAccountIdFormatErrorNew
 import play.api.http.HeaderNames.ACCEPT
@@ -25,9 +23,11 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
+import shared.models.errors._
+import shared.stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import support.{IntegrationBaseSpec, WireMockMethods}
 
-class CreateAmendUkSavingsAnnualSummaryControllerISpec extends IntegrationBaseSpec with WireMockMethods {
+class Def1_CreateAmendUkSavingsAnnualSummaryControllerISpec extends IntegrationBaseSpec with WireMockMethods {
 
   val requestJson: JsValue =
     Json.parse("""{

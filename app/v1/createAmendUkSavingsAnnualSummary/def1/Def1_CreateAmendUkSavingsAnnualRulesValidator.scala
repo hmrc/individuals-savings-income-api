@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.createAmendUkSavingsAnnualSummary.def1
 
 import cats.data.Validated
 import cats.implicits.toFoldableOps
 import shared.controllers.validators.RulesValidator
 import shared.controllers.validators.resolvers.ResolveParsedNumber
 import shared.models.errors.MtdError
-import v1.models.request.createAmendUkSavingsAnnualSummary._
+import v1.createAmendUkSavingsAnnualSummary.def1.model.request.Def1_CreateAmendUkSavingsAnnualSummaryRequestData
 
-object CreateAmendUkSavingsAnnualRulesValidator extends RulesValidator[CreateAmendUkSavingsAnnualSummaryRequestData] {
+object Def1_CreateAmendUkSavingsAnnualRulesValidator extends RulesValidator[Def1_CreateAmendUkSavingsAnnualSummaryRequestData] {
   private val resolveParsedNumber = ResolveParsedNumber()
 
   def validateBusinessRules(
-                             parsed: CreateAmendUkSavingsAnnualSummaryRequestData): Validated[Seq[MtdError], CreateAmendUkSavingsAnnualSummaryRequestData] = {
+      parsed: Def1_CreateAmendUkSavingsAnnualSummaryRequestData): Validated[Seq[MtdError], Def1_CreateAmendUkSavingsAnnualSummaryRequestData] = {
     import parsed._
 
     val validatedMandatoryDecimalNumbers = List(
-      (body.taxedUkInterest, s"/taxedUkInterest"),
-      (body.untaxedUkInterest, s"/untaxedUkInterest")
+      (mtdBody.taxedUkInterest, s"/taxedUkInterest"),
+      (mtdBody.untaxedUkInterest, s"/untaxedUkInterest")
     ).traverse_ { case (value, path) =>
       resolveParsedNumber(value, path)
     }

@@ -14,38 +14,36 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.createAmendUkSavingsAnnualSummary
 
 import models.domain.SavingsAccountId
+import play.api.libs.json.{JsObject, JsValue}
+import play.api.mvc.Result
+import shared.config.MockAppConfig
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import shared.models.audit.GenericAuditDetailFixture.nino
 import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import shared.models.auth.UserDetails
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
-import shared.config.MockAppConfig
-import play.api.libs.json.{JsObject, JsValue}
-import play.api.mvc.Result
-import shared.models.audit.GenericAuditDetailFixture.nino
+import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.utils.MockIdGenerator
-import v1.mocks.services.MockCreateAmendUkSavingsAnnualSummaryService
-import v1.mocks.validators.MockCreateAmendUkSavingsAnnualSummaryValidatorFactory
-import v1.models.request.createAmendUkSavingsAnnualSummary._
+import v1.createAmendUkSavingsAnnualSummary.def1.model.request.{Def1_CreateAmendUkSavingsAnnualSummaryRequestBody, Def1_CreateAmendUkSavingsAnnualSummaryRequestData}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CreateAmendUkSavingsAnnualSummaryControllerSpec
     extends ControllerBaseSpec
-      with ControllerTestRunner
-      with MockEnrolmentsAuthService
-      with MockMtdIdLookupService
-      with MockCreateAmendUkSavingsAnnualSummaryValidatorFactory
-      with MockCreateAmendUkSavingsAnnualSummaryService
-      with MockIdGenerator
-      with MockAuditService
-      with MockAppConfig {
+    with ControllerTestRunner
+    with MockEnrolmentsAuthService
+    with MockMtdIdLookupService
+    with MockCreateAmendUkSavingsAnnualSummaryValidatorFactory
+    with MockCreateAmendUkSavingsAnnualSummaryService
+    with MockIdGenerator
+    with MockAuditService
+    with MockAppConfig {
 
   val taxYear: String          = "2019-20"
   val savingsAccountId: String = "acctId"
@@ -53,11 +51,11 @@ class CreateAmendUkSavingsAnnualSummaryControllerSpec
 
   val requestJson: JsObject = JsObject.empty
 
-  val requestData: CreateAmendUkSavingsAnnualSummaryRequestData = CreateAmendUkSavingsAnnualSummaryRequestData(
+  val requestData: Def1_CreateAmendUkSavingsAnnualSummaryRequestData = Def1_CreateAmendUkSavingsAnnualSummaryRequestData(
     nino = Nino(nino),
     taxYear = TaxYear.fromMtd(taxYear),
     savingsAccountId = SavingsAccountId(savingsAccountId),
-    body = CreateAmendUkSavingsAnnualSummaryBody(None, None)
+    mtdBody = Def1_CreateAmendUkSavingsAnnualSummaryRequestBody(None, None)
   )
 
   "CreateAmendUkSavingsAnnualSummaryController" should {

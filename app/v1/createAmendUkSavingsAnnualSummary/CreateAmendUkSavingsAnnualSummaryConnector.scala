@@ -14,30 +14,28 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.createAmendUkSavingsAnnualSummary
 
 import config.FeatureSwitches
+import play.api.http.Status
+import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
-import shared.models.domain.{Nino, TaxYear}
-import shared.config.AppConfig
-import play.api.http.Status
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v1.models.request.createAmendUkSavingsAnnualSummary.DownstreamCreateAmendUkSavingsAnnualSummaryBody
+import v1.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)
-  (implicit featureSwitches: FeatureSwitches)
-  extends BaseDownstreamConnector {
+class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(implicit featureSwitches: FeatureSwitches)
+    extends BaseDownstreamConnector {
 
-  def createOrAmendUKSavingsAccountSummary(nino: Nino, taxYear: TaxYear, body: DownstreamCreateAmendUkSavingsAnnualSummaryBody)(implicit
-                                                                                                                                hc: HeaderCarrier,
-                                                                                                                                cc: ExecutionContext,
-                                                                                                                                correlationId: String): Future[DownstreamOutcome[Unit]] = {
-
+  def createOrAmendUKSavingsAccountSummary(requestData: CreateAmendUkSavingsAnnualSummaryRequestData)(implicit
+      hc: HeaderCarrier,
+      cc: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[Unit]] = {
+    import requestData._
     import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 
     implicit val successCode: SuccessCode = SuccessCode(Status.OK)
@@ -54,7 +52,7 @@ class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient
       }
     post(
       uri = downstreamUri,
-      body = body
+      body = mtdBody.asDownstreamRequestBody(savingsAccountId)
     )
   }
 

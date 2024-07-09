@@ -18,8 +18,8 @@ package v1.listUkSavingsAccounts
 
 import play.api.libs.json.Reads
 import shared.schema.DownstreamReadable
-import v1.listUkSavingsAccounts.def1.model.response.Def1_UkSavingsAccount
-import v1.listUkSavingsAccounts.model.response.{Def1_ListUkSavingsAccountsResponse, ListUkSavingsAccountsResponse, UkSavingsAccount}
+import v1.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
+import v1.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
 
 sealed trait ListUkSavingsAccountsSchema extends DownstreamReadable[ListUkSavingsAccountsResponse[UkSavingsAccount]]
 

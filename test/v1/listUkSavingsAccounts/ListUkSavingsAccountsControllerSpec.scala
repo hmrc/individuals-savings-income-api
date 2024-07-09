@@ -24,9 +24,8 @@ import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.domain.Nino
 import shared.models.errors.{ErrorWrapper, NinoFormatError, NotFoundError}
 import shared.models.outcomes.ResponseWrapper
-import v1.listUkSavingsAccounts.def1.model.response.Def1_UkSavingsAccount
-import v1.listUkSavingsAccounts.model.request.Def1_ListUkSavingsAccountsRequestData
-import v1.listUkSavingsAccounts.model.response.Def1_ListUkSavingsAccountsResponse
+import v1.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

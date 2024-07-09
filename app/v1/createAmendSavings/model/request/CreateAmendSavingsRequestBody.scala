@@ -16,36 +16,16 @@
 
 package v1.createAmendSavings.model.request
 
-import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import shared.utils.JsonWritesUtil
-import utils.JsonUtils
-import v1.createAmendSavings.def1.model.request.{AmendForeignInterestItem, AmendSecurities}
+import v1.createAmendSavings.def1.model.request.Def1_CreateAmendSavingsRequestBody
 
-sealed trait CreateAmendSavingsRequestBody
+trait CreateAmendSavingsRequestBody
 
 object CreateAmendSavingsRequestBody extends JsonWritesUtil {
 
   implicit val writes: OWrites[CreateAmendSavingsRequestBody] = writesFrom { case a: Def1_CreateAmendSavingsRequestBody =>
     Json.toJson(a).as[JsObject]
   }
-
-}
-
-case class Def1_CreateAmendSavingsRequestBody(securities: Option[AmendSecurities], foreignInterest: Option[Seq[AmendForeignInterestItem]])
-    extends CreateAmendSavingsRequestBody
-
-object Def1_CreateAmendSavingsRequestBody extends JsonUtils {
-  val empty: Def1_CreateAmendSavingsRequestBody = Def1_CreateAmendSavingsRequestBody(None, None)
-
-  implicit val reads: Reads[Def1_CreateAmendSavingsRequestBody] = (
-    (JsPath \ "securities").readNullable[AmendSecurities] and
-      (JsPath \ "foreignInterest").readNullable[Seq[AmendForeignInterestItem]].mapEmptySeqToNone
-  )(Def1_CreateAmendSavingsRequestBody.apply _)
-
-  implicit val writes: OWrites[Def1_CreateAmendSavingsRequestBody] = (
-    (JsPath \ "securities").writeNullable[AmendSecurities] and
-      (JsPath \ "foreignInterest").writeNullable[Seq[AmendForeignInterestItem]]
-  )(unlift(Def1_CreateAmendSavingsRequestBody.unapply))
 
 }

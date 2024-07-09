@@ -23,7 +23,8 @@ import models.domain.SavingsAccountId
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.ResolveNino
 import shared.models.errors.{MtdError, SavingsAccountIdFormatError}
-import v1.listUkSavingsAccounts.model.request.{Def1_ListUkSavingsAccountsRequestData, ListUkSavingsAccountsRequestData}
+import v1.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 
 class Def1_ListUkSavingsAccountsValidator(nino: String, savingsAccountId: Option[String]) extends Validator[ListUkSavingsAccountsRequestData] {
 

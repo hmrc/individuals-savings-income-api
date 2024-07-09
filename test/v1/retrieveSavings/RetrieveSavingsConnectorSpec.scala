@@ -19,8 +19,10 @@ package v1.retrieveSavings
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear, Timestamp}
 import shared.models.outcomes.ResponseWrapper
-import v1.retrieveSavings.model.request.{Def1_RetrieveSavingsRequestData, RetrieveSavingsRequestData}
-import v1.retrieveSavings.model.response.{Def1_RetrieveSavingsResponse, RetrieveSavingsResponse}
+import v1.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
+import v1.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
+import v1.retrieveSavings.model.request.RetrieveSavingsRequestData
+import v1.retrieveSavings.model.response.RetrieveSavingsResponse
 
 import scala.concurrent.Future
 

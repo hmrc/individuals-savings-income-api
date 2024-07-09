@@ -22,8 +22,7 @@ import cats.implicits.toFoldableOps
 import shared.controllers.validators.RulesValidator
 import shared.controllers.validators.resolvers.{ResolveParsedCountryCode, ResolveParsedNumber}
 import shared.models.errors.MtdError
-import v1.createAmendSavings.def1.model.request.{AmendForeignInterestItem, AmendSecurities}
-import v1.createAmendSavings.model.request.{Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v1.createAmendSavings.def1.model.request.{AmendForeignInterestItem, AmendSecurities, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
 
 object Def1_CreateAmendSavingsRulesValidator extends RulesValidator[Def1_CreateAmendSavingsRequestData] {
   private val resolveParsedNumber = ResolveParsedNumber()

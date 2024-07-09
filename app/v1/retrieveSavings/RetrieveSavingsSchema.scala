@@ -18,7 +18,8 @@ package v1.retrieveSavings
 
 import play.api.libs.json.Reads
 import shared.schema.DownstreamReadable
-import v1.retrieveSavings.model.response.{Def1_RetrieveSavingsResponse, RetrieveSavingsResponse}
+import v1.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
+import v1.retrieveSavings.model.response.RetrieveSavingsResponse
 
 sealed trait RetrieveSavingsSchema extends DownstreamReadable[RetrieveSavingsResponse]
 

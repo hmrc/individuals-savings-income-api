@@ -20,7 +20,7 @@ import models.domain.SavingsAccountId
 import shared.UnitSpec
 import shared.models.domain.Nino
 import shared.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, SavingsAccountIdFormatError}
-import v1.listUkSavingsAccounts.model.request.Def1_ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
 
 class Def1_ListUkSavingsAccountsValidatorSpec extends UnitSpec {
 

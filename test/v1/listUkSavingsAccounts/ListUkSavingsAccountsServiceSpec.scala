@@ -22,9 +22,8 @@ import shared.models.domain.Nino
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v1.listUkSavingsAccounts.def1.model.response.Def1_UkSavingsAccount
-import v1.listUkSavingsAccounts.model.request.Def1_ListUkSavingsAccountsRequestData
-import v1.listUkSavingsAccounts.model.response.Def1_ListUkSavingsAccountsResponse
+import v1.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
 
 import scala.concurrent.Future
 

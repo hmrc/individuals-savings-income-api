@@ -24,7 +24,8 @@ import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
-import v1.deleteSavings.model.request.{Def1_DeleteSavingsRequestData, DeleteSavingsRequestData}
+import v1.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
+import v1.deleteSavings.model.request.DeleteSavingsRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

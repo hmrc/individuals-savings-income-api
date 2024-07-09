@@ -18,9 +18,8 @@ package v1.createAmendSavings.def1.model.request
 
 import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 import shared.UnitSpec
-import v1.createAmendSavings.model.request.Def1_CreateAmendSavingsRequestBody
 
-class CreateAmendSavingsRequestBodySpec extends UnitSpec {
+class Def1_CreateAmendSavingsRequestBodySpec extends UnitSpec {
 
   val mtdJson: JsValue = Json.parse(
     """

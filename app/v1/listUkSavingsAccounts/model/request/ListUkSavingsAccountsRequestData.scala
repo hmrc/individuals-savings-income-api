@@ -20,13 +20,9 @@ import models.domain.SavingsAccountId
 import shared.models.domain.Nino
 import v1.listUkSavingsAccounts.ListUkSavingsAccountsSchema
 
-sealed trait ListUkSavingsAccountsRequestData {
+trait ListUkSavingsAccountsRequestData {
   def nino: Nino
   def savingsAccountId: Option[SavingsAccountId]
 
   val schema: ListUkSavingsAccountsSchema
-}
-
-case class Def1_ListUkSavingsAccountsRequestData(nino: Nino, savingsAccountId: Option[SavingsAccountId]) extends ListUkSavingsAccountsRequestData {
-  override val schema: ListUkSavingsAccountsSchema = ListUkSavingsAccountsSchema.Def1
 }

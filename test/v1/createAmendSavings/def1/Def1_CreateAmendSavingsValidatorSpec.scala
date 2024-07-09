@@ -21,7 +21,8 @@ import shared.UnitSpec
 import shared.config.MockAppConfig
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
-import v1.createAmendSavings.model.request.{CreateAmendSavingsRequestData, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v1.createAmendSavings.def1.model.request.{Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
 class Def1_CreateAmendSavingsValidatorSpec extends UnitSpec with MockAppConfig {
 

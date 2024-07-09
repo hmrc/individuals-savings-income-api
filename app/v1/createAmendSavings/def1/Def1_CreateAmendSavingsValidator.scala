@@ -25,7 +25,8 @@ import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJson
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
 import v1.createAmendSavings.def1.Def1_CreateAmendSavingsRulesValidator.validateBusinessRules
-import v1.createAmendSavings.model.request.{CreateAmendSavingsRequestData, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v1.createAmendSavings.def1.model.request.{Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
 class Def1_CreateAmendSavingsValidator(nino: String, taxYear: String, body: JsValue)(appConfig: AppConfig)
     extends Validator[CreateAmendSavingsRequestData] {

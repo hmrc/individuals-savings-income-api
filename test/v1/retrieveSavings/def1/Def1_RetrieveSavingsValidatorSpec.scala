@@ -20,7 +20,7 @@ import shared.UnitSpec
 import shared.config.{AppConfig, MockAppConfig}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
-import v1.retrieveSavings.model.request.Def1_RetrieveSavingsRequestData
+import v1.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
 
 class Def1_RetrieveSavingsValidatorSpec extends UnitSpec with MockAppConfig {
 

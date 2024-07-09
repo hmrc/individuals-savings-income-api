@@ -23,9 +23,8 @@ import shared.models.domain.{Nino, TaxYear, Timestamp}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import v1.retrieveSavings.def1.model.RetrieveSavingsControllerFixture
-import v1.retrieveSavings.def1.model.response.{ForeignInterestItem, Securities}
-import v1.retrieveSavings.model.request.Def1_RetrieveSavingsRequestData
-import v1.retrieveSavings.model.response.Def1_RetrieveSavingsResponse
+import v1.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
+import v1.retrieveSavings.def1.model.response.{Def1_RetrieveSavingsResponse, ForeignInterestItem, Securities}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

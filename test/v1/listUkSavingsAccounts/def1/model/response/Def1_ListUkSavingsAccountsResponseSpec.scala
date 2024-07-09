@@ -18,9 +18,8 @@ package v1.listUkSavingsAccounts.def1.model.response
 
 import play.api.libs.json.Json
 import shared.UnitSpec
-import v1.listUkSavingsAccounts.model.response.Def1_ListUkSavingsAccountsResponse
 
-class ListUkSavingsAccountsResponseSpec extends UnitSpec {
+class Def1_ListUkSavingsAccountsResponseSpec extends UnitSpec {
 
   val ukSavingsAccountsFromDES = Json.parse(
     """

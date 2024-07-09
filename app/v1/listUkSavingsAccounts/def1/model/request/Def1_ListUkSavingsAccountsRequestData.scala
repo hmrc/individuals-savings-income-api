@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package v1.createAmendSavings.model.request
+package v1.listUkSavingsAccounts.def1.model.request
 
-import shared.models.domain.{Nino, TaxYear}
-import v1.createAmendSavings.CreateAmendSavingsSchema
+import models.domain.SavingsAccountId
+import shared.models.domain.Nino
+import v1.listUkSavingsAccounts.ListUkSavingsAccountsSchema
+import v1.listUkSavingsAccounts.ListUkSavingsAccountsSchema.Def1
+import v1.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 
-trait CreateAmendSavingsRequestData {
-  def nino: Nino
-  def taxYear: TaxYear
-  def body: CreateAmendSavingsRequestBody
-
-  val schema: CreateAmendSavingsSchema
+case class Def1_ListUkSavingsAccountsRequestData(nino: Nino, savingsAccountId: Option[SavingsAccountId]) extends ListUkSavingsAccountsRequestData {
+  override val schema: ListUkSavingsAccountsSchema = Def1
 }

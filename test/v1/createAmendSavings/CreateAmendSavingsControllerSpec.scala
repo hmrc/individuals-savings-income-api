@@ -27,8 +27,8 @@ import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.MockMtdIdLookupService
-import v1.createAmendSavings.def1.model.request.{AmendForeignInterestItem, AmendSecurities}
-import v1.createAmendSavings.model.request.{CreateAmendSavingsRequestData, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v1.createAmendSavings.def1.model.request.{AmendForeignInterestItem, AmendSecurities, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

@@ -19,9 +19,8 @@ package v1.retrieveSavings.def1.model.response
 import play.api.libs.json.{JsError, JsValue, Json}
 import shared.UnitSpec
 import shared.models.domain.Timestamp
-import v1.retrieveSavings.model.response.Def1_RetrieveSavingsResponse
 
-class RetrieveSavingsResponseSpec extends UnitSpec {
+class Def1_RetrieveSavingsResponseSpec extends UnitSpec {
 
   private val desResponse: JsValue = Json.parse(
     """

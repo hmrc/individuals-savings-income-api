@@ -20,7 +20,7 @@ import shared.UnitSpec
 import shared.config.{AppConfig, MockAppConfig}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
-import v1.deleteSavings.model.request.Def1_DeleteSavingsRequestData
+import v1.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
 
 class Def1_DeleteSavingsValidatorSpec extends UnitSpec with MockAppConfig {
 

@@ -21,9 +21,9 @@ import shared.config.MockAppConfig
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import v1.listUkSavingsAccounts.def1.model.response.Def1_UkSavingsAccount
-import v1.listUkSavingsAccounts.model.request.Def1_ListUkSavingsAccountsRequestData
-import v1.listUkSavingsAccounts.model.response.{Def1_ListUkSavingsAccountsResponse, ListUkSavingsAccountsResponse, UkSavingsAccount}
+import v1.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
+import v1.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
+import v1.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
 
 import scala.concurrent.Future
 

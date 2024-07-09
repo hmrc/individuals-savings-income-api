@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v1.createAmendSavings.model.request
+package v1.createAmendSavings.def1.model.request
 
 import shared.models.domain.{Nino, TaxYear}
 import v1.createAmendSavings.CreateAmendSavingsSchema
+import v1.createAmendSavings.CreateAmendSavingsSchema.Def1
+import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
-trait CreateAmendSavingsRequestData {
-  def nino: Nino
-  def taxYear: TaxYear
-  def body: CreateAmendSavingsRequestBody
+case class Def1_CreateAmendSavingsRequestData(nino: Nino, taxYear: TaxYear, body: Def1_CreateAmendSavingsRequestBody)
+    extends CreateAmendSavingsRequestData {
 
-  val schema: CreateAmendSavingsSchema
+  override val schema: CreateAmendSavingsSchema = Def1
 }

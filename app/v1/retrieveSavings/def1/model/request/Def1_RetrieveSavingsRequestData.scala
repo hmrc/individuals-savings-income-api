@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package v1.createAmendSavings.model.request
+package v1.retrieveSavings.def1.model.request
 
 import shared.models.domain.{Nino, TaxYear}
-import v1.createAmendSavings.CreateAmendSavingsSchema
+import v1.retrieveSavings.RetrieveSavingsSchema
+import v1.retrieveSavings.RetrieveSavingsSchema.Def1
+import v1.retrieveSavings.model.request.RetrieveSavingsRequestData
 
-trait CreateAmendSavingsRequestData {
-  def nino: Nino
-  def taxYear: TaxYear
-  def body: CreateAmendSavingsRequestBody
-
-  val schema: CreateAmendSavingsSchema
+case class Def1_RetrieveSavingsRequestData(nino: Nino, taxYear: TaxYear) extends RetrieveSavingsRequestData {
+  val schema: RetrieveSavingsSchema = Def1
 }

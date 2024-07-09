@@ -21,8 +21,8 @@ import shared.models.domain.{Nino, TaxYear, Timestamp}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v1.retrieveSavings.model.request.Def1_RetrieveSavingsRequestData
-import v1.retrieveSavings.model.response.Def1_RetrieveSavingsResponse
+import v1.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
+import v1.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
 
 import scala.concurrent.Future
 

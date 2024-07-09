@@ -19,7 +19,8 @@ package v1.createAmendSavings
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import v1.createAmendSavings.model.request.{CreateAmendSavingsRequestData, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v1.createAmendSavings.def1.model.request.{Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
 import scala.concurrent.Future
 

@@ -23,7 +23,8 @@ import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v1.deleteSavings.model.request.{Def1_DeleteSavingsRequestData, DeleteSavingsRequestData}
+import v1.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
+import v1.deleteSavings.model.request.DeleteSavingsRequestData
 
 class Def1_DeleteSavingsValidator(nino: String, taxYear: String)(appConfig: AppConfig) extends Validator[DeleteSavingsRequestData] {
 

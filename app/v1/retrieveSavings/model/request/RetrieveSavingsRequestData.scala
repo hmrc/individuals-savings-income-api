@@ -19,13 +19,9 @@ package v1.retrieveSavings.model.request
 import shared.models.domain.{Nino, TaxYear}
 import v1.retrieveSavings.RetrieveSavingsSchema
 
-sealed trait RetrieveSavingsRequestData {
+trait RetrieveSavingsRequestData {
   def nino: Nino
   def taxYear: TaxYear
 
   val schema: RetrieveSavingsSchema
-}
-
-case class Def1_RetrieveSavingsRequestData(nino: Nino, taxYear: TaxYear) extends RetrieveSavingsRequestData {
-  val schema: RetrieveSavingsSchema = RetrieveSavingsSchema.Def1
 }

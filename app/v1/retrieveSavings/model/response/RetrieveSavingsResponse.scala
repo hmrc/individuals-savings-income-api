@@ -16,34 +16,16 @@
 
 package v1.retrieveSavings.model.response
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import shared.models.domain.Timestamp
+import play.api.libs.json._
 import shared.utils.JsonWritesUtil
-import utils.JsonUtils
-import v1.retrieveSavings.def1.model.response.{ForeignInterestItem, Securities}
+import v1.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
 
-sealed trait RetrieveSavingsResponse
+trait RetrieveSavingsResponse
 
 object RetrieveSavingsResponse extends JsonWritesUtil {
 
   implicit val writes: OWrites[RetrieveSavingsResponse] = writesFrom { case a: Def1_RetrieveSavingsResponse =>
-    implicitly[OWrites[Def1_RetrieveSavingsResponse]].writes(a)
+    Json.toJson(a).as[JsObject]
   }
-
-}
-
-case class Def1_RetrieveSavingsResponse(submittedOn: Timestamp, securities: Option[Securities], foreignInterest: Option[Seq[ForeignInterestItem]])
-    extends RetrieveSavingsResponse
-
-object Def1_RetrieveSavingsResponse extends JsonUtils {
-
-  implicit val reads: Reads[Def1_RetrieveSavingsResponse] = (
-    (JsPath \ "submittedOn").read[Timestamp] and
-      (JsPath \ "securities").readNullable[Securities] and
-      (JsPath \ "foreignInterest").readNullable[Seq[ForeignInterestItem]].mapEmptySeqToNone
-  )(Def1_RetrieveSavingsResponse.apply _)
-
-  implicit val writes: OWrites[Def1_RetrieveSavingsResponse] = Json.writes[Def1_RetrieveSavingsResponse]
 
 }

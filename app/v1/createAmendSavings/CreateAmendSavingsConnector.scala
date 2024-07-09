@@ -18,6 +18,7 @@ package v1.createAmendSavings
 
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
+import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
@@ -34,7 +35,6 @@ class CreateAmendSavingsConnector @Inject() (val http: HttpClient, val appConfig
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
     import request._
-    import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 
     val downstreamUri =
       if (taxYear.useTaxYearSpecificApi) {

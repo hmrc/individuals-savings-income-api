@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.addUkSavingsAccount
 
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
@@ -24,10 +24,8 @@ import shared.models.audit._
 import shared.models.domain.Nino
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
-import v1.mocks.services.MockAddUkSavingsAccountService
-import v1.mocks.validators.MockAddUkSavingsAccountValidatorFactory
-import v1.models.request.addUkSavingsAccount.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
-import v1.models.response.addUkSavingsAccount.AddUkSavingsAccountResponse
+import v1.addUkSavingsAccount.def1.model.request.{Def1_AddUkSavingsAccountRequestBody, Def1_AddUkSavingsAccountRequestData}
+import v1.addUkSavingsAccount.def1.model.response.Def1_AddUkSavingsAccountResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -109,12 +107,12 @@ class AddUkSavingsAccountControllerSpec
       |}
       |""".stripMargin)
 
-    val requestData: AddUkSavingsAccountRequestData = AddUkSavingsAccountRequestData(
+    val requestData: Def1_AddUkSavingsAccountRequestData = Def1_AddUkSavingsAccountRequestData(
       nino = Nino(validNino),
-      body = AddUkSavingsAccountRequestBody("Shares savings account")
+      body = Def1_AddUkSavingsAccountRequestBody("Shares savings account")
     )
 
-    val responseData: AddUkSavingsAccountResponse = AddUkSavingsAccountResponse(
+    val responseData: Def1_AddUkSavingsAccountResponse = Def1_AddUkSavingsAccountResponse(
       savingsAccountId = savingsAccountId
     )
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.addUkSavingsAccount
 
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
@@ -23,8 +23,6 @@ import shared.controllers._
 import shared.routing.Version
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.IdGenerator
-import v1.controllers.validators.AddUkSavingsAccountValidatorFactory
-import v1.services.AddUkSavingsAccountService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext

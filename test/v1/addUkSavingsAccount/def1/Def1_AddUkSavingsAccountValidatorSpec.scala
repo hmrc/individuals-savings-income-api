@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.addUkSavingsAccount.def1
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 import shared.UnitSpec
 import shared.models.domain.Nino
-import shared.models.errors._
-import v1.models.request.addUkSavingsAccount.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
+import shared.models.errors.{AccountNameFormatError, ErrorWrapper, NinoFormatError, RuleIncorrectOrEmptyBodyError}
+import v1.addUkSavingsAccount.def1.model.request.{Def1_AddUkSavingsAccountRequestBody, Def1_AddUkSavingsAccountRequestData}
+import v1.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
 
-class AddUkSavingsAccountValidatorFactorySpec extends UnitSpec {
+class Def1_AddUkSavingsAccountValidatorSpec extends UnitSpec {
 
   implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
   private val validNino              = "AA123456A"
@@ -54,16 +55,15 @@ class AddUkSavingsAccountValidatorFactorySpec extends UnitSpec {
   )
 
   private val parsedNino                             = Nino(validNino)
-  private val parsedRequestBody                      = AddUkSavingsAccountRequestBody("Shares savings account")
-  private val validatorFactory                       = new AddUkSavingsAccountValidatorFactory()
-  private def validator(nino: String, body: JsValue) = validatorFactory.validator(nino, body)
+  private val parsedRequestBody                      = Def1_AddUkSavingsAccountRequestBody("Shares savings account")
+  private def validator(nino: String, body: JsValue) = new Def1_AddUkSavingsAccountValidator(nino, body)
 
   "AddUkSavingsAccountValidator" when {
     "running a validation" should {
       "return no errors" when {
         "a valid request is supplied" in {
           val result: Either[ErrorWrapper, AddUkSavingsAccountRequestData] = validator(validNino, validRequestBodyJson).validateAndWrapResult()
-          result shouldBe Right(AddUkSavingsAccountRequestData(parsedNino, parsedRequestBody))
+          result shouldBe Right(Def1_AddUkSavingsAccountRequestData(parsedNino, parsedRequestBody))
         }
       }
 

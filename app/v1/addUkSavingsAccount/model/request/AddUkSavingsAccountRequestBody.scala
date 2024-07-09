@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package v1.models.request.addUkSavingsAccount
+package v1.addUkSavingsAccount.model.request
 
-import play.api.libs.json.{Json, OWrites, Reads}
+import play.api.libs.json.{JsObject, Json, OWrites}
+import shared.utils.JsonWritesUtil
+import v1.addUkSavingsAccount.def1.model.request.Def1_AddUkSavingsAccountRequestBody
 
-case class AddUkSavingsAccountRequestBody(accountName: String)
+trait AddUkSavingsAccountRequestBody
 
-object AddUkSavingsAccountRequestBody {
+object AddUkSavingsAccountRequestBody extends JsonWritesUtil {
 
-  implicit val reads: Reads[AddUkSavingsAccountRequestBody] = Json.reads[AddUkSavingsAccountRequestBody]
-
-  implicit val writes: OWrites[AddUkSavingsAccountRequestBody] = (addUkSavingsRequestBody: AddUkSavingsAccountRequestBody) =>
-    Json.obj(
-      "incomeSourceType" -> "interest-from-uk-banks",
-      "incomeSourceName" -> addUkSavingsRequestBody.accountName
-    )
+  implicit val writes: OWrites[AddUkSavingsAccountRequestBody] = writesFrom { case a: Def1_AddUkSavingsAccountRequestBody =>
+    Json.toJson(a).as[JsObject]
+  }
 
 }

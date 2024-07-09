@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.request.addUkSavingsAccount
+package v1.addUkSavingsAccount.def1.model.request
 
 import play.api.libs.json.{JsError, JsObject, Json}
 import shared.UnitSpec
 
-class AddUkSavingsAccountRequestBodySpec extends UnitSpec {
+class Def1_AddUkSavingsAccountRequestBodySpec extends UnitSpec {
 
   val mtdJson = Json.parse("""
       |{
@@ -34,12 +34,12 @@ class AddUkSavingsAccountRequestBodySpec extends UnitSpec {
       |}
       |""".stripMargin)
 
-  val model: AddUkSavingsAccountRequestBody = AddUkSavingsAccountRequestBody("Shares savings account")
+  val model: Def1_AddUkSavingsAccountRequestBody = Def1_AddUkSavingsAccountRequestBody("Shares savings account")
 
   "AddUkSavings" when {
     "read from a valid JSON" should {
       "produce the expected object" in {
-        mtdJson.as[AddUkSavingsAccountRequestBody] shouldBe model
+        mtdJson.as[Def1_AddUkSavingsAccountRequestBody] shouldBe model
       }
     }
   }
@@ -47,7 +47,7 @@ class AddUkSavingsAccountRequestBodySpec extends UnitSpec {
   "read from empty JSON" should {
     "produce a JsError" in {
       val invalidJson = JsObject.empty
-      invalidJson.validate[AddUkSavingsAccountRequestBody] shouldBe a[JsError]
+      invalidJson.validate[Def1_AddUkSavingsAccountRequestBody] shouldBe a[JsError]
     }
   }
 

@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.request.addUkSavingsAccount
+package v1.addUkSavingsAccount.def1.model.request
 
 import shared.models.domain.Nino
+import v1.addUkSavingsAccount.AddUkSavingsAccountSchema
+import v1.addUkSavingsAccount.AddUkSavingsAccountSchema.Def1
+import v1.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
 
-case class AddUkSavingsAccountRequestData(nino: Nino, body: AddUkSavingsAccountRequestBody)
+case class Def1_AddUkSavingsAccountRequestData(nino: Nino, body: Def1_AddUkSavingsAccountRequestBody) extends AddUkSavingsAccountRequestData {
+  override val schema: AddUkSavingsAccountSchema = Def1
+}

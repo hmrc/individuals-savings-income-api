@@ -14,35 +14,29 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.addUkSavingsAccount.def1
 
 import cats.data.Validated
-import cats.implicits.{catsSyntaxTuple2Semigroupal, toFoldableOps}
+import cats.implicits._
 import play.api.libs.json.JsValue
 import resolvers.ResolveAccountName
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject}
 import shared.models.errors.MtdError
-import v1.models.request.addUkSavingsAccount.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
+import v1.addUkSavingsAccount.def1.model.request.{Def1_AddUkSavingsAccountRequestBody, Def1_AddUkSavingsAccountRequestData}
+import v1.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
 
-import javax.inject.Inject
+class Def1_AddUkSavingsAccountValidator(nino: String, body: JsValue) extends Validator[AddUkSavingsAccountRequestData] {
 
-class AddUkSavingsAccountValidatorFactory @Inject() {
+  private val resolveJson = new ResolveNonEmptyJsonObject[Def1_AddUkSavingsAccountRequestBody]()
 
-  private val resolveJson = new ResolveNonEmptyJsonObject[AddUkSavingsAccountRequestBody]()
+  def validate: Validated[Seq[MtdError], AddUkSavingsAccountRequestData] = (
+    ResolveNino(nino),
+    resolveJson(body)
+  ).mapN(Def1_AddUkSavingsAccountRequestData) andThen validateBusinessRules
 
-  def validator(nino: String, body: JsValue): Validator[AddUkSavingsAccountRequestData] = new Validator[AddUkSavingsAccountRequestData] {
-
-    def validate: Validated[Seq[MtdError], AddUkSavingsAccountRequestData] = (
-      ResolveNino(nino),
-      resolveJson(body)
-    ).mapN(AddUkSavingsAccountRequestData) andThen validateBusinessRules
-
-  }
-
-  private def validateBusinessRules(parsed: AddUkSavingsAccountRequestData): Validated[Seq[MtdError], AddUkSavingsAccountRequestData] = {
-    import parsed.body.accountName
-
+  private def validateBusinessRules(parsed: Def1_AddUkSavingsAccountRequestData): Validated[Seq[MtdError], Def1_AddUkSavingsAccountRequestData] = {
+    import parsed.body._
     List((accountName, "/accountName")).traverse_ { case (value, path) => ResolveAccountName(value, path) }.map(_ => parsed)
 
   }

@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package v1.models.response.addUkSavingsAccount
+package v1.addUkSavingsAccount
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.json.JsValue
+import shared.controllers.validators.Validator
+import v1.addUkSavingsAccount.def1.Def1_AddUkSavingsAccountValidator
+import v1.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
 
-case class AddUkSavingsAccountResponse(savingsAccountId: String)
+class AddUkSavingsAccountValidatorFactory {
 
-object AddUkSavingsAccountResponse {
-
-  implicit val reads: Reads[AddUkSavingsAccountResponse] = (JsPath \ "incomeSourceId").read[String].map(AddUkSavingsAccountResponse(_))
-
-  implicit val writes: OWrites[AddUkSavingsAccountResponse] = Json.writes[AddUkSavingsAccountResponse]
+  def validator(nino: String, body: JsValue): Validator[AddUkSavingsAccountRequestData] = new Def1_AddUkSavingsAccountValidator(nino, body)
 
 }

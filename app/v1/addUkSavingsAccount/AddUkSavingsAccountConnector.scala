@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.addUkSavingsAccount
 
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.DesUri
 import shared.connectors.httpparsers.StandardDownstreamHttpParser.reads
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v1.models.request.addUkSavingsAccount.AddUkSavingsAccountRequestData
-import v1.models.response.addUkSavingsAccount.AddUkSavingsAccountResponse
+import v1.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
+import v1.addUkSavingsAccount.model.response.AddUkSavingsAccountResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,8 +36,9 @@ class AddUkSavingsAccountConnector @Inject() (val http: HttpClient, val appConfi
       correlationId: String): Future[DownstreamOutcome[AddUkSavingsAccountResponse]] = {
 
     import request._
+    import schema._
 
-    val downstreamUri = DesUri[AddUkSavingsAccountResponse](s"income-tax/income-sources/nino/$nino")
+    val downstreamUri = DesUri[DownstreamResp](s"income-tax/income-sources/nino/$nino")
 
     post(body, downstreamUri)
   }

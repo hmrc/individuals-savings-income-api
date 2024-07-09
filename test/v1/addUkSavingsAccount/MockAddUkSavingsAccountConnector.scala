@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package v1.mocks.connectors
+package v1.addUkSavingsAccount
 
-import shared.connectors.DownstreamOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import shared.connectors.DownstreamOutcome
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.connectors.AddUkSavingsAccountConnector
-import v1.models.request.addUkSavingsAccount.AddUkSavingsAccountRequestData
-import v1.models.response.addUkSavingsAccount.AddUkSavingsAccountResponse
+import v1.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
+import v1.addUkSavingsAccount.model.response.AddUkSavingsAccountResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 

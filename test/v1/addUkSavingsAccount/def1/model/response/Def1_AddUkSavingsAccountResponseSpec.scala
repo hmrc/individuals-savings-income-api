@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.response.addUkSavingsAccount
+package v1.addUkSavingsAccount.def1.model.response
 
 import play.api.libs.json.Json
 import shared.UnitSpec
 
-class AddUkSavingsAccountResponseSpec extends UnitSpec {
+class Def1_AddUkSavingsAccountResponseSpec extends UnitSpec {
 
-  val model: AddUkSavingsAccountResponse = AddUkSavingsAccountResponse("SAVKB2UVwUTBQGJ")
+  val model: Def1_AddUkSavingsAccountResponse = Def1_AddUkSavingsAccountResponse("SAVKB2UVwUTBQGJ")
 
   val mtdJson = Json.parse("""
       |{
@@ -38,7 +38,7 @@ class AddUkSavingsAccountResponseSpec extends UnitSpec {
   "AddUkSavingsAccountResponse" when {
     "read from valid JSON" should {
       "produce the expected object" in {
-        desJson.as[AddUkSavingsAccountResponse] shouldBe model
+        desJson.as[Def1_AddUkSavingsAccountResponse] shouldBe model
       }
     }
 

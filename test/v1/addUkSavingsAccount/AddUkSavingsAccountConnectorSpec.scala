@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.addUkSavingsAccount
 
 import shared.config.MockAppConfig
 import shared.connectors.ConnectorSpec
 import shared.mocks.MockHttpClient
 import shared.models.domain.Nino
 import shared.models.outcomes.ResponseWrapper
-import v1.models.request.addUkSavingsAccount.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
-import v1.models.response.addUkSavingsAccount.AddUkSavingsAccountResponse
+import v1.addUkSavingsAccount.def1.model.request.{Def1_AddUkSavingsAccountRequestBody, Def1_AddUkSavingsAccountRequestData}
+import v1.addUkSavingsAccount.def1.model.response.Def1_AddUkSavingsAccountResponse
 
 import scala.concurrent.Future
 
@@ -30,14 +30,15 @@ class AddUkSavingsAccountConnectorSpec extends ConnectorSpec {
 
   val nino: String = "AA111111A"
 
-  val addUkSavingsAccountRequestBody: AddUkSavingsAccountRequestBody = AddUkSavingsAccountRequestBody(accountName = "Shares savings account")
+  val addUkSavingsAccountRequestBody: Def1_AddUkSavingsAccountRequestBody =
+    Def1_AddUkSavingsAccountRequestBody(accountName = "Shares savings account")
 
-  val addUkSavingsAccountRequest: AddUkSavingsAccountRequestData = AddUkSavingsAccountRequestData(
+  val addUkSavingsAccountRequest: Def1_AddUkSavingsAccountRequestData = Def1_AddUkSavingsAccountRequestData(
     nino = Nino(nino),
     body = addUkSavingsAccountRequestBody
   )
 
-  val addUkSavingsAccountResponse: AddUkSavingsAccountResponse = AddUkSavingsAccountResponse(
+  val addUkSavingsAccountResponse: Def1_AddUkSavingsAccountResponse = Def1_AddUkSavingsAccountResponse(
     savingsAccountId = "SAVKB2UVwUTBQGJ"
   )
 

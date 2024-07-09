@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.endpoints
+package v1.addUkSavingsAccount.def1
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status._
@@ -25,7 +25,7 @@ import shared.models.errors.{AccountNameFormatError, _}
 import shared.stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import support.IntegrationBaseSpec
 
-class AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
+class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
@@ -114,7 +114,6 @@ class AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
             override val nino: String             = requestNino
             override val taxYear: String          = requestTaxYear
             override val requestBodyJson: JsValue = requestBody
-
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()

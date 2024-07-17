@@ -28,8 +28,9 @@ import shared.models.outcomes.ResponseWrapper
 import v1.fixtures.RetrieveUkSavingsAccountAnnualSummaryControllerFixture
 import v1.mocks.services.MockRetrieveUkSavingsAnnualSummaryService
 import v1.mocks.validators.MockRetrieveUkSavingsAccountValidatorFactory
-import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRequestData
-import v1.models.response.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryResponse
+import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummaryController
+import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAccountAnnualSummaryResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -48,13 +49,13 @@ class RetrieveUkSavingsAccountAnnualSummaryControllerSpec
   val unTaxedUkIncome: Option[BigDecimal] = Some(34514974058.99)
 
 
-  private val requestData: RetrieveUkSavingsAnnualSummaryRequestData = RetrieveUkSavingsAnnualSummaryRequestData(
+  private val requestData: RetrieveUkSavingsAccountAnnualSummaryRequestData = RetrieveUkSavingsAnnualSummaryRequestData(
     nino = Nino(nino),
     taxYear = TaxYear.fromMtd(taxYear),
     savingsAccountId = SavingsAccountId(savingsAccountId)
   )
 
-  private val retrieveUkSavingsAnnualSummaryResponse: RetrieveUkSavingsAnnualSummaryResponse = new RetrieveUkSavingsAnnualSummaryResponse(
+  private val retrieveUkSavingsAnnualSummaryResponse: RetrieveUkSavingsAccountAnnualSummaryResponse = new RetrieveUkSavingsAccountAnnualSummaryResponse(
     taxedUkInterest = taxedUkIncome,
     untaxedUkInterest = unTaxedUkIncome
   )

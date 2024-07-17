@@ -23,8 +23,8 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.validators.Validator
 import shared.models.errors.MtdError
-import v1.controllers.validators.RetrieveUkSavingsAccountValidatorFactory
-import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountValidatorFactory
+import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 trait MockRetrieveUkSavingsAccountValidatorFactory extends MockFactory {
 
@@ -32,29 +32,29 @@ trait MockRetrieveUkSavingsAccountValidatorFactory extends MockFactory {
 
   object MockRetrieveUkSavingsAccountValidator {
 
-    def validator(): CallHandler[Validator[RetrieveUkSavingsAnnualSummaryRequestData]] =
+    def validator(): CallHandler[Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData]] =
       (mockRetrieveUkSavingsAccountValidatorFactory.validator(_: String, _: String, _: String)).expects(*, *, *)
 
   }
 
   def willUseValidator(
-                        use: Validator[RetrieveUkSavingsAnnualSummaryRequestData]): CallHandler[Validator[RetrieveUkSavingsAnnualSummaryRequestData]] = {
+                        use: Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData]): CallHandler[Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData]] = {
     MockRetrieveUkSavingsAccountValidator
       .validator()
       .anyNumberOfTimes()
       .returns(use)
   }
 
-  def returningSuccess(result: RetrieveUkSavingsAnnualSummaryRequestData): Validator[RetrieveUkSavingsAnnualSummaryRequestData] =
-    new Validator[RetrieveUkSavingsAnnualSummaryRequestData] {
-      def validate: Validated[Seq[MtdError], RetrieveUkSavingsAnnualSummaryRequestData] = Valid(result)
+  def returningSuccess(result: RetrieveUkSavingsAccountAnnualSummaryRequestData): Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] =
+    new Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] {
+      def validate: Validated[Seq[MtdError], RetrieveUkSavingsAccountAnnualSummaryRequestData] = Valid(result)
     }
 
-  def returning(result: MtdError*): Validator[RetrieveUkSavingsAnnualSummaryRequestData] = returningErrors(result)
+  def returning(result: MtdError*): Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] = returningErrors(result)
 
-  def returningErrors(result: Seq[MtdError]): Validator[RetrieveUkSavingsAnnualSummaryRequestData] =
-    new Validator[RetrieveUkSavingsAnnualSummaryRequestData] {
-      def validate: Validated[Seq[MtdError], RetrieveUkSavingsAnnualSummaryRequestData] = Invalid(result)
+  def returningErrors(result: Seq[MtdError]): Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] =
+    new Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] {
+      def validate: Validated[Seq[MtdError], RetrieveUkSavingsAccountAnnualSummaryRequestData] = Invalid(result)
     }
 
 }

@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package v1.services
+package v1.retrieveUkSavingsAccountAnnualSummary
 
 import cats.data.EitherT
 import shared.controllers.{EndpointLogContext, RequestContext}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{BaseService, ServiceOutcome}
-import v1.connectors.RetrieveUkSavingsAccountAnnualSummaryConnector
-import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRequestData
-import v1.models.response.retrieveUkSavingsAnnualSummary.{DownstreamUkSavingsAnnualIncomeResponse, RetrieveUkSavingsAnnualSummaryResponse}
+import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{DownstreamUkSavingsAnnualIncomeResponse, RetrieveUkSavingsAccountAnnualSummaryResponse}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -31,9 +30,9 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class RetrieveUkSavingsAccountAnnualSummaryService @Inject() (connector: RetrieveUkSavingsAccountAnnualSummaryConnector) extends BaseService {
 
-  def retrieveUkSavingsAccountAnnualSummary(request: RetrieveUkSavingsAnnualSummaryRequestData)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[ServiceOutcome[RetrieveUkSavingsAnnualSummaryResponse]] = {
+  def retrieveUkSavingsAccountAnnualSummary(request: RetrieveUkSavingsAccountAnnualSummaryRequestData)(implicit
+                                                                                                       ctx: RequestContext,
+                                                                                                       ec: ExecutionContext): Future[ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse]] = {
 
     val result = for {
       downstreamResponseWrapper <- EitherT(connector.retrieveUkSavingsAccountAnnualSummary(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
@@ -44,7 +43,7 @@ class RetrieveUkSavingsAccountAnnualSummaryService @Inject() (connector: Retriev
   }
 
   private def convertToMtd(downstreamResponseWrapper: ResponseWrapper[DownstreamUkSavingsAnnualIncomeResponse])(implicit
-      logContext: EndpointLogContext): ServiceOutcome[RetrieveUkSavingsAnnualSummaryResponse] = {
+      logContext: EndpointLogContext): ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse] = {
 
     downstreamResponseWrapper.responseData.savingsInterestAnnualIncome match {
       case item +: Nil => Right(ResponseWrapper(downstreamResponseWrapper.correlationId, item.toMtd))

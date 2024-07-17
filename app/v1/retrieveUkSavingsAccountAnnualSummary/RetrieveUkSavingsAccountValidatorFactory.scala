@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.retrieveUkSavingsAccountAnnualSummary
 
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple3Semigroupal
@@ -24,7 +24,7 @@ import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 import javax.inject.{Inject, Singleton}
 
@@ -34,10 +34,10 @@ class RetrieveUkSavingsAccountValidatorFactory @Inject() (appConfig: AppConfig) 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
 
-  def validator(nino: String, taxYear: String, savingsAccountId: String): Validator[RetrieveUkSavingsAnnualSummaryRequestData] =
-    new Validator[RetrieveUkSavingsAnnualSummaryRequestData] {
+  def validator(nino: String, taxYear: String, savingsAccountId: String): Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] =
+    new Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] {
 
-      def validate: Validated[Seq[MtdError], RetrieveUkSavingsAnnualSummaryRequestData] =
+      def validate: Validated[Seq[MtdError], RetrieveUkSavingsAccountAnnualSummaryRequestData] =
         (
           ResolveNino(nino),
           resolveTaxYear(taxYear),

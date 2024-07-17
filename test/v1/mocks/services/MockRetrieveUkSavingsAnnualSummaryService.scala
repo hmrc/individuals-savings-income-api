@@ -20,9 +20,9 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
 import shared.services.ServiceOutcome
-import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRequestData
-import v1.models.response.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryResponse
-import v1.services.RetrieveUkSavingsAccountAnnualSummaryService
+import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummaryService
+import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAccountAnnualSummaryResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -33,10 +33,10 @@ trait MockRetrieveUkSavingsAnnualSummaryService extends MockFactory {
   object MockRetrieveUkSavingsAnnualSummaryService {
 
     def retrieveUkSavings(
-        requestData: RetrieveUkSavingsAnnualSummaryRequestData): CallHandler[Future[ServiceOutcome[RetrieveUkSavingsAnnualSummaryResponse]]] = {
+        requestData: RetrieveUkSavingsAccountAnnualSummaryRequestData): CallHandler[Future[ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse]]] = {
       (
         mockRetrieveUkSavingsAnnualSummaryService
-          .retrieveUkSavingsAccountAnnualSummary(_: RetrieveUkSavingsAnnualSummaryRequestData)(
+          .retrieveUkSavingsAccountAnnualSummary(_: RetrieveUkSavingsAccountAnnualSummaryRequestData)(
             _: RequestContext,
             _: ExecutionContext
           )

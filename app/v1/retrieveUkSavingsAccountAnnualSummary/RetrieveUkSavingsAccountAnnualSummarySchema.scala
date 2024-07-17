@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveUkSavingsAnnualSummary
+package v1.retrieveUkSavingsAccountAnnualSummary
 
-import play.api.libs.json.Json
-import shared.UnitSpec
+import play.api.libs.json.Reads
+import shared.schema.DownstreamReadable
 import v1.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAccountAnnualSummaryResponse
 
-class RetrieveUkSavingsAnnualSummaryResponseSpec extends UnitSpec {
+sealed trait RetrieveUkSavingsAccountAnnualSummarySchema extends DownstreamReadable[RetrieveUkSavingsAccountAnnualSummaryResponse]
 
-  "writes" must {
-    "write as MTD JSON" in {
-      Json.toJson(RetrieveUkSavingsAccountAnnualSummaryResponse(taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12))) shouldBe
-        Json.parse("""{
-          |  "taxedUkInterest": 1.12,
-          |  "untaxedUkInterest": 2.12
-          |}""".stripMargin)
-    }
+object RetrieveUkSavingsAccountAnnualSummarySchema {
+
+  case object Def1 extends RetrieveUkSavingsAccountAnnualSummarySchema {
+    type DownstreamResp = Def1_RetrieveUkSavingsAccountAnnualSummaryResponse
+    val connectorReads: Reads[DownstreamResp] = Def1_RetrieveUkSavingsAccountAnnualSummaryResponse.reads
   }
-
 
 }

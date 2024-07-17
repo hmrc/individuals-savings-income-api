@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveUkSavingsAnnualSummary
+package v1.retrieveUkSavingsAccountAnnualSummary.model.response
 
 import play.api.libs.json.{Json, Reads}
 
@@ -26,8 +26,8 @@ object DownstreamUkSavingsAnnualIncomeResponse {
 
 case class DownstreamUkSavingsAnnualIncomeItem(incomeSourceId: String, taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal]) {
 
-  def toMtd: RetrieveUkSavingsAnnualSummaryResponse =
-    RetrieveUkSavingsAnnualSummaryResponse(taxedUkInterest = taxedUkInterest, untaxedUkInterest = untaxedUkInterest)
+  def toMtd: RetrieveUkSavingsAccountAnnualSummaryResponse =
+    RetrieveUkSavingsAccountAnnualSummaryResponse(taxedUkInterest = taxedUkInterest, untaxedUkInterest = untaxedUkInterest)
 
 }
 

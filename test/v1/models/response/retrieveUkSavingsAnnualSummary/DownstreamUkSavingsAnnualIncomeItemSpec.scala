@@ -17,13 +17,14 @@
 package v1.models.response.retrieveUkSavingsAnnualSummary
 
 import shared.UnitSpec
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{DownstreamUkSavingsAnnualIncomeItem, RetrieveUkSavingsAccountAnnualSummaryResponse}
 
 class DownstreamUkSavingsAnnualIncomeItemSpec extends UnitSpec {
 
   "DownstreamUkSavingsAnnualIncomeItem" must {
     "be convertible to MTD" in {
       DownstreamUkSavingsAnnualIncomeItem("ignored", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)).toMtd shouldBe
-        RetrieveUkSavingsAnnualSummaryResponse(taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12))
+        RetrieveUkSavingsAccountAnnualSummaryResponse(taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12))
     }
   }
 

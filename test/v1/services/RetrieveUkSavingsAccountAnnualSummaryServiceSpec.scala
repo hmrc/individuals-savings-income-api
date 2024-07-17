@@ -24,8 +24,9 @@ import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import v1.mocks.connectors.MockRetrieveUkSavingsAccountAnnualSummaryConnector
-import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRequestData
-import v1.models.response.retrieveUkSavingsAnnualSummary.{DownstreamUkSavingsAnnualIncomeItem, DownstreamUkSavingsAnnualIncomeResponse, RetrieveUkSavingsAnnualSummaryResponse}
+import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummaryService
+import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{DownstreamUkSavingsAnnualIncomeItem, DownstreamUkSavingsAnnualIncomeResponse, RetrieveUkSavingsAccountAnnualSummaryResponse}
 
 import scala.concurrent.Future
 
@@ -60,7 +61,7 @@ class RetrieveUkSavingsAccountAnnualSummaryServiceSpec extends ServiceSpec {
           .retrieveUkSavingsAccountAnnualSummary(request) returns Future.successful(Right(downstreamResponse))
 
         await(service.retrieveUkSavingsAccountAnnualSummary(request)) shouldBe
-          Right(ResponseWrapper(correlationId, RetrieveUkSavingsAnnualSummaryResponse(Some(2000.99), Some(5000.50))))
+          Right(ResponseWrapper(correlationId, RetrieveUkSavingsAccountAnnualSummaryResponse(Some(2000.99), Some(5000.50))))
       }
     }
 

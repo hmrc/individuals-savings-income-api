@@ -23,7 +23,8 @@ import shared.config.{AppConfig, MockAppConfig}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import utils.CurrentDateTime
-import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountValidatorFactory
+import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

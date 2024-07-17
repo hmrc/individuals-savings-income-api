@@ -22,8 +22,9 @@ import models.domain.SavingsAccountId
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import v1.models.request.retrieveUkSavingsAnnualSummary.RetrieveUkSavingsAnnualSummaryRequestData
-import v1.models.response.retrieveUkSavingsAnnualSummary.{DownstreamUkSavingsAnnualIncomeItem, DownstreamUkSavingsAnnualIncomeResponse}
+import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummaryConnector
+import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{DownstreamUkSavingsAnnualIncomeItem, DownstreamUkSavingsAnnualIncomeResponse}
 
 import scala.concurrent.Future
 
@@ -37,7 +38,7 @@ class RetrieveUkSavingsAccountAnnualSummaryConnectorSpec extends ConnectorSpec w
 
     def taxYear: TaxYear
 
-    val request: RetrieveUkSavingsAnnualSummaryRequestData =
+    val request: RetrieveUkSavingsAccountAnnualSummaryRequestData =
       RetrieveUkSavingsAnnualSummaryRequestData(
         Nino(nino),
         taxYear,

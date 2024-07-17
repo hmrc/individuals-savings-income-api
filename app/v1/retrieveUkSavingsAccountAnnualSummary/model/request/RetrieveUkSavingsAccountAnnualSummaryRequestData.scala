@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveUkSavingsAnnualSummary
+package v1.retrieveUkSavingsAccountAnnualSummary.model.request
 
-import play.api.libs.json.{Json, OWrites}
+import models.domain.SavingsAccountId
+import shared.models.domain.{Nino, TaxYear}
+import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummarySchema
 
-case class RetrieveUkSavingsAnnualSummaryResponse(taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal])
+trait RetrieveUkSavingsAccountAnnualSummaryRequestData {
+  def nino: Nino
+  def taxYear: TaxYear
+  def savingsAccountId: SavingsAccountId
 
-object RetrieveUkSavingsAnnualSummaryResponse {
-  implicit val writes: OWrites[RetrieveUkSavingsAnnualSummaryResponse] = Json.writes[RetrieveUkSavingsAnnualSummaryResponse]
-
+  val schema: RetrieveUkSavingsAccountAnnualSummarySchema
 }

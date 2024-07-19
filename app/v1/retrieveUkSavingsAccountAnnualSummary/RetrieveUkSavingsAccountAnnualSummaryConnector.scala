@@ -23,7 +23,7 @@ import shared.connectors.httpparsers.StandardDownstreamHttpParser.reads
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
-import v1.retrieveUkSavingsAccountAnnualSummary.model.response.DownstreamUkSavingsAnnualIncomeResponse
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAccountAnnualSummaryResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,12 +35,12 @@ class RetrieveUkSavingsAccountAnnualSummaryConnector @Inject() (val http: HttpCl
   def retrieveUkSavingsAccountAnnualSummary(request: RetrieveUkSavingsAccountAnnualSummaryRequestData)(implicit
                                                                                                        hc: HeaderCarrier,
                                                                                                        ec: ExecutionContext,
-                                                                                                       correlationId: String): Future[DownstreamOutcome[DownstreamUkSavingsAnnualIncomeResponse]] = {
+                                                                                                       correlationId: String): Future[DownstreamOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse]] = {
 
     val nino           = request.nino.nino
     val incomeSourceId = request.savingsAccountId
 
-    val downstreamUri: DownstreamUri[DownstreamUkSavingsAnnualIncomeResponse] =
+    val downstreamUri: DownstreamUri[RetrieveUkSavingsAccountAnnualSummaryResponse] =
       if (request.taxYear.useTaxYearSpecificApi) {
         TaxYearSpecificIfsUri(s"income-tax/${request.taxYear.asTysDownstream}/$nino/income-source/savings/annual?incomeSourceId=$incomeSourceId")
       } else {

@@ -22,7 +22,7 @@ import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{BaseService, ServiceOutcome}
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
-import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{DownstreamUkSavingsAnnualIncomeResponse, RetrieveUkSavingsAccountAnnualSummaryResponse}
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAccountAnnualSummaryResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -31,8 +31,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class RetrieveUkSavingsAccountAnnualSummaryService @Inject() (connector: RetrieveUkSavingsAccountAnnualSummaryConnector) extends BaseService {
 
   def retrieveUkSavingsAccountAnnualSummary(request: RetrieveUkSavingsAccountAnnualSummaryRequestData)(implicit
-                                                                                                       ctx: RequestContext,
-                                                                                                       ec: ExecutionContext): Future[ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse]] = {
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse]] = {
 
     val result = for {
       downstreamResponseWrapper <- EitherT(connector.retrieveUkSavingsAccountAnnualSummary(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
@@ -42,16 +42,17 @@ class RetrieveUkSavingsAccountAnnualSummaryService @Inject() (connector: Retriev
     result.value
   }
 
-  private def convertToMtd(downstreamResponseWrapper: ResponseWrapper[DownstreamUkSavingsAnnualIncomeResponse])(implicit
+  private def convertToMtd(downstreamResponseWrapper: ResponseWrapper[RetrieveUkSavingsAccountAnnualSummaryResponse])(implicit
       logContext: EndpointLogContext): ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse] = {
+    import downstreamResponseWrapper._
 
-    downstreamResponseWrapper.responseData.savingsInterestAnnualIncome match {
-      case item +: Nil => Right(ResponseWrapper(downstreamResponseWrapper.correlationId, item.toMtd))
-      case Nil         => Left(ErrorWrapper(downstreamResponseWrapper.correlationId, NotFoundError, None))
+    responseData.savingsInterestAnnualIncome match {
+      case _ +: Nil => Right(ResponseWrapper(correlationId, responseData))
+      case Nil      => Left(ErrorWrapper(correlationId, NotFoundError, None))
 
       case _ =>
         logger.info(s"[${logContext.controllerName}] [${logContext.endpointName}] - More than one matching account found")
-        Left(ErrorWrapper(downstreamResponseWrapper.correlationId, InternalError, None))
+        Left(ErrorWrapper(correlationId, InternalError, None))
     }
   }
 
@@ -59,7 +60,7 @@ class RetrieveUkSavingsAccountAnnualSummaryService @Inject() (connector: Retriev
     val errors = Map(
       "INVALID_NINO"            -> NinoFormatError,
       "INVALID_TYPE"            -> InternalError,
-      "INVALID_TAXYEAR"         -> TaxYearFormatError, //remove once DES to IFS migration complete
+      "INVALID_TAXYEAR"         -> TaxYearFormatError, // remove once DES to IFS migration complete
       "INVALID_INCOME_SOURCE"   -> SavingsAccountIdFormatError,
       "NOT_FOUND_PERIOD"        -> NotFoundError,
       "NOT_FOUND_INCOME_SOURCE" -> NotFoundError,

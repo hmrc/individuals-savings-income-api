@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package v1.connectors
-
+package v1.retrieveUkSavingsAccountAnnualSummary
 
 import mocks.MockFeatureSwitches
 import models.domain.SavingsAccountId
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummaryConnector
+import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
-import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{DownstreamUkSavingsAnnualIncomeItem, DownstreamUkSavingsAnnualIncomeResponse}
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{RetrieveUkSavingsAccountAnnualSummaryResponse, RetrieveUkSavingsAnnualIncomeItem}
 
 import scala.concurrent.Future
 
@@ -39,15 +38,15 @@ class RetrieveUkSavingsAccountAnnualSummaryConnectorSpec extends ConnectorSpec w
     def taxYear: TaxYear
 
     val request: RetrieveUkSavingsAccountAnnualSummaryRequestData =
-      RetrieveUkSavingsAnnualSummaryRequestData(
+      Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData(
         Nino(nino),
         taxYear,
         SavingsAccountId(incomeSourceId)
       )
 
-    val response: DownstreamUkSavingsAnnualIncomeResponse = DownstreamUkSavingsAnnualIncomeResponse(
+    val response: RetrieveUkSavingsAccountAnnualSummaryResponse = RetrieveUkSavingsAccountAnnualSummaryResponse(
       Seq(
-        DownstreamUkSavingsAnnualIncomeItem(
+        RetrieveUkSavingsAnnualIncomeItem(
           incomeSourceId = incomeSourceId,
           taxedUkInterest = Some(1230.55),
           untaxedUkInterest = Some(1230.55)
@@ -67,7 +66,7 @@ class RetrieveUkSavingsAccountAnnualSummaryConnectorSpec extends ConnectorSpec w
 
         MockFeatureSwitches.isDesIf_MigrationEnabled.returns(false)
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-        private val outcome = Right(ResponseWrapper(correlationId, response))
+        private val outcome  = Right(ResponseWrapper(correlationId, response))
         willGet(
           s"$baseUrl/income-tax/nino/$nino/income-source/savings/annual/2020?incomeSourceId=$incomeSourceId"
         ) returns Future.successful(outcome)
@@ -79,7 +78,7 @@ class RetrieveUkSavingsAccountAnnualSummaryConnectorSpec extends ConnectorSpec w
 
         MockFeatureSwitches.isDesIf_MigrationEnabled.returns(true)
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-        private val outcome = Right(ResponseWrapper(correlationId, response))
+        private val outcome  = Right(ResponseWrapper(correlationId, response))
         willGet(
           s"$baseUrl/income-tax/nino/$nino/income-source/savings/annual/2020?incomeSourceId=$incomeSourceId"
         ) returns Future.successful(outcome)

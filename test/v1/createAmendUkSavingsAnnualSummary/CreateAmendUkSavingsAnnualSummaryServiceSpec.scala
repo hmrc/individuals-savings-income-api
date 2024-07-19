@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.services
+package v1.createAmendUkSavingsAnnualSummary
 
 import models.domain.SavingsAccountId
 import shared.controllers.EndpointLogContext
@@ -23,7 +23,6 @@ import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import v1.createAmendUkSavingsAnnualSummary.def1.model.request.{Def1_CreateAmendUkSavingsAnnualSummaryRequestBody, Def1_CreateAmendUkSavingsAnnualSummaryRequestData}
-import v1.createAmendUkSavingsAnnualSummary.{CreateAmendUkSavingsAnnualSummaryService, MockCreateAmendUkSavingsAnnualSummaryConnector}
 
 import scala.concurrent.Future
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.fixtures
+package v1.retrieveUkSavingsAccountAnnualSummary.def1.model
 
 import play.api.libs.json.{JsValue, Json}
 
@@ -22,8 +22,8 @@ object RetrieveUkSavingsAccountAnnualSummaryControllerFixture {
 
   val mtdRetrieveResponse: JsValue = Json.parse("""
       |{
-      |   "taxedUkInterest": 93556675358.99,
-      |   "untaxedUkInterest": 34514974058.99
+      |   "taxedUkInterest": 1.12,
+      |   "untaxedUkInterest": 2.12
       |   }
       """.stripMargin)
 

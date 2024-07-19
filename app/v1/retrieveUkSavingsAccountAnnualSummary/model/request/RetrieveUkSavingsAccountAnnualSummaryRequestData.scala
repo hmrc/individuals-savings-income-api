@@ -18,12 +18,11 @@ package v1.retrieveUkSavingsAccountAnnualSummary.model.request
 
 import models.domain.SavingsAccountId
 import shared.models.domain.{Nino, TaxYear}
-import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummarySchema
 
 trait RetrieveUkSavingsAccountAnnualSummaryRequestData {
   def nino: Nino
   def taxYear: TaxYear
   def savingsAccountId: SavingsAccountId
 
-  val schema: RetrieveUkSavingsAccountAnnualSummarySchema
+//  val schema: RetrieveUkSavingsAccountAnnualSummarySchema
 }

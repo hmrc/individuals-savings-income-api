@@ -18,11 +18,11 @@ package v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request
 
 import models.domain.SavingsAccountId
 import shared.models.domain.{Nino, TaxYear}
-import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummarySchema
-import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummarySchema.Def1
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 case class Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData(nino: Nino, taxYear: TaxYear, savingsAccountId: SavingsAccountId)
-    extends RetrieveUkSavingsAccountAnnualSummaryRequestData {
-  val schema: RetrieveUkSavingsAccountAnnualSummarySchema = Def1
-}
+    extends RetrieveUkSavingsAccountAnnualSummaryRequestData
+
+//    {
+//  val schema: RetrieveUkSavingsAccountAnnualSummarySchema = Def1
+//}

@@ -24,6 +24,7 @@ import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
+import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 import javax.inject.{Inject, Singleton}
@@ -42,7 +43,7 @@ class RetrieveUkSavingsAccountValidatorFactory @Inject() (appConfig: AppConfig) 
           ResolveNino(nino),
           resolveTaxYear(taxYear),
           ResolveSavingsAccountId(savingsAccountId)
-        ).mapN(RetrieveUkSavingsAnnualSummaryRequestData)
+        ).mapN(Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData)
 
     }
 

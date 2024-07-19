@@ -16,11 +16,28 @@
 
 package v1.retrieveUkSavingsAccountAnnualSummary.model.response
 
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.json.{Json, OWrites, Reads}
 
-case class RetrieveUkSavingsAccountAnnualSummaryResponse(taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal])
+case class RetrieveUkSavingsAccountAnnualSummaryResponse(savingsInterestAnnualIncome: Seq[RetrieveUkSavingsAnnualIncomeItem])
 
 object RetrieveUkSavingsAccountAnnualSummaryResponse {
-  implicit val writes: OWrites[RetrieveUkSavingsAccountAnnualSummaryResponse] = Json.writes[RetrieveUkSavingsAccountAnnualSummaryResponse]
+  implicit val reads: Reads[RetrieveUkSavingsAccountAnnualSummaryResponse] = Json.reads
 
+  implicit val writes: OWrites[RetrieveUkSavingsAccountAnnualSummaryResponse] = (response: RetrieveUkSavingsAccountAnnualSummaryResponse) => {
+    response.savingsInterestAnnualIncome.headOption match {
+      case Some(item) =>
+        Json.obj(
+          "taxedUkInterest"   -> item.taxedUkInterest,
+          "untaxedUkInterest" -> item.untaxedUkInterest
+        )
+      case None => Json.obj()
+    }
+  }
+
+}
+
+case class RetrieveUkSavingsAnnualIncomeItem(incomeSourceId: String, taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal])
+
+object RetrieveUkSavingsAnnualIncomeItem {
+  implicit val reads: Reads[RetrieveUkSavingsAnnualIncomeItem] = Json.reads
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers.validators
+package v1.retrieveUkSavingsAccountAnnualSummary
 
 import mocks.MockCurrentDateTime
 import models.domain.SavingsAccountId
@@ -23,8 +23,7 @@ import shared.config.{AppConfig, MockAppConfig}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import utils.CurrentDateTime
-import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountValidatorFactory
-import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -56,7 +55,7 @@ class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockApp
     "return no errors" when {
       "a valid request is supplied" in new Test {
         validator.validator(validNino, validTaxYear, validSavingsAccountId.toString).validateAndWrapResult() shouldBe
-          Right(RetrieveUkSavingsAnnualSummaryRequestData(parsedNino, parsedTaxYear, validSavingsAccountId))
+          Right(Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData(parsedNino, parsedTaxYear, validSavingsAccountId))
       }
     }
 

@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package v1.mocks.services
+package v1.retrieveUkSavingsAccountAnnualSummary
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
 import shared.services.ServiceOutcome
-import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummaryService
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 import v1.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAccountAnnualSummaryResponse
 
@@ -32,8 +31,8 @@ trait MockRetrieveUkSavingsAnnualSummaryService extends MockFactory {
 
   object MockRetrieveUkSavingsAnnualSummaryService {
 
-    def retrieveUkSavings(
-        requestData: RetrieveUkSavingsAccountAnnualSummaryRequestData): CallHandler[Future[ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse]]] = {
+    def retrieveUkSavings(requestData: RetrieveUkSavingsAccountAnnualSummaryRequestData)
+        : CallHandler[Future[ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse]]] = {
       (
         mockRetrieveUkSavingsAnnualSummaryService
           .retrieveUkSavingsAccountAnnualSummary(_: RetrieveUkSavingsAccountAnnualSummaryRequestData)(

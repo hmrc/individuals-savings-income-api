@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-package v1.mocks.validators
-
+package v1.retrieveUkSavingsAccountAnnualSummary
 
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
@@ -23,7 +22,6 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.validators.Validator
 import shared.models.errors.MtdError
-import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountValidatorFactory
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 trait MockRetrieveUkSavingsAccountValidatorFactory extends MockFactory {

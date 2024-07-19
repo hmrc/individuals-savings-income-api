@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers
-
-
+package v1.retrieveUkSavingsAccountAnnualSummary
 
 import models.domain.SavingsAccountId
 import play.api.mvc.Result
@@ -25,12 +23,10 @@ import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
-import v1.fixtures.RetrieveUkSavingsAccountAnnualSummaryControllerFixture
-import v1.mocks.services.MockRetrieveUkSavingsAnnualSummaryService
-import v1.mocks.validators.MockRetrieveUkSavingsAccountValidatorFactory
-import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummaryController
+import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.RetrieveUkSavingsAccountAnnualSummaryControllerFixture
+import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
-import v1.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAccountAnnualSummaryResponse
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{RetrieveUkSavingsAccountAnnualSummaryResponse, RetrieveUkSavingsAnnualIncomeItem}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -42,23 +38,24 @@ class RetrieveUkSavingsAccountAnnualSummaryControllerSpec
     with MockRetrieveUkSavingsAccountValidatorFactory
     with MockAppConfig {
 
-  val nino: String = "AA123456A"
+  val nino: String                        = "AA123456A"
   val taxYear: String                     = "2019-20"
   val savingsAccountId: String            = "ABCDE0123456789"
   val taxedUkIncome: Option[BigDecimal]   = Some(93556675358.99)
   val unTaxedUkIncome: Option[BigDecimal] = Some(34514974058.99)
 
-
-  private val requestData: RetrieveUkSavingsAccountAnnualSummaryRequestData = RetrieveUkSavingsAnnualSummaryRequestData(
+  private val requestData: RetrieveUkSavingsAccountAnnualSummaryRequestData = Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData(
     nino = Nino(nino),
     taxYear = TaxYear.fromMtd(taxYear),
     savingsAccountId = SavingsAccountId(savingsAccountId)
   )
 
-  private val retrieveUkSavingsAnnualSummaryResponse: RetrieveUkSavingsAccountAnnualSummaryResponse = new RetrieveUkSavingsAccountAnnualSummaryResponse(
-    taxedUkInterest = taxedUkIncome,
-    untaxedUkInterest = unTaxedUkIncome
-  )
+  private val retrieveUkSavingsAccountAnnualSummaryResponse: RetrieveUkSavingsAccountAnnualSummaryResponse =
+    new RetrieveUkSavingsAccountAnnualSummaryResponse(
+      Seq(
+        RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
+        RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
+      ))
 
   private val mtdResponse = RetrieveUkSavingsAccountAnnualSummaryControllerFixture.mtdRetrieveResponse
 
@@ -69,7 +66,7 @@ class RetrieveUkSavingsAccountAnnualSummaryControllerSpec
 
         MockRetrieveUkSavingsAnnualSummaryService
           .retrieveUkSavings(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, retrieveUkSavingsAnnualSummaryResponse))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, retrieveUkSavingsAccountAnnualSummaryResponse))))
 
         runOkTest(
           expectedStatus = OK,
@@ -81,7 +78,6 @@ class RetrieveUkSavingsAccountAnnualSummaryControllerSpec
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
         willUseValidator(returningErrors(Seq(ErrorWrapper(correlationId, NinoFormatError).error)))
-
 
         runErrorTest(NinoFormatError)
       }

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveUkSavingsAnnualSummary
+package v1.retrieveUkSavingsAccountAnnualSummary.def1.model.response
 
 import play.api.libs.json.Json
 import shared.UnitSpec
-import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{DownstreamUkSavingsAnnualIncomeItem, DownstreamUkSavingsAnnualIncomeResponse}
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{RetrieveUkSavingsAccountAnnualSummaryResponse, RetrieveUkSavingsAnnualIncomeItem}
 
-class DownstreamUkSavingsAnnualIncomeResponseSpec extends UnitSpec {
+class RetrieveUkSavingsAccountAnnualSummaryResponseSpec extends UnitSpec {
 
   "Reads" must {
     "read from downstream JSON" in {
@@ -40,12 +40,26 @@ class DownstreamUkSavingsAnnualIncomeResponseSpec extends UnitSpec {
                    |  ]
                    |}
           |""".stripMargin)
-        .as[DownstreamUkSavingsAnnualIncomeResponse] shouldBe
-        DownstreamUkSavingsAnnualIncomeResponse(
+        .as[RetrieveUkSavingsAccountAnnualSummaryResponse] shouldBe
+        RetrieveUkSavingsAccountAnnualSummaryResponse(
           Seq(
-            DownstreamUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
-            DownstreamUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
+            RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
+            RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
           ))
+    }
+  }
+
+  "writes" must {
+    "write as MTD JSON" in {
+      Json.toJson(
+        RetrieveUkSavingsAccountAnnualSummaryResponse(Seq(
+          RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
+          RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
+        ))) shouldBe
+        Json.parse("""{
+            |  "taxedUkInterest": 1.12,
+            |  "untaxedUkInterest": 2.12
+            |}""".stripMargin)
     }
   }
 

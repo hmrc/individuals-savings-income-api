@@ -23,7 +23,8 @@ import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
-import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{RetrieveUkSavingsAccountAnnualSummaryResponse, RetrieveUkSavingsAnnualIncomeItem}
+import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.response.{Def1_RetrieveUkSavingsAccountAnnualSummaryResponse, Def1_RetrieveUkSavingsAnnualIncomeItem}
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAccountAnnualSummaryResponse
 
 import scala.concurrent.Future
 
@@ -46,8 +47,8 @@ class RetrieveUkSavingsAccountAnnualSummaryServiceSpec extends ServiceSpec {
   "RetrieveUkSavingsAccountAnnualSummaryService" when {
     "the downstream returns a single account" must {
       "return a successful result" in new Test {
-        private val responseData = RetrieveUkSavingsAccountAnnualSummaryResponse(
-          Seq(RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "ignored", taxedUkInterest = Some(2000.99), untaxedUkInterest = Some(5000.50))))
+        private val responseData = Def1_RetrieveUkSavingsAccountAnnualSummaryResponse(
+          Seq(Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "ignored", taxedUkInterest = Some(2000.99), untaxedUkInterest = Some(5000.50))))
 
         val downstreamResponse: ResponseWrapper[RetrieveUkSavingsAccountAnnualSummaryResponse] =
           ResponseWrapper(
@@ -68,10 +69,10 @@ class RetrieveUkSavingsAccountAnnualSummaryServiceSpec extends ServiceSpec {
         val downstreamResponse: ResponseWrapper[RetrieveUkSavingsAccountAnnualSummaryResponse] =
           ResponseWrapper(
             correlationId,
-            RetrieveUkSavingsAccountAnnualSummaryResponse(
+            Def1_RetrieveUkSavingsAccountAnnualSummaryResponse(
               Seq(
-                RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "ignored1", taxedUkInterest = Some(1), untaxedUkInterest = Some(1)),
-                RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "ignored1", taxedUkInterest = Some(2), untaxedUkInterest = Some(3))
+                Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "ignored1", taxedUkInterest = Some(1), untaxedUkInterest = Some(1)),
+                Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "ignored1", taxedUkInterest = Some(2), untaxedUkInterest = Some(3))
               )
             )
           )
@@ -87,7 +88,7 @@ class RetrieveUkSavingsAccountAnnualSummaryServiceSpec extends ServiceSpec {
     "the downstream returns no accounts" must {
       "return a NotFoundError" in new Test {
         val downstreamResponse: ResponseWrapper[RetrieveUkSavingsAccountAnnualSummaryResponse] =
-          ResponseWrapper(correlationId, RetrieveUkSavingsAccountAnnualSummaryResponse(Nil))
+          ResponseWrapper(correlationId, Def1_RetrieveUkSavingsAccountAnnualSummaryResponse(Nil))
 
         MockRetrieveUkSavingsAccountAnnualSummaryConnector
           .retrieveUkSavingsAccountAnnualSummary(requestData) returns Future.successful(Right(downstreamResponse))

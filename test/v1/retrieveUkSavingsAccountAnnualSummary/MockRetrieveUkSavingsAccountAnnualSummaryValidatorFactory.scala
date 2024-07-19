@@ -24,9 +24,10 @@ import shared.controllers.validators.Validator
 import shared.models.errors.MtdError
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
-trait MockRetrieveUkSavingsAccountValidatorFactory extends MockFactory {
+trait MockRetrieveUkSavingsAccountAnnualSummaryValidatorFactory extends MockFactory {
 
-  val mockRetrieveUkSavingsAccountValidatorFactory: RetrieveUkSavingsAccountValidatorFactory = mock[RetrieveUkSavingsAccountValidatorFactory]
+  val mockRetrieveUkSavingsAccountValidatorFactory: RetrieveUkSavingsAccountAnnualSummaryValidatorFactory =
+    mock[RetrieveUkSavingsAccountAnnualSummaryValidatorFactory]
 
   object MockRetrieveUkSavingsAccountValidator {
 
@@ -36,7 +37,7 @@ trait MockRetrieveUkSavingsAccountValidatorFactory extends MockFactory {
   }
 
   def willUseValidator(
-                        use: Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData]): CallHandler[Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData]] = {
+      use: Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData]): CallHandler[Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData]] = {
     MockRetrieveUkSavingsAccountValidator
       .validator()
       .anyNumberOfTimes()

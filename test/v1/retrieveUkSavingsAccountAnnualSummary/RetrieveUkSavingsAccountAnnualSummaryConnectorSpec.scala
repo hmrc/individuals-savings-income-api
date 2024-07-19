@@ -22,8 +22,8 @@ import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
 import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
+import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.response.{Def1_RetrieveUkSavingsAccountAnnualSummaryResponse, Def1_RetrieveUkSavingsAnnualIncomeItem}
 import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
-import v1.retrieveUkSavingsAccountAnnualSummary.model.response.{RetrieveUkSavingsAccountAnnualSummaryResponse, RetrieveUkSavingsAnnualIncomeItem}
 
 import scala.concurrent.Future
 
@@ -44,9 +44,9 @@ class RetrieveUkSavingsAccountAnnualSummaryConnectorSpec extends ConnectorSpec w
         SavingsAccountId(incomeSourceId)
       )
 
-    val response: RetrieveUkSavingsAccountAnnualSummaryResponse = RetrieveUkSavingsAccountAnnualSummaryResponse(
+    val response: Def1_RetrieveUkSavingsAccountAnnualSummaryResponse = Def1_RetrieveUkSavingsAccountAnnualSummaryResponse(
       Seq(
-        RetrieveUkSavingsAnnualIncomeItem(
+        Def1_RetrieveUkSavingsAnnualIncomeItem(
           incomeSourceId = incomeSourceId,
           taxedUkInterest = Some(1230.55),
           untaxedUkInterest = Some(1230.55)

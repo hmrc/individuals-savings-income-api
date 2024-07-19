@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package v1.retrieveUkSavingsAccountAnnualSummary.model.request
+package v1.retrieveUkSavingsAccountAnnualSummary.def1.model.response
 
-import models.domain.SavingsAccountId
-import shared.models.domain.{Nino, TaxYear}
-import v1.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummarySchema
+import play.api.libs.json.{Json, Reads}
+import v1.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAnnualIncomeItem
 
-trait RetrieveUkSavingsAccountAnnualSummaryRequestData {
-  def nino: Nino
-  def taxYear: TaxYear
-  def savingsAccountId: SavingsAccountId
+case class Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId: String, taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal])
+    extends RetrieveUkSavingsAnnualIncomeItem
 
-  val schema: RetrieveUkSavingsAccountAnnualSummarySchema
+object Def1_RetrieveUkSavingsAnnualIncomeItem {
+  implicit val reads: Reads[Def1_RetrieveUkSavingsAnnualIncomeItem] = Json.reads[Def1_RetrieveUkSavingsAnnualIncomeItem]
 }

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.retrieveUkSavingsAccountAnnualSummary
+package v1.retrieveUkSavingsAccountAnnualSummary.def1
 
 import mocks.MockCurrentDateTime
 import models.domain.SavingsAccountId
 import shared.UnitSpec
-import shared.config.{AppConfig, MockAppConfig}
+import shared.config.MockAppConfig
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import utils.CurrentDateTime
@@ -28,7 +28,7 @@ import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_Retrieve
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockAppConfig {
+class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
   private val validNino                      = "AA123456A"
@@ -37,13 +37,13 @@ class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockApp
   private val parsedNino                     = Nino(validNino)
   private val parsedTaxYear                  = TaxYear.fromMtd(validTaxYear)
 
+  private def validator(nino: String, taxYear: String, savingsAccountId: String) =
+    new Def1_RetrieveUkSavingsAccountAnnualSummaryValidator(nino, taxYear, savingsAccountId)(mockAppConfig)
+
   class Test extends MockCurrentDateTime {
 
     implicit val dateTimeProvider: CurrentDateTime = mockCurrentDateTime
     val dateTimeFormatter: DateTimeFormatter       = DateTimeFormatter.ISO_LOCAL_DATE
-
-    implicit val appConfig: AppConfig = mockAppConfig
-    val validator                     = new RetrieveUkSavingsAccountValidatorFactory(mockAppConfig)
 
     MockCurrentDateTime.getLocalDate
       .returns(LocalDate.parse("2022-07-11", dateTimeFormatter))
@@ -54,14 +54,14 @@ class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockApp
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in new Test {
-        validator.validator(validNino, validTaxYear, validSavingsAccountId.toString).validateAndWrapResult() shouldBe
+        validator(validNino, validTaxYear, validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Right(Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData(parsedNino, parsedTaxYear, validSavingsAccountId))
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in new Test {
-        validator.validator("A12344A", validTaxYear, validSavingsAccountId.toString).validateAndWrapResult() shouldBe
+        validator("A12344A", validTaxYear, validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, NinoFormatError)
           )
@@ -70,7 +70,7 @@ class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockApp
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in new Test {
-        validator.validator(validNino, "20178", validSavingsAccountId.toString).validateAndWrapResult() shouldBe
+        validator(validNino, "20178", validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, TaxYearFormatError)
           )
@@ -79,7 +79,7 @@ class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockApp
 
     "return RuleTaxYearNotSupportedError error" when {
       "a tax year that is not supported is supplied" in new Test {
-        validator.validator(validNino, "2018-19", validSavingsAccountId.toString).validateAndWrapResult() shouldBe
+        validator(validNino, "2018-19", validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
           )
@@ -88,7 +88,7 @@ class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockApp
 
     "return NinoFormatError and TaxYearFormatError errors" when {
       "request supplied has invalid nino and tax year" in new Test {
-        validator.validator("A12344A", "20178", validSavingsAccountId.toString).validateAndWrapResult() shouldBe
+        validator("A12344A", "20178", validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(
               correlationId,
@@ -101,7 +101,7 @@ class RetrieveUkSavingsAccountValidatorFactorySpec extends UnitSpec with MockApp
 
     "return NinoFormatError, TaxYearFormatError and SavingsAccountIdFormatError errors" when {
       "request supplied has invalid nino, tax year and savingsAccountId" in new Test {
-        validator.validator("A12344A", "20178", "ABCDE12345FG").validateAndWrapResult() shouldBe
+        validator("A12344A", "20178", "ABCDE12345FG").validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(
               correlationId,

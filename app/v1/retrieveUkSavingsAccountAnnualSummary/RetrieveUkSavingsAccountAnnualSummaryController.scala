@@ -28,7 +28,7 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class RetrieveUkSavingsAccountAnnualSummaryController @Inject() (val authService: EnrolmentsAuthService,
                                                                  val lookupService: MtdIdLookupService,
-                                                                 validatorFactory: RetrieveUkSavingsAccountValidatorFactory,
+                                                                 validatorFactory: RetrieveUkSavingsAccountAnnualSummaryValidatorFactory,
                                                                  service: RetrieveUkSavingsAccountAnnualSummaryService,
                                                                  cc: ControllerComponents,
                                                                  val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)

@@ -29,18 +29,22 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RetrieveUkSavingsAccountAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(implicit featureSwitches: FeatureSwitches)
-  extends BaseDownstreamConnector {
+class RetrieveUkSavingsAccountAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(implicit
+    featureSwitches: FeatureSwitches)
+    extends BaseDownstreamConnector {
 
   def retrieveUkSavingsAccountAnnualSummary(request: RetrieveUkSavingsAccountAnnualSummaryRequestData)(implicit
-                                                                                                       hc: HeaderCarrier,
-                                                                                                       ec: ExecutionContext,
-                                                                                                       correlationId: String): Future[DownstreamOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse]] = {
 
     val nino           = request.nino.nino
     val incomeSourceId = request.savingsAccountId
 
-    val downstreamUri: DownstreamUri[RetrieveUkSavingsAccountAnnualSummaryResponse] =
+    import request._
+    import schema._
+
+    val downstreamUri: DownstreamUri[DownstreamResp] =
       if (request.taxYear.useTaxYearSpecificApi) {
         TaxYearSpecificIfsUri(s"income-tax/${request.taxYear.asTysDownstream}/$nino/income-source/savings/annual?incomeSourceId=$incomeSourceId")
       } else {

@@ -36,20 +36,22 @@ class RetrieveUkSavingsAccountAnnualSummaryService @Inject() (connector: Retriev
 
     val result = for {
       downstreamResponseWrapper <- EitherT(connector.retrieveUkSavingsAccountAnnualSummary(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
-      mtdResponseWrapper        <- EitherT.fromEither[Future](convertToMtd(downstreamResponseWrapper))
+      mtdResponseWrapper        <- EitherT.fromEither[Future](validateDownstreamResponse(downstreamResponseWrapper))
     } yield mtdResponseWrapper
 
     result.value
   }
 
-  private def convertToMtd(downstreamResponseWrapper: ResponseWrapper[RetrieveUkSavingsAccountAnnualSummaryResponse])(implicit
-      logContext: EndpointLogContext): ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse] = {
+  def validateDownstreamResponse(
+      downstreamResponseWrapper: ResponseWrapper[RetrieveUkSavingsAccountAnnualSummaryResponse]
+  )(implicit logContext: EndpointLogContext): ServiceOutcome[RetrieveUkSavingsAccountAnnualSummaryResponse] = {
     import downstreamResponseWrapper._
 
     responseData.savingsInterestAnnualIncome match {
-      case _ +: Nil => Right(ResponseWrapper(correlationId, responseData))
-      case Nil      => Left(ErrorWrapper(correlationId, NotFoundError, None))
-
+      case Nil =>
+        Left(ErrorWrapper(correlationId, NotFoundError, None))
+      case _ +: Nil =>
+        Right(ResponseWrapper(correlationId, responseData))
       case _ =>
         logger.info(s"[${logContext.controllerName}] [${logContext.endpointName}] - More than one matching account found")
         Left(ErrorWrapper(correlationId, InternalError, None))

@@ -24,7 +24,7 @@ import v1.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsA
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class RetrieveUkSavingsAccountAnnualSummaryValidatorFactory @Inject()(appConfig: AppConfig) {
+class RetrieveUkSavingsAccountAnnualSummaryValidatorFactory @Inject() (appConfig: AppConfig) {
 
   def validator(nino: String, taxYear: String, savingsAccountId: String): Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] =
     new Def1_RetrieveUkSavingsAccountAnnualSummaryValidator(nino, taxYear, savingsAccountId)(appConfig)

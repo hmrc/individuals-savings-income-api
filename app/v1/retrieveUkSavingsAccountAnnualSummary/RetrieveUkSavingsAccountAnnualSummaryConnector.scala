@@ -16,7 +16,7 @@
 
 package v1.retrieveUkSavingsAccountAnnualSummary
 
-import config.FeatureSwitches
+import config.SavingsFeatureSwitches
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser.reads
@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class RetrieveUkSavingsAccountAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(implicit
-    featureSwitches: FeatureSwitches)
+    featureSwitches: SavingsFeatureSwitches)
     extends BaseDownstreamConnector {
 
   def retrieveUkSavingsAccountAnnualSummary(request: RetrieveUkSavingsAccountAnnualSummaryRequestData)(implicit

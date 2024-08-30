@@ -16,7 +16,7 @@
 
 package v1.createAmendUkSavingsAnnualSummary
 
-import config.FeatureSwitches
+import config.SavingsFeatureSwitches
 import play.api.http.Status
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
@@ -28,7 +28,8 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(implicit featureSwitches: FeatureSwitches)
+class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(implicit
+    featureSwitches: SavingsFeatureSwitches)
     extends BaseDownstreamConnector {
 
   def createOrAmendUKSavingsAccountSummary(requestData: CreateAmendUkSavingsAnnualSummaryRequestData)(implicit

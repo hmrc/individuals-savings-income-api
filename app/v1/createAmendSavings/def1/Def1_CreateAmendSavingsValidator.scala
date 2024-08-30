@@ -19,6 +19,7 @@ package v1.createAmendSavings.def1
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple3Semigroupal
 import play.api.libs.json.JsValue
+import config.SavingsConfig
 import shared.config.AppConfig
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
@@ -31,7 +32,7 @@ import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 class Def1_CreateAmendSavingsValidator(nino: String, taxYear: String, body: JsValue)(appConfig: AppConfig)
     extends Validator[CreateAmendSavingsRequestData] {
 
-  private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
+  private lazy val minimumTaxYear = SavingsConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
   private val resolveJson         = new ResolveNonEmptyJsonObject[Def1_CreateAmendSavingsRequestBody]()
 

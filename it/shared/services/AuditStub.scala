@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package mocks
+package shared.services
 
-import config.FeatureSwitches
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.Status.NO_CONTENT
+import support.WireMockMethods
 
-trait MockFeatureSwitches extends MockFactory {
+object AuditStub extends WireMockMethods {
 
-  implicit val mockFeatureSwitches: FeatureSwitches = mock[FeatureSwitches]
+  private val auditUri: String = s"/write/audit.*"
 
-  object MockFeatureSwitches {
-    def isDesIf_MigrationEnabled: CallHandler[Boolean] =
-      (() => mockFeatureSwitches.isDesIf_MigrationEnabled).expects()
-
+  def audit(): StubMapping = {
+    when(method = POST, uri = auditUri)
+      .thenReturn(status = NO_CONTENT)
   }
 
 }

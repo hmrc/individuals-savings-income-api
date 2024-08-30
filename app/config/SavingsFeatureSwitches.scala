@@ -22,21 +22,22 @@ import shared.config.AppConfig
 
 import javax.inject.{Inject, Singleton}
 
-@ImplementedBy(classOf[FeatureSwitchesImpl])
-trait FeatureSwitches {
+@ImplementedBy(classOf[SavingsFeatureSwitchesImpl])
+trait SavingsFeatureSwitches {
   def isDesIf_MigrationEnabled: Boolean
 }
 
 @Singleton
-class FeatureSwitchesImpl(featureSwitchConfig: Configuration) extends FeatureSwitches {
+class SavingsFeatureSwitchesImpl(featureSwitchConfig: Configuration) extends SavingsFeatureSwitches {
 
   @Inject
   def this(appConfig: AppConfig) = this(appConfig.featureSwitchConfig)
-  val isDesIf_MigrationEnabled: Boolean  = isEnabled("desIf_Migration.enabled")
+
+  val isDesIf_MigrationEnabled: Boolean = isEnabled("desIf_Migration.enabled")
 
   private def isEnabled(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
 }
 
-object FeatureSwitches {
-  def apply(configuration: Configuration): FeatureSwitches = new FeatureSwitchesImpl(configuration)
+object SavingsFeatureSwitches {
+  def apply(configuration: Configuration): SavingsFeatureSwitches = new SavingsFeatureSwitchesImpl(configuration)
 }

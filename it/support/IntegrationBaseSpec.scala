@@ -80,7 +80,7 @@ trait IntegrationBaseSpec extends UnitSpec with WireMockHelper with GuiceOneServ
   def document(response: WSResponse): JsValue = Json.parse(response.body)
 
   def getCurrentTaxYear: String = {
-    val currentDate : LocalDate = LocalDate.now()
+    val currentDate: LocalDate = LocalDate.now()
 
     val taxYearStartDate: LocalDate = LocalDate.parse(
       s"${currentDate.getYear}-04-06",

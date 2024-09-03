@@ -21,15 +21,12 @@ import org.scalamock.handlers.{CallHandler, CallHandler0}
 import org.scalamock.scalatest.MockFactory
 import play.api.Configuration
 import shared.routing.Version
-import config.SavingsConfig
 
 trait MockAppConfig extends MockFactory {
 
   implicit val mockAppConfig: AppConfig = mock[AppConfig]
 
   object MockedAppConfig {
-    def minimumPermittedTaxYear: CallHandler[Int]                     = (() => SavingsConfig.minimumPermittedTaxYear).expects()
-    def ukSavingsAccountAnnualSummaryMinimumTaxYear: CallHandler[Int] = (() => SavingsConfig.ukSavingsAccountAnnualSummaryMinimumTaxYear).expects()
 
     // MTD ID Lookup Config
     def mtdIdBaseUrl: CallHandler0[String] = (() => mockAppConfig.mtdIdBaseUrl: String).expects()

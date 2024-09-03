@@ -16,7 +16,7 @@
 
 package v1.createAmendUkSavingsAnnualSummary
 
-import config.SavingsFeatureSwitches
+import config.SavingsConfig
 import play.api.http.Status
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
@@ -28,8 +28,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(implicit
-    featureSwitches: SavingsFeatureSwitches)
+class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig, savingsConfig: SavingsConfig)
     extends BaseDownstreamConnector {
 
   def createOrAmendUKSavingsAccountSummary(requestData: CreateAmendUkSavingsAnnualSummaryRequestData)(implicit
@@ -46,7 +45,7 @@ class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient
     val downstreamUri =
       if (taxYear.useTaxYearSpecificApi) {
         TaxYearSpecificIfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/savings/annual")
-      } else if (featureSwitches.isDesIf_MigrationEnabled) {
+      } else if (savingsConfig.featureSwitches.isDesIf_MigrationEnabled) {
         IfsUri[Unit](path)
       } else {
         DesUri[Unit](path)

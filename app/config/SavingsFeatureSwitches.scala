@@ -16,28 +16,15 @@
 
 package config
 
-import com.google.inject.ImplementedBy
 import play.api.Configuration
-import shared.config.AppConfig
+import shared.config.{AppConfig, FeatureSwitches}
 
-import javax.inject.{Inject, Singleton}
-
-@ImplementedBy(classOf[SavingsFeatureSwitchesImpl])
-trait SavingsFeatureSwitches {
-  def isDesIf_MigrationEnabled: Boolean
-}
-
-@Singleton
-class SavingsFeatureSwitchesImpl(featureSwitchConfig: Configuration) extends SavingsFeatureSwitches {
-
-  @Inject
-  def this(appConfig: AppConfig) = this(appConfig.featureSwitchConfig)
-
-  val isDesIf_MigrationEnabled: Boolean = isEnabled("desIf_Migration.enabled")
-
-  private def isEnabled(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
+/** API-specific feature switches.
+  */
+case class SavingsFeatureSwitches(val featureSwitchConfig: Configuration) extends FeatureSwitches {
+  def isDesIf_MigrationEnabled: Boolean = isEnabled("desIf_Migration")
 }
 
 object SavingsFeatureSwitches {
-  def apply(configuration: Configuration): SavingsFeatureSwitches = new SavingsFeatureSwitchesImpl(configuration)
+  def apply()(implicit appConfig: AppConfig): SavingsFeatureSwitches = SavingsFeatureSwitches(appConfig.featureSwitchConfig)
 }

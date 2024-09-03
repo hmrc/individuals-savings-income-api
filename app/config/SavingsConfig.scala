@@ -16,10 +16,19 @@
 
 package config
 
+import play.api.Configuration
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+
+import javax.inject.{Inject, Singleton}
+
 /** Put API-specific config here...
   */
+@Singleton
+class SavingsConfig @Inject() (config: ServicesConfig, configuration: Configuration) {
 
-object SavingsConfig {
+  def featureSwitchConfig: Configuration = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
+
+  def featureSwitches: SavingsFeatureSwitches = SavingsFeatureSwitches(featureSwitchConfig)
 
   val minimumPermittedTaxYear: Int                     = 2020
   val ukSavingsAccountAnnualSummaryMinimumTaxYear: Int = 2018

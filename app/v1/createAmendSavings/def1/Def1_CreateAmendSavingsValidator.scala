@@ -29,10 +29,10 @@ import v1.createAmendSavings.def1.Def1_CreateAmendSavingsRulesValidator.validate
 import v1.createAmendSavings.def1.model.request.{Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
 import v1.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
-class Def1_CreateAmendSavingsValidator(nino: String, taxYear: String, body: JsValue)(appConfig: AppConfig)
+class Def1_CreateAmendSavingsValidator(nino: String, taxYear: String, body: JsValue)(appConfig: AppConfig, savingsConfig: SavingsConfig)
     extends Validator[CreateAmendSavingsRequestData] {
 
-  private lazy val minimumTaxYear = SavingsConfig.minimumPermittedTaxYear
+  private lazy val minimumTaxYear = savingsConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
   private val resolveJson         = new ResolveNonEmptyJsonObject[Def1_CreateAmendSavingsRequestBody]()
 

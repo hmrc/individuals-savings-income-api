@@ -33,9 +33,11 @@ import v1.createAmendUkSavingsAnnualSummary.def1.model.request.{
 }
 import v1.createAmendUkSavingsAnnualSummary.model.request._
 
-class Def1_CreateAmendUkSavingsAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue)(appConfig: AppConfig)
+class Def1_CreateAmendUkSavingsAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue)(
+    appConfig: AppConfig,
+    savingsConfig: SavingsConfig)
     extends Validator[CreateAmendUkSavingsAnnualSummaryRequestData] {
-  private lazy val minimumTaxYear = SavingsConfig.ukSavingsAccountAnnualSummaryMinimumTaxYear
+  private lazy val minimumTaxYear = savingsConfig.ukSavingsAccountAnnualSummaryMinimumTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromDownstreamInt(minimumTaxYear))
   private val resolveJson         = new ResolveNonEmptyJsonObject[Def1_CreateAmendUkSavingsAnnualSummaryRequestBody]()
 

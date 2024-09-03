@@ -33,6 +33,9 @@ trait MockSavingsConfig extends MockFactory {
     def isDesIf_MigrationEnabled: CallHandler[Boolean] =
       (() => mockSavingsFeatureSwitches.isDesIf_MigrationEnabled).expects()
 
+    def isListUkSavingsDownstreamURLEnabled: CallHandler[Boolean] =
+      (() => mockSavingsFeatureSwitches.isListUkSavingsDownstreamURLEnabled).expects()
+
     def featureSwitchConfig: CallHandler0[Configuration]      = (() => mockSavingsConfig.featureSwitchConfig: Configuration).expects()
     def featureSwitches: CallHandler0[SavingsFeatureSwitches] = (() => mockSavingsConfig.featureSwitches: SavingsFeatureSwitches).expects()
 

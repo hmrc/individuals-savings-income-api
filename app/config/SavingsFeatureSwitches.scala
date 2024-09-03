@@ -22,7 +22,8 @@ import shared.config.{AppConfig, FeatureSwitches}
 /** API-specific feature switches.
   */
 case class SavingsFeatureSwitches(val featureSwitchConfig: Configuration) extends FeatureSwitches {
-  def isDesIf_MigrationEnabled: Boolean = isEnabled("desIf_Migration")
+  def isDesIf_MigrationEnabled: Boolean            = isEnabled("desIf_Migration")
+  def isListUkSavingsDownstreamURLEnabled: Boolean = isEnabled("listUkSavingsDownstreamURL")
 }
 
 object SavingsFeatureSwitches {

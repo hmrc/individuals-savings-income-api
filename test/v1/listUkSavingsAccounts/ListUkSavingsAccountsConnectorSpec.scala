@@ -16,9 +16,7 @@
 
 package v1.listUkSavingsAccounts
 
-import mocks.MockFeatureSwitches
 import models.domain.SavingsAccountId
-import play.api.Configuration
 import shared.config.MockAppConfig
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
@@ -29,13 +27,13 @@ import v1.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, U
 
 import scala.concurrent.Future
 
-class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockAppConfig with MockFeatureSwitches {
+class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockAppConfig {
 
-  val nino: String = "AA111111A"
-  val taxYear: String = "2019"
-  val savingsAccountId: SavingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
+  val nino: String     = "AA111111A"
+  val taxYear: String  = "2019"
+  val savingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
-  val request: Def1_ListUkSavingsAccountsRequestData = Def1_ListUkSavingsAccountsRequestData(Nino(nino), None)
+  val request: Def1_ListUkSavingsAccountsRequestData                     = Def1_ListUkSavingsAccountsRequestData(Nino(nino), None)
   val requestWithSavingsAccountId: Def1_ListUkSavingsAccountsRequestData = Def1_ListUkSavingsAccountsRequestData(Nino(nino), Some(savingsAccountId))
 
   private val validResponse = Def1_ListUkSavingsAccountsResponse(
@@ -56,94 +54,46 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockAppConfi
     def taxYear: TaxYear
 
     val connector: ListUkSavingsAccountsConnector =
-      new ListUkSavingsAccountsConnector(http = mockHttpClient, appConfig = mockAppConfig)(mockFeatureSwitches)
+      new ListUkSavingsAccountsConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
   }
 
   "ListUkSavingsAccountsConnector" when {
     "listUkSavingsAccounts" must {
-      "return a valid response, list of uk savings accounts when isListUkSavingsDownstreamURLEnabled is false" +
+      "return a valid response, list of uk savings accounts " +
         "upon receiving SUCCESS response from the backend service" in new DesTest with Test {
 
-        MockFeatureSwitches.isListUkSavingsDownstreamURLEnabled.returns(false)
+          val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
+            Right(ResponseWrapper(correlationId, validResponse))
+          override def taxYear: TaxYear = TaxYear("2021")
 
-        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
-          Right(ResponseWrapper(correlationId, validResponse))
+          willGet(
+            url = s"$baseUrl/income-tax/income-sources/nino/${this.nino}",
+            parameters = Seq("incomeSourceType" -> "interest-from-uk-banks")
+          ).returns(Future.successful(outcome))
 
-        override def taxYear: TaxYear = TaxYear("2021")
+          val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] = await(connector.listUkSavingsAccounts(request))
+          result shouldBe outcome
 
-        willGet(
-          url = s"$baseUrl/income-tax/income-sources/nino/${this.nino}",
-          parameters = Seq("incomeSourceType" -> "interest-from-uk-banks")
-        ).returns(Future.successful(outcome))
-
-        val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] = await(connector.listUkSavingsAccounts(request))
-        result shouldBe outcome
-
-      }
-      "return a valid response, list of uk savings accounts when isListUkSavingsDownstreamURLEnabled is true " +
-        "upon receiving SUCCESS response from the backend service" in new IfsTest with Test {
-
-
-        MockAppConfig.featureSwitchConfig returns Configuration("listUkSavingsDownstreamURL.enabled" -> true)
-        MockFeatureSwitches.isListUkSavingsDownstreamURLEnabled.returns(true)
-
-        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
-          Right(ResponseWrapper(correlationId, validResponse))
-
-        override def taxYear: TaxYear = TaxYear("2021")
-
-        willGet(
-          url = s"$baseUrl/income-tax/income-sources/${this.nino}",
-          parameters = Seq("incomeSourceType" -> "09")
-        ).returns(Future.successful(outcome))
-
-        val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] = await(connector.listUkSavingsAccounts(request))
-        result shouldBe outcome
-
-      }
+        }
 
       "return a valid response, list of a single uk savings account " +
-        "when incomeSourceId was sent as part of the request and isListUkSavingsDownstreamURLEnabled is false" +
+        "when incomeSourceId was sent as part of the request and " +
         "upon receiving SUCCESS response from the backend service " in new DesTest with Test {
 
-        MockFeatureSwitches.isListUkSavingsDownstreamURLEnabled.returns(false)
+          val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
+            Right(ResponseWrapper(correlationId, validResponse))
+          override def taxYear: TaxYear = TaxYear("2021")
 
-        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
-          Right(ResponseWrapper(correlationId, validResponse))
+          willGet(
+            url = s"$baseUrl/income-tax/income-sources/nino/${this.nino}",
+            parameters = Seq("incomeSourceType" -> "interest-from-uk-banks", "incomeSourceId" -> savingsAccountId.toString)
+          ).returns(Future.successful(outcome))
 
-        override def taxYear: TaxYear = TaxYear("2021")
-
-        willGet(
-          url = s"$baseUrl/income-tax/income-sources/nino/${this.nino}",
-          parameters = Seq("incomeSourceType" -> "interest-from-uk-banks", "incomeSourceId" -> savingsAccountId.toString)
-        ).returns(Future.successful(outcome))
-
-        val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] =
-          await(connector.listUkSavingsAccounts(requestWithSavingsAccountId))
-        result shouldBe outcome
-      }
-
-      "return a valid response, list of a single uk savings account " +
-        "when incomeSourceId was sent as part of the request and isListUkSavingsDownstreamURLEnabled is true " +
-        "upon receiving SUCCESS response from the backend service " in new IfsTest with Test {
-
-        MockFeatureSwitches.isListUkSavingsDownstreamURLEnabled.returns(true)
-
-        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
-          Right(ResponseWrapper(correlationId, validResponse))
-
-        override def taxYear: TaxYear = TaxYear("2021")
-
-        willGet(
-          url = s"$baseUrl/income-tax/income-sources/${this.nino}",
-          parameters = Seq("incomeSourceType" -> "09", "incomeSourceId" -> savingsAccountId.toString)
-        ).returns(Future.successful(outcome))
-
-        val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] =
-          await(connector.listUkSavingsAccounts(requestWithSavingsAccountId))
-        result shouldBe outcome
-      }
+          val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] =
+            await(connector.listUkSavingsAccounts(requestWithSavingsAccountId))
+          result shouldBe outcome
+        }
     }
   }
 

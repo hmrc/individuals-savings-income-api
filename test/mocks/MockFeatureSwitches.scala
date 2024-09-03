@@ -28,8 +28,6 @@ trait MockFeatureSwitches extends MockFactory {
     def isDesIf_MigrationEnabled: CallHandler[Boolean] =
       (() => mockFeatureSwitches.isDesIf_MigrationEnabled).expects()
 
-    def isListUkSavingsDownstreamURLEnabled: CallHandler[Boolean] =
-      (() => mockFeatureSwitches.isListUkSavingsDownstreamURLEnabled).expects()
   }
 
 }

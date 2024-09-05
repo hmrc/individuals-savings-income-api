@@ -18,7 +18,7 @@ package definition
 
 import play.api.Logger
 import shared.config.AppConfig
-import shared.definition.{APIDefinition, APIStatus, APIVersion, ApiDefinitionFactory, Definition, Scope}
+import shared.definition.{APIDefinition, APIStatus, APIVersion, ApiDefinitionFactory, Definition}
 import shared.routing.{Version, Version1}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
@@ -27,8 +27,6 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class SavingsApiDefinitionFactory @Inject() (protected val appConfig: AppConfig) extends ApiDefinitionFactory {
 
-  override val readScope           = "read:self-assessment"
-  override val writeScope          = "write:self-assessment"
   override lazy val logger: Logger = Logger(this.getClass)
 
   override lazy val confidenceLevel: ConfidenceLevel = {
@@ -39,20 +37,6 @@ class SavingsApiDefinitionFactory @Inject() (protected val appConfig: AppConfig)
 
   lazy val definition: Definition =
     Definition(
-      scopes = Seq(
-        Scope(
-          key = readScope,
-          name = "View your Self Assessment information",
-          description = "Allow read access to self assessment data",
-          confidenceLevel = confidenceLevel
-        ),
-        Scope(
-          key = writeScope,
-          name = "Change your Self Assessment information",
-          description = "Allow write access to self assessment data",
-          confidenceLevel = confidenceLevel
-        )
-      ),
       api = APIDefinition(
         name = "Individuals Savings Income (MTD)",
         description = "An API for providing individuals savings income data",

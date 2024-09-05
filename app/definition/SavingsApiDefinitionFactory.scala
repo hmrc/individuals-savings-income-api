@@ -20,7 +20,6 @@ import play.api.Logger
 import shared.config.AppConfig
 import shared.definition.{APIDefinition, APIStatus, APIVersion, ApiDefinitionFactory, Definition}
 import shared.routing.{Version, Version1}
-import uk.gov.hmrc.auth.core.ConfidenceLevel
 
 import javax.inject.{Inject, Singleton}
 
@@ -28,12 +27,6 @@ import javax.inject.{Inject, Singleton}
 class SavingsApiDefinitionFactory @Inject() (protected val appConfig: AppConfig) extends ApiDefinitionFactory {
 
   override lazy val logger: Logger = Logger(this.getClass)
-
-  override lazy val confidenceLevel: ConfidenceLevel = {
-    val clConfig = appConfig.confidenceLevelConfig
-
-    if (clConfig.definitionEnabled) clConfig.confidenceLevel else ConfidenceLevel.L50
-  }
 
   lazy val definition: Definition =
     Definition(

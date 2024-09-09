@@ -33,7 +33,7 @@ class Def1_UkSavingsAccountSpec extends UnitSpec {
   val invalidUkSavingsAccountFromDESJson = Json.parse(
     """
       |{
-      |   "incomeSourceId": "SAVKB2UVwUTBQGJ"
+      |   "incomeSourceName": "Shares savings account"
       |}
     """.stripMargin
   )
@@ -53,7 +53,7 @@ class Def1_UkSavingsAccountSpec extends UnitSpec {
     "return a valid Def1_UkSavingsAccount model " when {
       "a valid uk savings account json from DES is supplied" in {
         validUkSavingsAccountFromDESJson.as[Def1_UkSavingsAccount] shouldBe
-          Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", "Shares savings account")
+          Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", Some("Shares savings account"))
       }
     }
 
@@ -71,7 +71,7 @@ class Def1_UkSavingsAccountSpec extends UnitSpec {
 
     "return a valid MTD uk savings json" when {
       "a valid Def1_UkSavingsAccount model is supplier" in {
-        Json.toJson(Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", "Shares savings account")) shouldBe
+        Json.toJson(Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", Some("Shares savings account"))) shouldBe
           validUkSavigsAccountFromMTDJson
       }
     }

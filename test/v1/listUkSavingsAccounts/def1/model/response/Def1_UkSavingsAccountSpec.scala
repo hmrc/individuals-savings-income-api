@@ -55,7 +55,7 @@ class Def1_UkSavingsAccountSpec extends UnitSpec {
     """.stripMargin
   )
 
-  val validNoOptUkSavigsAccountFromMTDJson = Json.parse(
+  val validNoOptUkSavingsAccountFromMTDJson = Json.parse(
     """
       |{
       |   "savingsAccountId": "SAVKB2UVwUTBQGJ"
@@ -73,8 +73,8 @@ class Def1_UkSavingsAccountSpec extends UnitSpec {
       }
 
       "a valid uk savings account json with mandatory fields only from DES is supplied" in {
-        validnNoOptUkSavingsAccountFromDESJson.as[Def1_UkSavingsAccount] shouldBe
-          Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ")
+        validNoOptUkSavingsAccountFromDESJson.as[Def1_UkSavingsAccount] shouldBe
+          Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ",None)
       }
     }
 
@@ -97,8 +97,8 @@ class Def1_UkSavingsAccountSpec extends UnitSpec {
       }
       
       "a valid Def1_UkSavingsAccount model with mandatory fields only is supplier" in {
-        Json.toJson(Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ")) shouldBe
-          validNoOptUkSavigsAccountFromMTDJson
+        Json.toJson(Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ",None)) shouldBe
+          validNoOptUkSavingsAccountFromMTDJson
       }
     }
   }

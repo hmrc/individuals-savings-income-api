@@ -37,10 +37,7 @@ class Def1_ListUkSavingsAccountsResponseSpec extends UnitSpec {
       |    "incomeSourceType": "interest-from-uk-banks"
       |  },
       |  {
-      |    "incomeSourceId": "000000000000003",
-      |    "incomeSourceName": "Bank Account 3",
-      |    "identifier": "AA111111A",
-      |    "incomeSourceType": "interest-from-uk-banks"
+      |    "incomeSourceId": "000000000000003"
       |  }
       |]
     """.stripMargin
@@ -53,20 +50,17 @@ class Def1_ListUkSavingsAccountsResponseSpec extends UnitSpec {
       |      {
       |        "incomeSourceId": "000000000000001",
       |        "incomeSourceName": "Bank Account 1",
-      |        "identifier": "AA111111A",
-      |        "incomeSourceType": "interest-from-uk-banks"
+      |        "startDate": "2024-08-22",
+      |        "endDate": "2024-08-22"
       |      },
       |      {
       |        "incomeSourceId": "000000000000002",
       |        "incomeSourceName": "Bank Account 2",
-      |        "identifier": "AA111111A",
-      |        "incomeSourceType": "interest-from-uk-banks"
+      |        "startDate": "2024-08-22",
+      |        "endDate": "2024-08-22"
       |      },
       |      {
-      |        "incomeSourceId": "000000000000003",
-      |        "incomeSourceName": "Bank Account 3",
-      |        "identifier": "AA111111A",
-      |        "incomeSourceType": "interest-from-uk-banks"
+      |        "incomeSourceId": "000000000000003"
       |      }
       |  ]
       |}
@@ -78,10 +72,7 @@ class Def1_ListUkSavingsAccountsResponseSpec extends UnitSpec {
       |{
       |  "not_bbsi": [
       |      {
-      |        "incomeSourceId": "000000000000003",
-      |        "incomeSourceName": "Bank Account 3",
-      |        "identifier": "AA111111A",
-      |        "incomeSourceType": "interest-from-uk-banks"
+      |        "incomeSourceId": "000000000000003"
       |      }
       |  ]
       |}
@@ -102,8 +93,7 @@ class Def1_ListUkSavingsAccountsResponseSpec extends UnitSpec {
       |        "accountName": "Bank Account 2"
       |    },
       |    {
-      |        "savingsAccountId": "000000000000003",
-      |        "accountName": "Bank Account 3"
+      |        "savingsAccountId": "000000000000003"
       |    }
       |  ]
       |}
@@ -117,7 +107,7 @@ class Def1_ListUkSavingsAccountsResponseSpec extends UnitSpec {
       List(
         Def1_UkSavingsAccount("000000000000001", Some("Bank Account 1")),
         Def1_UkSavingsAccount("000000000000002", Some("Bank Account 2")),
-        Def1_UkSavingsAccount("000000000000003", Some("Bank Account 3"))
+        Def1_UkSavingsAccount("000000000000003", None)
       )
     )
   )

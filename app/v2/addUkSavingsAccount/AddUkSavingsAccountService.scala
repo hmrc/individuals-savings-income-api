@@ -17,6 +17,7 @@
 package v2.addUkSavingsAccount
 
 import cats.implicits._
+import models.errors.{RuleDuplicateAccountNameError, RuleMaximumSavingsAccountsLimitError}
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}

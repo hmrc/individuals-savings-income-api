@@ -16,7 +16,7 @@
 
 package v1.addUkSavingsAccount
 
-import shared.config.MockAppConfig
+import shared.config.MockSharedAppConfig
 import shared.connectors.ConnectorSpec
 import shared.mocks.MockHttpClient
 import shared.models.domain.Nino
@@ -42,11 +42,11 @@ class AddUkSavingsAccountConnectorSpec extends ConnectorSpec {
     savingsAccountId = "SAVKB2UVwUTBQGJ"
   )
 
-  trait Test extends MockHttpClient with MockAppConfig {
+  trait Test extends MockHttpClient with MockSharedAppConfig {
 
     val connector: AddUkSavingsAccountConnector = new AddUkSavingsAccountConnector(
       http = mockHttpClient,
-      appConfig = mockAppConfig
+      appConfig = mockSharedAppConfig
     )
 
   }

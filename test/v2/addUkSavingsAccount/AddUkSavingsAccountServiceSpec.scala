@@ -16,6 +16,7 @@
 
 package v2.addUkSavingsAccount
 
+import models.errors.{RuleDuplicateAccountNameError, RuleMaximumSavingsAccountsLimitError}
 import shared.controllers.EndpointLogContext
 import shared.models.domain.Nino
 import shared.models.errors._

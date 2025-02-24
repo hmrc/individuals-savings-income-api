@@ -34,27 +34,25 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
     val savingsAccountId: String = "SAVKB2UVwUTBQGJ"
     val taxYear: String          = "2020-21"
 
-    val requestBodyJson: JsValue = Json.parse("""
+    val requestBodyJson: JsValue = Json.parse(
+      """
         |{
         |   "accountName": "Shares savings account"
         |}
-        |""".stripMargin)
+      """.stripMargin
+    )
 
-    val desResponseJson: JsValue = Json.parse(s"""
-         |{
-         |   "incomeSourceId": "$savingsAccountId"
-         |}
-         |""".stripMargin)
+    val responseJson: JsValue = Json.parse(
+      s"""
+        |{
+        |   "savingsAccountId": "$savingsAccountId"
+        |}
+      """.stripMargin
+    )
 
-    val responseJson: JsValue = Json.parse(s"""
-         |{
-         |   "savingsAccountId": "$savingsAccountId"
-         |}
-         |""".stripMargin)
+    private def uri: String = s"/uk-accounts/$nino"
 
-    def uri: String = s"/uk-accounts/$nino"
-
-    def ifsUri: String = s"/income-tax/income-sources/nino/$nino"
+    def downstreamUri: String = s"/itsd/income-sources/$nino"
 
     def setupStubs(): StubMapping
 
@@ -77,7 +75,7 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.POST, ifsUri, OK, desResponseJson)
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, CREATED, Map("IncomeSourceId" -> savingsAccountId))
         }
 
         val response: WSResponse = await(request().post(requestBodyJson))
@@ -89,19 +87,23 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
 
     "return error according to spec" when {
 
-      val validRequestJson: JsValue = Json.parse("""
+      val validRequestJson: JsValue = Json.parse(
+        """
           |{
           |   "accountName": "Shares savings account"
           |}
-          |""".stripMargin)
+        """.stripMargin
+      )
 
       val emptyRequestJson: JsValue = JsObject.empty
 
-      val nonValidRequestBodyJson: JsValue = Json.parse("""
+      val nonValidRequestBodyJson: JsValue = Json.parse(
+        """
           |{
           |   "accountName": "Shares savings account!"
           |}
-          |""".stripMargin)
+        """.stripMargin
+      )
 
       "validation error" when {
         def validationErrorTest(requestNino: String,
@@ -139,15 +141,15 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
         input.foreach(args => (validationErrorTest _).tupled(args))
       }
 
-      "ifs service error" when {
-        def serviceErrorTest(ifsStatus: Int, ifsCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"ifs returns an $ifsCode error and status $ifsStatus" in new Test {
+      "downstream service error" when {
+        def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"downstream returns an $downstreamCode error and status $downstreamStatus" in new Test {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DownstreamStub.onError(DownstreamStub.POST, ifsUri, ifsStatus, errorBody(ifsCode))
+              DownstreamStub.onError(DownstreamStub.POST, downstreamUri, downstreamStatus, errorBody(downstreamCode))
             }
 
             val response: WSResponse = await(request().post(requestBodyJson))
@@ -160,7 +162,7 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
           s"""
              |{
              |   "code": "$code",
-             |   "reason": "ifs message"
+             |   "reason": "downstream message"
              |}
             """.stripMargin
 

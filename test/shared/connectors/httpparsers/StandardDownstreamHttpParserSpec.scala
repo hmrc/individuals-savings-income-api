@@ -65,11 +65,6 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
 
         httpReads.read(method, url, httpResponse) shouldBe Left(expected)
       }
-
-      handleErrorsCorrectly(httpReads)
-      handleInternalErrorsCorrectly(httpReads)
-      handleUnexpectedResponse(httpReads)
-      handleBvrsCorrectly(httpReads)
     }
 
     "a success code is specified" should {
@@ -82,9 +77,14 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
         httpReads.read(method, url, httpResponse) shouldBe Right(downstreamResponse)
       }
     }
+
+    handleErrorsCorrectly(httpReads)
+    handleInternalErrorsCorrectly(httpReads)
+    handleUnexpectedResponse(httpReads)
+    handleBvrsCorrectly(httpReads)
   }
 
-  "The generic HTTP parser for empty response" when {
+  "The generic HTTP parser for empty response with no header extraction" when {
     "no status code is specified" should {
       val httpReads: HttpReads[DownstreamOutcome[Unit]] = implicitly
 
@@ -95,11 +95,6 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
           httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))
         }
       }
-
-      handleErrorsCorrectly(httpReads)
-      handleInternalErrorsCorrectly(httpReads)
-      handleUnexpectedResponse(httpReads)
-      handleBvrsCorrectly(httpReads)
     }
 
     "a success code is specified" should {
@@ -112,6 +107,59 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
         httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))
       }
     }
+
+    handleErrorsCorrectly(httpReads)
+    handleInternalErrorsCorrectly(httpReads)
+    handleUnexpectedResponse(httpReads)
+    handleBvrsCorrectly(httpReads)
+  }
+
+  "The generic HTTP parser for empty responses with header extraction" when {
+    val headerName  = "someHeader"
+    val headerValue = "someHeaderValue"
+
+    case class SomeCaseClass(value: String)
+
+    "using the default success code (201 Created)" should {
+      val httpReadsWithHeader: HttpReads[DownstreamOutcome[SomeCaseClass]] =
+        readsEmptyWithHeader[SomeCaseClass](headerName, SomeCaseClass)
+
+      "return a Right downstream response with SomeCaseClass when the expected header is present" in {
+        val httpResponse = HttpResponse(CREATED, "", headers = Map(headerName -> List(headerValue), "CorrelationId" -> List(correlationId)))
+
+        httpReadsWithHeader.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, SomeCaseClass(headerValue)))
+      }
+
+      "return an outbound error when the expected header is absent" in {
+        val httpResponse = HttpResponse(CREATED, "", headers = Map("CorrelationId" -> List(correlationId)))
+
+        httpReadsWithHeader.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
+      }
+    }
+
+    "using a custom success code (202 Accepted)" should {
+      implicit val successCode: SuccessCode = SuccessCode(ACCEPTED)
+
+      val httpReadsWithHeader: HttpReads[DownstreamOutcome[SomeCaseClass]] =
+        readsEmptyWithHeader[SomeCaseClass](headerName, SomeCaseClass)
+
+      "return a Right downstream response with SomeCaseClass when the expected header is present" in {
+        val httpResponse = HttpResponse(ACCEPTED, "", headers = Map(headerName -> List(headerValue), "CorrelationId" -> List(correlationId)))
+
+        httpReadsWithHeader.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, SomeCaseClass(headerValue)))
+      }
+
+      "return an outbound error when the expected header is absent" in {
+        val httpResponse = HttpResponse(ACCEPTED, "", headers = Map("CorrelationId" -> List(correlationId)))
+
+        httpReadsWithHeader.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
+      }
+    }
+
+    handleErrorsCorrectly(httpReads)
+    handleInternalErrorsCorrectly(httpReads)
+    handleUnexpectedResponse(httpReads)
+    handleBvrsCorrectly(httpReads)
   }
 
   val singleErrorJson: JsValue = Json.parse(
@@ -213,7 +261,8 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
 
   private def handleBvrsCorrectly[A](httpReads: HttpReads[DownstreamOutcome[A]]): Unit = {
 
-    val singleBvrJson = Json.parse("""
+    val singleBvrJson = Json.parse(
+      """
         |{
         |   "bvrfailureResponseElement": {
         |     "validationRuleFailures": [
@@ -226,7 +275,8 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
         |     ]
         |   }
         |}
-      """.stripMargin)
+      """.stripMargin
+    )
 
     s"receiving a response with BVR errors" should {
       "return an outbound BUSINESS_ERROR error containing the BVR ids" in {

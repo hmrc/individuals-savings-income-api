@@ -34,6 +34,22 @@ object StandardDownstreamHttpParser extends HttpParser {
         Right(ResponseWrapper(correlationId, ()))
       }
 
+  def readsEmptyWithHeader[A](headerName: String,
+                              buildResponseFromHeader: String => A
+                             )(implicit successCode: SuccessCode = SuccessCode(CREATED)): HttpReads[DownstreamOutcome[A]] =
+    (_: String, url: String, response: HttpResponse) =>
+      doRead(url, response) { correlationId =>
+        response.header(headerName) match {
+          case Some(headerValue) =>
+            val generatedResponse: A = buildResponseFromHeader(headerValue)
+            Right(ResponseWrapper(correlationId, generatedResponse))
+
+          case None =>
+            logger.warn(s"[StandardDownstreamHttpParser][readsEmptyWithHeader] Missing $headerName in response headers")
+            Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
+        }
+      }
+
   implicit def reads[A: Reads](implicit successCode: SuccessCode = SuccessCode(OK)): HttpReads[DownstreamOutcome[A]] =
     (_: String, url: String, response: HttpResponse) =>
       doRead(url, response) { correlationId =>

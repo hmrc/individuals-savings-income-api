@@ -16,11 +16,13 @@
 
 package v2.addUkSavingsAccount
 
-import shared.config.SharedAppConfig
-import shared.connectors.DownstreamUri.DesUri
-import shared.connectors.httpparsers.StandardDownstreamHttpParser.reads
+import shared.config.{ConfigFeatureSwitches, SharedAppConfig}
+import shared.connectors.DownstreamUri.{DesUri, HipUri}
+import shared.connectors.httpparsers.StandardDownstreamHttpParser.{reads, readsEmptyWithHeader}
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
+import v2.addUkSavingsAccount.AddUkSavingsAccountSchema.Def1
+import v2.addUkSavingsAccount.def1.model.response.Def1_AddUkSavingsAccountResponse
 import v2.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
 import v2.addUkSavingsAccount.model.response.AddUkSavingsAccountResponse
 
@@ -38,9 +40,24 @@ class AddUkSavingsAccountConnector @Inject() (val http: HttpClient, val appConfi
     import request._
     import schema._
 
-    val downstreamUri = DesUri[DownstreamResp](s"income-tax/income-sources/nino/$nino")
+    if (ConfigFeatureSwitches().isEnabled("des_hip_migration_1393")) {
+      val buildResponseFromHeader: String => AddUkSavingsAccountResponse = (headerValue: String) => schema match {
+        case Def1 => Def1_AddUkSavingsAccountResponse(headerValue)
+      }
 
-    post(body, downstreamUri)
+      implicit val hipReads: HttpReads[DownstreamOutcome[AddUkSavingsAccountResponse]] =
+        readsEmptyWithHeader[AddUkSavingsAccountResponse](
+          "IncomeSourceId",
+          buildResponseFromHeader
+        )
+
+      val downstreamUri = HipUri[DownstreamResp](s"itsd/income-sources/$nino")
+      post(body, downstreamUri)
+
+    } else {
+      val downstreamUri = DesUri[DownstreamResp](s"income-tax/income-sources/nino/$nino")
+      post(body, downstreamUri)
+    }
   }
 
 }

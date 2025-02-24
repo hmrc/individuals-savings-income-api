@@ -143,7 +143,7 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
 
       "downstream service error" when {
         def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"downstream returns an $downstreamCode error and status $downstreamStatus" in new Test {
+          s"downstream returns a code $downstreamCode error and status $downstreamStatus" in new Test {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -160,13 +160,20 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
 
         def errorBody(code: String): String =
           s"""
-             |{
-             |   "code": "$code",
-             |   "reason": "downstream message"
-             |}
-            """.stripMargin
+            |{
+            |   "errorCode": "$code",
+            |   "errorDescription": "downstream message",
+            |    "validationRuleFailures": [
+            |        {
+            |            "id": "string",
+            |            "type": "ERR",
+            |            "text": "string"
+            |        }
+            |    ]
+            |}
+          """.stripMargin
 
-        val input = List(
+        val desErrors = List(
           (BAD_REQUEST, "INVALID_IDVALUE", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "INVALID_IDTYPE", INTERNAL_SERVER_ERROR, InternalError),
           (BAD_REQUEST, "INVALID_PAYLOAD", INTERNAL_SERVER_ERROR, InternalError),
@@ -175,7 +182,10 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError)
         )
-        input.foreach(args => (serviceErrorTest _).tupled(args))
+
+        val hipErrors = List((UNPROCESSABLE_ENTITY, "1011", BAD_REQUEST, RuleMaximumSavingsAccountsLimitError))
+
+        (desErrors ++ hipErrors).foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }

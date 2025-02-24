@@ -82,6 +82,7 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
     handleInternalErrorsCorrectly(httpReads)
     handleUnexpectedResponse(httpReads)
     handleBvrsCorrectly(httpReads)
+    handleHipErrorsCorrectly(httpReads)
   }
 
   "The generic HTTP parser for empty response with no header extraction" when {
@@ -112,6 +113,7 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
     handleInternalErrorsCorrectly(httpReads)
     handleUnexpectedResponse(httpReads)
     handleBvrsCorrectly(httpReads)
+    handleHipErrorsCorrectly(httpReads)
   }
 
   "The generic HTTP parser for empty responses with header extraction" when {
@@ -160,6 +162,7 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
     handleInternalErrorsCorrectly(httpReads)
     handleUnexpectedResponse(httpReads)
     handleBvrsCorrectly(httpReads)
+    handleHipErrorsCorrectly(httpReads)
   }
 
   val singleErrorJson: JsValue = Json.parse(
@@ -278,7 +281,7 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
       """.stripMargin
     )
 
-    s"receiving a response with BVR errors" should {
+    "receiving a response with BVR errors" should {
       "return an outbound BUSINESS_ERROR error containing the BVR ids" in {
         val httpResponse = HttpResponse(BAD_REQUEST, singleBvrJson, Map("CorrelationId" -> List(correlationId)))
         val result       = httpReads.read(method, url, httpResponse)
@@ -294,6 +297,65 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
                   MtdError("BVR2", "", BAD_REQUEST)
                 )))
           )
+        )
+      }
+    }
+  }
+
+  val singleHipErrorJson: JsValue = Json.parse(
+    """
+      |{
+      |    "errorCode": "1011",
+      |    "errorDescription": "Some error occurred",
+      |    "validationRuleFailures": [
+      |        {
+      |            "id": "string",
+      |            "type": "ERR",
+      |            "text": "string"
+      |        }
+      |    ]
+      |}
+    """.stripMargin
+  )
+
+  val multipleHipErrorsJson: JsValue = Json.parse(
+    """
+      |{
+      |    "origin": "HIP",
+      |    "response": {
+      |        "failures": [
+      |            {
+      |                "type": "ERR1",
+      |                "reason": "Error 1 description"
+      |            },
+      |            {
+      |                "type": "ERR2",
+      |                "reason": "Error 2 description"
+      |            }
+      |        ]
+      |    }
+      |}
+    """.stripMargin
+  )
+
+  private def handleHipErrorsCorrectly[A](httpReads: HttpReads[DownstreamOutcome[A]]): Unit = {
+
+    "receiving a 400 response with multiple HIP errors" should {
+      "return a Left ResponseWrapper containing the extracted error types" in {
+        val httpResponse = HttpResponse(BAD_REQUEST, multipleHipErrorsJson, Map("CorrelationId" -> List(correlationId)))
+
+        httpReads.read(method, url, httpResponse) shouldBe Left(
+          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("ERR1"), DownstreamErrorCode("ERR2"))))
+        )
+      }
+    }
+
+    "receiving a 422 response with single HIP error" should {
+      "return a Left ResponseWrapper containing the extracted error code" in {
+        val httpResponse = HttpResponse(UNPROCESSABLE_ENTITY, singleHipErrorJson, Map("CorrelationId" -> List(correlationId)))
+
+        httpReads.read(method, url, httpResponse) shouldBe Left(
+          ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("1011")))
         )
       }
     }

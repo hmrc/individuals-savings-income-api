@@ -64,6 +64,7 @@ class AddUkSavingsAccountServiceSpec extends ServiceSpec {
         await(service.addSavings(addUkSavingsAccountRequest)) shouldBe outcome
       }
     }
+
     "map errors according to spec" when {
 
       def serviceError(desErrorCode: String, error: MtdError): Unit =
@@ -76,7 +77,7 @@ class AddUkSavingsAccountServiceSpec extends ServiceSpec {
           await(service.addSavings(addUkSavingsAccountRequest)) shouldBe Left(ErrorWrapper(correlationId, error))
         }
 
-      val input = List(
+      val desErrors = List(
         ("INVALID_IDVALUE", NinoFormatError),
         ("MAX_ACCOUNTS_REACHED", RuleMaximumSavingsAccountsLimitError),
         ("ALREADY_EXISTS", RuleDuplicateAccountNameError),
@@ -86,8 +87,9 @@ class AddUkSavingsAccountServiceSpec extends ServiceSpec {
         ("SERVICE_UNAVAILABLE", InternalError)
       )
 
-      input.foreach(args => (serviceError _).tupled(args))
+      val hipErrors = List(("1011", RuleMaximumSavingsAccountsLimitError))
 
+      (desErrors ++ hipErrors).foreach(args => (serviceError _).tupled(args))
     }
   }
 

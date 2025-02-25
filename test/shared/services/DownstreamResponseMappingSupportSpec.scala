@@ -16,7 +16,7 @@
 
 package shared.services
 
-import play.api.http.Status.BAD_REQUEST
+import play.api.http.Status.{BAD_REQUEST, CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY}
 import play.api.libs.json.{Format, Json}
 import shared.controllers.EndpointLogContext
 import shared.models.errors._
@@ -40,6 +40,11 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
     case "INVALID_CORRELATIONID"  => InternalError
   }
 
+  val errorStatusMap: PartialFunction[Int, MtdError] = {
+    case CONFLICT  => Error1
+    case NOT_FOUND => Error2
+  }
+
   case class TestClass(field: Option[String])
 
   object TestClass {
@@ -55,17 +60,45 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
   object ErrorBvr extends MtdError("msg", "bvr", BAD_REQUEST)
 
   "mapping Downstream errors" when {
-    "single error" when {
-      "the error code is in the map provided" must {
-        "use the mapping and wrap" in {
+    "single error (error code)" when {
+      "the error code is in the provided error code map" must {
+        "use the mapping and wrap the error" in {
           mapping.mapDownstreamErrors(errorCodeMap)(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERR1")))) shouldBe
             ErrorWrapper(correlationId, Error1)
         }
       }
 
-      "the error code is not in the map provided" must {
-        "default to DownstreamError and wrap" in {
+      "the error code is not in the provided error code map" must {
+        "default to InternalError and wrap" in {
           mapping.mapDownstreamErrors(errorCodeMap)(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("UNKNOWN")))) shouldBe
+            ErrorWrapper(correlationId, InternalError)
+        }
+      }
+    }
+
+    "single error (status code)" when {
+      "the status code is in the provided status code map" must {
+        Seq((CONFLICT, Error1), (NOT_FOUND, Error2)).foreach { case (status, error) =>
+          s"use the mapping and wrap the error $error" in {
+            mapping.mapDownstreamErrors(errorCodeMap, Some(errorStatusMap))(
+              ResponseWrapper(correlationId, DownstreamStatusError(status))) shouldBe
+              ErrorWrapper(correlationId, error)
+          }
+        }
+      }
+
+      "the status code is not in the provided status code map" must {
+        "default to InternalError and wrap" in {
+          mapping.mapDownstreamErrors(errorCodeMap, Some(errorStatusMap))(
+            ResponseWrapper(correlationId, DownstreamStatusError(UNPROCESSABLE_ENTITY))) shouldBe
+            ErrorWrapper(correlationId, InternalError)
+        }
+      }
+
+      "no status map is provided" must {
+        "default to InternalError and wrap" in {
+          mapping.mapDownstreamErrors(errorCodeMap)(
+            ResponseWrapper(correlationId, DownstreamStatusError(CONFLICT))) shouldBe
             ErrorWrapper(correlationId, InternalError)
         }
       }

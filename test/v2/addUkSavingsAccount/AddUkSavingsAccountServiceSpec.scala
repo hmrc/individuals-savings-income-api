@@ -67,12 +67,22 @@ class AddUkSavingsAccountServiceSpec extends ServiceSpec {
 
     "map errors according to spec" when {
 
-      def serviceError(desErrorCode: String, error: MtdError): Unit =
-        s"a $desErrorCode error is returned from the service" in new Test {
+      def serviceCodeError(downstreamErrorCode: String, error: MtdError): Unit =
+        s"a code $downstreamErrorCode error is returned from the service" in new Test {
 
           MockAddUkSavingsAccountConnector
             .addSavings(addUkSavingsAccountRequest)
-            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(desErrorCode))))))
+            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
+
+          await(service.addSavings(addUkSavingsAccountRequest)) shouldBe Left(ErrorWrapper(correlationId, error))
+        }
+
+      def serviceStatusError(downstreamStatus: Int, error: MtdError): Unit =
+        s"a status $downstreamStatus error is returned from the service" in new Test {
+
+          MockAddUkSavingsAccountConnector
+            .addSavings(addUkSavingsAccountRequest)
+            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamStatusError(downstreamStatus)))))
 
           await(service.addSavings(addUkSavingsAccountRequest)) shouldBe Left(ErrorWrapper(correlationId, error))
         }
@@ -87,9 +97,13 @@ class AddUkSavingsAccountServiceSpec extends ServiceSpec {
         ("SERVICE_UNAVAILABLE", InternalError)
       )
 
-      val hipErrors = List(("1011", RuleMaximumSavingsAccountsLimitError))
+      val hipCodeErrors = List(("1011", RuleMaximumSavingsAccountsLimitError))
 
-      (desErrors ++ hipErrors).foreach(args => (serviceError _).tupled(args))
+      val hipStatusErrors = List((CONFLICT, RuleDuplicateAccountNameError))
+
+      (desErrors ++ hipCodeErrors).foreach(args => (serviceCodeError _).tupled(args))
+
+      hipStatusErrors.foreach(args => (serviceStatusError _).tupled(args))
     }
   }
 

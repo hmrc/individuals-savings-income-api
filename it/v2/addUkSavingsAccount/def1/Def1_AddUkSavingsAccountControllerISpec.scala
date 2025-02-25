@@ -142,7 +142,7 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
       }
 
       "downstream service error" when {
-        def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def serviceCodeErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"downstream returns a code $downstreamCode error and status $downstreamStatus" in new Test {
 
             override def setupStubs(): StubMapping = {
@@ -150,6 +150,22 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
               DownstreamStub.onError(DownstreamStub.POST, downstreamUri, downstreamStatus, errorBody(downstreamCode))
+            }
+
+            val response: WSResponse = await(request().post(requestBodyJson))
+            response.status shouldBe expectedStatus
+            response.json shouldBe Json.toJson(expectedBody)
+          }
+        }
+
+        def serviceStatusErrorTest(downstreamStatus: Int, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"downstream returns a status $downstreamStatus error" in new Test {
+
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+              DownstreamStub.onError(DownstreamStub.POST, downstreamUri, downstreamStatus)
             }
 
             val response: WSResponse = await(request().post(requestBodyJson))
@@ -183,9 +199,13 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError)
         )
 
-        val hipErrors = List((UNPROCESSABLE_ENTITY, "1011", BAD_REQUEST, RuleMaximumSavingsAccountsLimitError))
+        val hipCodeErrors = List((UNPROCESSABLE_ENTITY, "1011", BAD_REQUEST, RuleMaximumSavingsAccountsLimitError))
 
-        (desErrors ++ hipErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        val hipStatusErrors = List((CONFLICT, BAD_REQUEST, RuleDuplicateAccountNameError))
+
+        (desErrors ++ hipCodeErrors).foreach(args => (serviceCodeErrorTest _).tupled(args))
+
+        hipStatusErrors.foreach(args => (serviceStatusErrorTest _).tupled(args))
       }
     }
   }

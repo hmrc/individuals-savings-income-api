@@ -19,7 +19,7 @@ package shared.connectors.httpparsers
 import play.api.http.Status._
 import play.api.libs.json.Reads
 import shared.connectors.DownstreamOutcome
-import shared.models.errors.{InternalError, OutboundError}
+import shared.models.errors.{DownstreamStatusError, InternalError, OutboundError}
 import shared.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
@@ -65,10 +65,12 @@ object StandardDownstreamHttpParser extends HttpParser {
     val correlationId = retrieveCorrelationId(response)
 
     if (response.status != successCode.status) {
+      val bodyMessage: String = if (response.body.nonEmpty) s"body:\n${response.body}" else "no body"
+
       logger.warn(
         "[StandardDownstreamHttpParser][read] - " +
-          s"Error response received from downstream with status: ${response.status} and body\n" +
-          s"${response.body} and correlationId: $correlationId when calling $url")
+          s"Error response received from downstream with status: ${response.status}, $bodyMessage, " +
+          s"and correlationId: $correlationId when calling $url")
     }
 
     response.status match {
@@ -79,7 +81,11 @@ object StandardDownstreamHttpParser extends HttpParser {
         successOutcomeFactory(correlationId)
 
       case BAD_REQUEST | NOT_FOUND | FORBIDDEN | CONFLICT | UNPROCESSABLE_ENTITY | GONE =>
-        Left(ResponseWrapper(correlationId, parseErrors(response)))
+        if (response.body.nonEmpty) {
+          Left(ResponseWrapper(correlationId, parseErrors(response)))
+        } else {
+          Left(ResponseWrapper(correlationId, DownstreamStatusError(response.status)))
+        }
 
       case _ =>
         Left(ResponseWrapper(correlationId, OutboundError(InternalError)))

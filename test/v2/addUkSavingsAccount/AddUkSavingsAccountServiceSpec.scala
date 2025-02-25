@@ -16,6 +16,7 @@
 
 package v2.addUkSavingsAccount
 
+import models.errors.RuleOutsideAmendmentWindowError
 import shared.controllers.EndpointLogContext
 import shared.models.domain.Nino
 import shared.models.errors._
@@ -79,6 +80,7 @@ class AddUkSavingsAccountServiceSpec extends ServiceSpec {
         ("INVALID_IDVALUE", NinoFormatError),
         ("MAX_ACCOUNTS_REACHED", RuleMaximumSavingsAccountsLimitError),
         ("ALREADY_EXISTS", RuleDuplicateAccountNameError),
+        ("OUTSIDE_AMENDMENT_WINDOW", RuleOutsideAmendmentWindowError),
         ("INVALID_IDTYPE", InternalError),
         ("INVALID_PAYLOAD", InternalError),
         ("SERVER_ERROR", InternalError),

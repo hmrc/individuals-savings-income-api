@@ -17,6 +17,7 @@
 package v2.addUkSavingsAccount.def1
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import models.errors.RuleOutsideAmendmentWindowError
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
@@ -169,6 +170,7 @@ class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
           (BAD_REQUEST, "INVALID_PAYLOAD", INTERNAL_SERVER_ERROR, InternalError),
           (CONFLICT, "MAX_ACCOUNTS_REACHED", BAD_REQUEST, RuleMaximumSavingsAccountsLimitError),
           (CONFLICT, "ALREADY_EXISTS", BAD_REQUEST, RuleDuplicateAccountNameError),
+          (UNPROCESSABLE_ENTITY, "OUTSIDE_AMENDMENT_WINDOW", BAD_REQUEST, RuleOutsideAmendmentWindowError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError)
         )

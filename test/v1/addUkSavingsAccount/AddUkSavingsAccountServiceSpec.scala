@@ -16,6 +16,7 @@
 
 package v1.addUkSavingsAccount
 
+import models.errors.{RuleDuplicateAccountNameError, RuleMaximumSavingsAccountsLimitError}
 import shared.controllers.EndpointLogContext
 import shared.models.domain.Nino
 import shared.models.errors._
@@ -63,19 +64,30 @@ class AddUkSavingsAccountServiceSpec extends ServiceSpec {
         await(service.addSavings(addUkSavingsAccountRequest)) shouldBe outcome
       }
     }
+
     "map errors according to spec" when {
 
-      def serviceError(desErrorCode: String, error: MtdError): Unit =
-        s"a $desErrorCode error is returned from the service" in new Test {
+      def serviceCodeError(downstreamErrorCode: String, error: MtdError): Unit =
+        s"a code $downstreamErrorCode error is returned from the service" in new Test {
 
           MockAddUkSavingsAccountConnector
             .addSavings(addUkSavingsAccountRequest)
-            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(desErrorCode))))))
+            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
           await(service.addSavings(addUkSavingsAccountRequest)) shouldBe Left(ErrorWrapper(correlationId, error))
         }
 
-      val input = List(
+      def serviceStatusError(downstreamStatus: Int, error: MtdError): Unit =
+        s"a status $downstreamStatus error is returned from the service" in new Test {
+
+          MockAddUkSavingsAccountConnector
+            .addSavings(addUkSavingsAccountRequest)
+            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamStatusError(downstreamStatus)))))
+
+          await(service.addSavings(addUkSavingsAccountRequest)) shouldBe Left(ErrorWrapper(correlationId, error))
+        }
+
+      val desErrors = List(
         ("INVALID_IDVALUE", NinoFormatError),
         ("MAX_ACCOUNTS_REACHED", RuleMaximumSavingsAccountsLimitError),
         ("ALREADY_EXISTS", RuleDuplicateAccountNameError),
@@ -85,8 +97,13 @@ class AddUkSavingsAccountServiceSpec extends ServiceSpec {
         ("SERVICE_UNAVAILABLE", InternalError)
       )
 
-      input.foreach(args => (serviceError _).tupled(args))
+      val hipCodeErrors = List(("1011", RuleMaximumSavingsAccountsLimitError))
 
+      val hipStatusErrors = List((CONFLICT, RuleDuplicateAccountNameError))
+
+      (desErrors ++ hipCodeErrors).foreach(args => (serviceCodeError _).tupled(args))
+
+      hipStatusErrors.foreach(args => (serviceStatusError _).tupled(args))
     }
   }
 

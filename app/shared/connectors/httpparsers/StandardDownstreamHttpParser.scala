@@ -16,11 +16,11 @@
 
 package shared.connectors.httpparsers
 
-import shared.connectors.DownstreamOutcome
-import shared.models.errors.{InternalError, OutboundError}
-import shared.models.outcomes.ResponseWrapper
 import play.api.http.Status._
 import play.api.libs.json.Reads
+import shared.connectors.DownstreamOutcome
+import shared.models.errors.{DownstreamStatusError, InternalError, OutboundError}
+import shared.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 object StandardDownstreamHttpParser extends HttpParser {
@@ -32,6 +32,22 @@ object StandardDownstreamHttpParser extends HttpParser {
     (_: String, url: String, response: HttpResponse) =>
       doRead(url, response) { correlationId =>
         Right(ResponseWrapper(correlationId, ()))
+      }
+
+  def readsEmptyWithHeader[A](headerName: String,
+                              buildResponseFromHeader: String => A
+                             )(implicit successCode: SuccessCode = SuccessCode(CREATED)): HttpReads[DownstreamOutcome[A]] =
+    (_: String, url: String, response: HttpResponse) =>
+      doRead(url, response) { correlationId =>
+        response.header(headerName) match {
+          case Some(headerValue) =>
+            val generatedResponse: A = buildResponseFromHeader(headerValue)
+            Right(ResponseWrapper(correlationId, generatedResponse))
+
+          case None =>
+            logger.warn(s"[StandardDownstreamHttpParser][readsEmptyWithHeader] Missing $headerName in response headers")
+            Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
+        }
       }
 
   implicit def reads[A: Reads](implicit successCode: SuccessCode = SuccessCode(OK)): HttpReads[DownstreamOutcome[A]] =
@@ -49,10 +65,12 @@ object StandardDownstreamHttpParser extends HttpParser {
     val correlationId = retrieveCorrelationId(response)
 
     if (response.status != successCode.status) {
+      val bodyMessage: String = if (response.body.nonEmpty) s"body:\n${response.body}" else "no body"
+
       logger.warn(
         "[StandardDownstreamHttpParser][read] - " +
-          s"Error response received from downstream with status: ${response.status} and body\n" +
-          s"${response.body} and correlationId: $correlationId when calling $url")
+          s"Error response received from downstream with status: ${response.status}, $bodyMessage, " +
+          s"and correlationId: $correlationId when calling $url")
     }
 
     response.status match {
@@ -61,8 +79,16 @@ object StandardDownstreamHttpParser extends HttpParser {
           "[StandardDownstreamHttpParser][read] - " +
             s"Success response received from downstream with correlationId: $correlationId when calling $url")
         successOutcomeFactory(correlationId)
-      case BAD_REQUEST | NOT_FOUND | FORBIDDEN | CONFLICT | UNPROCESSABLE_ENTITY | GONE => Left(ResponseWrapper(correlationId, parseErrors(response)))
-      case _ => Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
+
+      case BAD_REQUEST | NOT_FOUND | FORBIDDEN | CONFLICT | UNPROCESSABLE_ENTITY | GONE =>
+        if (response.body.nonEmpty) {
+          Left(ResponseWrapper(correlationId, parseErrors(response)))
+        } else {
+          Left(ResponseWrapper(correlationId, DownstreamStatusError(response.status)))
+        }
+
+      case _ =>
+        Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
     }
   }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package shared.services
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.JsValue
-import support.WireMockMethods
+import shared.support.WireMockMethods
 
 object DownstreamStub extends WireMockMethods {
 
@@ -32,6 +32,11 @@ object DownstreamStub extends WireMockMethods {
       .thenReturn(status = status)
   }
 
+  def onSuccess(method: HTTPMethod, uri: String, status: Int, headers: Map[String, String]): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = status, headers)
+  }
+
   def onSuccess(method: HTTPMethod, uri: String, queryParams: Map[String, String], status: Int, body: JsValue): StubMapping = {
     when(method = method, uri = uri, queryParams = queryParams)
       .thenReturn(status = status, body)
@@ -40,6 +45,11 @@ object DownstreamStub extends WireMockMethods {
   def onError(method: HTTPMethod, uri: String, errorStatus: Int, errorBody: String): StubMapping = {
     when(method = method, uri = uri)
       .thenReturn(status = errorStatus, errorBody)
+  }
+
+  def onError(method: HTTPMethod, uri: String, errorStatus: Int): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = errorStatus)
   }
 
   def onError(method: HTTPMethod, uri: String, queryParams: Map[String, String], errorStatus: Int, errorBody: String): StubMapping = {

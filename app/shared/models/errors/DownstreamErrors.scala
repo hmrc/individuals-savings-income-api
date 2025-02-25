@@ -28,6 +28,8 @@ object DownstreamErrorCode {
 
 sealed trait DownstreamError
 
+case class DownstreamStatusError(status: Int) extends DownstreamError
+
 case class DownstreamErrors(errors: Seq[DownstreamErrorCode]) extends DownstreamError
 
 object DownstreamErrors {

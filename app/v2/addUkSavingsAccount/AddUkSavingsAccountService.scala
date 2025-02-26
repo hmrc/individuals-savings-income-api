@@ -17,7 +17,6 @@
 package v2.addUkSavingsAccount
 
 import cats.implicits._
-import models.errors.RuleOutsideAmendmentWindowError
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
@@ -39,14 +38,13 @@ class AddUkSavingsAccountService @Inject() (connector: AddUkSavingsAccountConnec
 
   private val downstreamErrorMap: Map[String, MtdError] =
     Map(
-      "INVALID_IDVALUE"          -> NinoFormatError,
-      "MAX_ACCOUNTS_REACHED"     -> RuleMaximumSavingsAccountsLimitError,
-      "ALREADY_EXISTS"           -> RuleDuplicateAccountNameError,
-      "OUTSIDE_AMENDMENT_WINDOW" -> RuleOutsideAmendmentWindowError,
-      "INVALID_IDTYPE"           -> InternalError,
-      "INVALID_PAYLOAD"          -> InternalError,
-      "SERVER_ERROR"             -> InternalError,
-      "SERVICE_UNAVAILABLE"      -> InternalError
+      "INVALID_IDVALUE"      -> NinoFormatError,
+      "MAX_ACCOUNTS_REACHED" -> RuleMaximumSavingsAccountsLimitError,
+      "ALREADY_EXISTS"       -> RuleDuplicateAccountNameError,
+      "INVALID_IDTYPE"       -> InternalError,
+      "INVALID_PAYLOAD"      -> InternalError,
+      "SERVER_ERROR"         -> InternalError,
+      "SERVICE_UNAVAILABLE"  -> InternalError
     )
 
 }

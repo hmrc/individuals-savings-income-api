@@ -13,3 +13,10 @@ post:
   security:
     - User-Restricted:
         - write:self-assessment
+
+put:
+  $ref: "./savings_uk_accounts_update.yaml"
+  summary: Update a UK Savings Account name
+  security:
+    - User-Restricted:
+        - write:self-assessment

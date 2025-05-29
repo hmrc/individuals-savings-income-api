@@ -33,7 +33,7 @@ requestBody:
   content:
     application/json:
       schema:
-        $ref: './schemas/uk_savings_account_add_request.json'
+        $ref: './schemas/ukSavingsAccount/uk_savings_account_add_request.json'
       examples:
         example-1:
           description: Request Example
@@ -49,7 +49,7 @@ responses:
     content:
       application/json:
         schema:
-          $ref: './schemas/uk_savings_account_add_response.json'
+          $ref: './schemas/ukSavingsAccount/uk_savings_account_add_response.json'
         examples:
           example-response:
             description: Example Response

@@ -33,7 +33,7 @@ requestBody:
   content:
     application/json:
       schema:
-        $ref: './schemas/savings_amend_request.json'
+        $ref: './schemas/savingsIncome/savings_amend_request.json'
       examples:
         example-1:
           description: Full Savings Income Amendment

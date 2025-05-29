@@ -32,7 +32,7 @@ requestBody:
   content:
     application/json:
       schema:
-        $ref: './schemas/uk_savings_account_update_request.json'
+        $ref: './schemas/ukSavingsAccount/uk_savings_account_update_request.json'
       examples:
         example-1:
           description: Request Example

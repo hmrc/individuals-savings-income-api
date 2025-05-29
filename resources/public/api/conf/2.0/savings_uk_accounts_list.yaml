@@ -36,7 +36,7 @@ responses:
     content:
       application/json:
         schema:
-          $ref: './schemas/uk_savings_account_list_response.json'
+          $ref: './schemas/ukSavingsAccount/uk_savings_account_list_response.json'
         examples:
           example-response:
             description: Example Response

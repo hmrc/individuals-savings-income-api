@@ -13,12 +13,3 @@ post:
   security:
     - User-Restricted:
         - write:self-assessment
-
-put:
-  # {{#if (enabled 'update-uk-savings-account-name')}}
-  $ref: "./savings_uk_accounts_name_update.yaml"
-  summary: Update a UK Savings Account name
-  security:
-    - User-Restricted:
-        - write:self-assessment
-  # {{/if}}

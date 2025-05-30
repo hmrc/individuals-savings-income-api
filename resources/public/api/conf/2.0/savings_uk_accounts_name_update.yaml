@@ -32,12 +32,12 @@ requestBody:
   content:
     application/json:
       schema:
-        $ref: './schemas/ukSavingsAccount/uk_savings_account_update_request.json'
+        $ref: './schemas/ukSavingsAccount/name_update_request.json'
       examples:
         example-1:
           description: Request Example
           value:
-            $ref: './examples/ukSavingsAccount/uk_savings_account_update_request.json'
+            $ref: './examples/ukSavingsAccount/name_update_request.json'
 
 responses:
   "204":
@@ -45,6 +45,12 @@ responses:
     headers:
       X-CorrelationId:
         $ref: './common/headers.yaml#/components/parameters/correlationId'
+      Deprecation:
+        $ref: "./common/headers.yaml#/components/parameters/deprecationHeader"
+      Sunset:
+        $ref: "./common/headers.yaml#/components/parameters/sunsetHeader"
+      Link:
+        $ref: "./common/headers.yaml#/components/parameters/linkHeader"
 
   "400":
     description: Bad request

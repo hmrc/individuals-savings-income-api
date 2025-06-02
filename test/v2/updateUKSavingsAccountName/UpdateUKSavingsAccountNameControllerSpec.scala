@@ -16,6 +16,8 @@
 
 package v2.updateUKSavingsAccountName
 
+import models.domain.SavingsAccountId
+import models.errors.AccountNameFormatError
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
@@ -25,7 +27,7 @@ import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{requestBodyModel, validRequestJson}
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
-
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class UpdateUKSavingsAccountNameControllerSpec
@@ -67,9 +69,9 @@ class UpdateUKSavingsAccountNameControllerSpec
 
         MockUpdateUKSavingsAccountNameService
           .createAmend(requestData)
-          .returns(Future.successful(Left(ErrorWrapper(correlationId, TaxYearFormatError))))
+          .returns(Future.successful(Left(ErrorWrapper(correlationId, AccountNameFormatError))))
 
-        runErrorTestWithAudit(TaxYearFormatError, Some(validRequestJson))
+        runErrorTestWithAudit(AccountNameFormatError, Some(validRequestJson))
       }
     }
   }

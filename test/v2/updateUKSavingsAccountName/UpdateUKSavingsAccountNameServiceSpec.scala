@@ -16,20 +16,21 @@
 
 package v2.updateUKSavingsAccountName
 
+import models.domain.SavingsAccountId
+import models.errors.SavingsAccountIdFormatError
 import shared.models.domain.Nino
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{ServiceOutcome, ServiceSpec}
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.requestBodyModel
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
-import models.errors.SavingsAccountIdFormatError
 
 import scala.concurrent.Future
 
 class UpdateUKSavingsAccountNameServiceSpec extends ServiceSpec {
 
   private val nino: Nino                 = Nino("AA123456A")
-  val savingsAccountId: String            = "ABCDE0123456789"
+  private val incomeSourceId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
   "UpdateUKSavingsAccountNameService" when {
     "update" should {
@@ -75,7 +76,7 @@ class UpdateUKSavingsAccountNameServiceSpec extends ServiceSpec {
 
     val request: UpdateUKSavingsAccountNameRequest = UpdateUKSavingsAccountNameRequest(
       nino = nino,
-      SavingsAccountId(incomeSourceId),
+      incomeSourceId,
       body = requestBodyModel
     )
 

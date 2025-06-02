@@ -17,6 +17,7 @@
 package v2.updateUKSavingsAccountName
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import models.errors.{AccountNameFormatError, SavingsAccountIdFormatError}
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
@@ -27,14 +28,6 @@ import shared.support.IntegrationBaseSpec
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.validRequestJson
 
 class UpdateUKSavingsAccountNameControllerISpec extends IntegrationBaseSpec {
-
-//  val validRequestJson: JsValue = Json.parse(
-//    """
-//      |{
-//      |   "accountName": "Shares savings account"
-//      |}
-//      """.stripMargin
-//  )
 
   "calling the 'update uk savings account name' endpoint" should {
     "return a 204 status code" when {
@@ -128,12 +121,14 @@ class UpdateUKSavingsAccountNameControllerISpec extends IntegrationBaseSpec {
           s"""
              |{
              |    "origin": "HIP",
-             |    "response": [
+             |    "response": {
+             |        "failures": [
              |            {
              |                "type": "${`type`}",
              |                "reason": "downstream message"
              |            }
-             |    ]
+             |        ]
+             |    }
              |}
        """.stripMargin
 

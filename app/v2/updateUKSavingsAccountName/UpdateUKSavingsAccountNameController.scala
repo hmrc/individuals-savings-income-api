@@ -56,7 +56,7 @@ class UpdateUKSavingsAccountNameController @Inject()(val authService: Enrolments
         .withService(service.update)
         .withAuditing(AuditHandler(
           auditService = auditService,
-          auditType = "updateUKSavingsAccountName",
+          auditType = "UpdateUKSavingsAccountName",
           transactionName = "update-uk-savings-account-name",
           apiVersion = Version(request),
           params = Map("nino" -> nino, "savingsAccountId" -> savingsAccountId),

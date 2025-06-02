@@ -21,7 +21,7 @@ import models.domain.SavingsAccountId
 import shared.models.domain.Nino
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
-import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.requestBodyModel
+import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{requestBodyModel, requestDownstreamBodyModel}
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
 import scala.concurrent.Future
@@ -38,7 +38,7 @@ class UpdateUKSavingsAccountNameConnectorSpec extends ConnectorSpec {
 
         willPut(
           url = s"$baseUrl/itsd/income-sources/$nino/non-business/$incomeSourceId",
-          body = requestBodyModel
+          body = requestDownstreamBodyModel
         ).returns(Future.successful(outcome))
 
         val result: DownstreamOutcome[Unit] = await(connector.update(request))
@@ -55,7 +55,7 @@ class UpdateUKSavingsAccountNameConnectorSpec extends ConnectorSpec {
 
         willPut(
           url = s"$baseUrl/itsd/income-sources/$nino/non-business/$incomeSourceId",
-          body = requestBodyModel
+          body = requestDownstreamBodyModel
         ).returns(Future.successful(errorOutcome))
 
         val result: DownstreamOutcome[Unit] = await(connector.update(request))

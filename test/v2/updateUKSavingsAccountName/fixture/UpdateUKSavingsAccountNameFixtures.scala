@@ -17,7 +17,7 @@
 package v2.updateUKSavingsAccountName.fixture
 
 import play.api.libs.json.{JsValue, Json}
-import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequestBody
+import v2.updateUKSavingsAccountName.model.request.{UpdateUKSavingsAccountNameDownstreamRequestBody, UpdateUKSavingsAccountNameRequestBody}
 
 object UpdateUKSavingsAccountNameFixtures {
 
@@ -25,6 +25,12 @@ object UpdateUKSavingsAccountNameFixtures {
     UpdateUKSavingsAccountNameRequestBody(
       accountName = "Shares savings account"
     )
+
+  val requestDownstreamBodyModel: UpdateUKSavingsAccountNameDownstreamRequestBody =
+    UpdateUKSavingsAccountNameDownstreamRequestBody(
+      incomeSourceName = "Shares savings account"
+    )
+
 
   val validRequestJson: JsValue = Json.parse(
     """

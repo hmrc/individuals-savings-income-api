@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.updateUKSavingsAccountName.models
+package v2.updateUKSavingsAccountName.model
 
 import play.api.libs.json.{JsError, JsObject, Json}
 import shared.utils.UnitSpec

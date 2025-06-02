@@ -16,6 +16,8 @@
 
 package v2.updateUKSavingsAccountName
 
+import models.domain.SavingsAccountId
+import models.errors.SavingsAccountIdFormatError
 import play.api.libs.json._
 import shared.models.domain.Nino
 import shared.models.errors._
@@ -29,9 +31,10 @@ class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorVal
   private implicit val correlationId: String = "1234"
 
   private val validNino: String         = "AA123456A"
-  val validSavingsAccountId: String            = "ABCDE0123456789"
+  val validSavingsAccountId: String            = "SAVKB2UVwUTBQGJ"
 
   private val parsedNino: Nino                 = Nino(validNino)
+  private val incomeSourceId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
   private def validator(nino: String,
                         savingsAccountId: String,
@@ -44,7 +47,7 @@ class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorVal
         val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
           validator(validNino, validSavingsAccountId, validRequestJson).validateAndWrapResult()
 
-        result shouldBe Right(UpdateUKSavingsAccountNameRequest(parsedNino, savingsAccountId, requestBodyModel))
+        result shouldBe Right(UpdateUKSavingsAccountNameRequest(parsedNino, incomeSourceId, requestBodyModel))
       }
     }
 
@@ -65,33 +68,20 @@ class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorVal
       }
     }
 
+    "passed an empty body" in {
+      val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
+        validator(validNino, validSavingsAccountId, JsObject.empty).validateAndWrapResult()
 
-      "passed a body with a missing mandatory field" in {
-        val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
-          validator(validNino, validSavingsAccountId, validRequestJson.removeProperty("/accountName")).validateAndWrapResult()
-
-        result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError.withPath("/accountName")))
-      }
-
-      validRequestJson.as[JsObject].fields.foreach { case (field, _) =>
-        s"passed a body with an incorrect type for field $field" in {
-          val invalidJson: JsValue = validRequestJson.update(s"/$field", JsObject.empty)
-
-          val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
-            validator(validNino, validSavingsAccountId, invalidJson).validateAndWrapResult()
-
-          result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError.withPath(s"/$field")))
-        }
-      }
+      result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError))
     }
-
+    }
 
     "return multiple errors" when {
       "request supplied has multiple errors" in {
         val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
           validator("A12344A", "GWD", validRequestJson).validateAndWrapResult()
 
-        result shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(List(NinoFormatError, TaxYearFormatError))))
+        result shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(List(NinoFormatError, SavingsAccountIdFormatError))))
       }
     }
 

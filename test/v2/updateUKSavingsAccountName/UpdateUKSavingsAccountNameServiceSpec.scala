@@ -30,7 +30,7 @@ import scala.concurrent.Future
 class UpdateUKSavingsAccountNameServiceSpec extends ServiceSpec {
 
   private val nino: Nino                 = Nino("AA123456A")
-  private val incomeSourceId = SavingsAccountId("SAVKB2UVwUTBQGJ")
+  private val savingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
   "UpdateUKSavingsAccountNameService" when {
     "update" should {
@@ -76,7 +76,7 @@ class UpdateUKSavingsAccountNameServiceSpec extends ServiceSpec {
 
     val request: UpdateUKSavingsAccountNameRequest = UpdateUKSavingsAccountNameRequest(
       nino = nino,
-      incomeSourceId,
+      savingsAccountId = savingsAccountId,
       body = requestBodyModel
     )
 

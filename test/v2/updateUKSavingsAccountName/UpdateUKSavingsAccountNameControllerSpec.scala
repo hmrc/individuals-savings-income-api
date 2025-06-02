@@ -36,7 +36,7 @@ class UpdateUKSavingsAccountNameControllerSpec
     with MockUpdateUKSavingsAccountNameService
     with MockUpdateUKSavingsAccountNameValidatorFactory {
 
-  val savingsAccountId: String            = "ABCDE0123456789"
+  val savingsAccountId: String            = "SAVKB2UVwUTBQGJ"
 
   private val requestData: UpdateUKSavingsAccountNameRequest = UpdateUKSavingsAccountNameRequest(
     nino = parsedNino,

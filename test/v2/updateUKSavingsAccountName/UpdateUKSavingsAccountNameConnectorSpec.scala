@@ -29,7 +29,7 @@ import scala.concurrent.Future
 class UpdateUKSavingsAccountNameConnectorSpec extends ConnectorSpec {
 
   private val nino: Nino                 = Nino("AA123456A")
-  val incomeSourceId: String = "SAVKB2UVwUTBQGJ"
+  val savingsAccountId: SavingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
   "UpdateUKSavingsAccountNameConnector" should {
     "return a 204 (NO_CONTENT) status for a success scenario" when {
@@ -37,7 +37,7 @@ class UpdateUKSavingsAccountNameConnectorSpec extends ConnectorSpec {
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         willPut(
-          url = s"$baseUrl/itsd/income-sources/$nino/non-business/$incomeSourceId",
+          url = s"$baseUrl/itsd/income-sources/$nino/non-business/$savingsAccountId",
           body = requestDownstreamBodyModel
         ).returns(Future.successful(outcome))
 
@@ -54,7 +54,7 @@ class UpdateUKSavingsAccountNameConnectorSpec extends ConnectorSpec {
           Left(ResponseWrapper(correlationId, downstreamErrorResponse))
 
         willPut(
-          url = s"$baseUrl/itsd/income-sources/$nino/non-business/$incomeSourceId",
+          url = s"$baseUrl/itsd/income-sources/$nino/non-business/$savingsAccountId",
           body = requestDownstreamBodyModel
         ).returns(Future.successful(errorOutcome))
 
@@ -72,7 +72,7 @@ class UpdateUKSavingsAccountNameConnectorSpec extends ConnectorSpec {
 
     protected val request: UpdateUKSavingsAccountNameRequest = UpdateUKSavingsAccountNameRequest(
       nino = nino,
-      SavingsAccountId(incomeSourceId),
+      savingsAccountId = savingsAccountId,
       body = requestBodyModel
     )
   }

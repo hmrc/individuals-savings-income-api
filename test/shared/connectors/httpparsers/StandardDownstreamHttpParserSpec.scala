@@ -331,7 +331,7 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
       }
     }
 
-    "receiving a response with multiple HIP errors containing types in response array" should {
+    "receiving a response with multiple HIP errors containing types in failure array" should {
       "return a Left ResponseWrapper containing the extracted types" in {
         val httpResponse = HttpResponse(
           BAD_REQUEST, multipleFailureErrorTypesJson, Map("CorrelationId" -> List(correlationId))

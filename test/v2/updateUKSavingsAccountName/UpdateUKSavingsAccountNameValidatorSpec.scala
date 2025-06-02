@@ -34,7 +34,7 @@ class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorVal
   val validSavingsAccountId: String            = "SAVKB2UVwUTBQGJ"
 
   private val parsedNino: Nino                 = Nino(validNino)
-  private val incomeSourceId = SavingsAccountId("SAVKB2UVwUTBQGJ")
+  private val savingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
   private def validator(nino: String,
                         savingsAccountId: String,
@@ -47,7 +47,7 @@ class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorVal
         val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
           validator(validNino, validSavingsAccountId, validRequestJson).validateAndWrapResult()
 
-        result shouldBe Right(UpdateUKSavingsAccountNameRequest(parsedNino, incomeSourceId, requestBodyModel))
+        result shouldBe Right(UpdateUKSavingsAccountNameRequest(parsedNino, savingsAccountId, requestBodyModel))
       }
     }
 

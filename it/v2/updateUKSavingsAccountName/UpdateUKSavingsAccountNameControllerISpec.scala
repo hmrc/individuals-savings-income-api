@@ -25,7 +25,7 @@ import play.api.test.Helpers.{ACCEPT, AUTHORIZATION, NO_CONTENT}
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.validRequestJson
+import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{nonValidRequestBodyJson, validRequestJson}
 
 class UpdateUKSavingsAccountNameControllerISpec extends IntegrationBaseSpec {
 
@@ -47,16 +47,6 @@ class UpdateUKSavingsAccountNameControllerISpec extends IntegrationBaseSpec {
     }
 
     "return error according to spec" when {
-      val emptyRequestJson: JsValue = JsObject.empty
-
-      val nonValidRequestBodyJson: JsValue = Json.parse(
-        """
-          |{
-          |   "accountName": "Shares savings account!"
-          |}
-        """.stripMargin
-      )
-
       "validation error" when {
         def validationErrorTest(requestNino: String,
                                 requestSavingsAccountId: String,
@@ -78,12 +68,11 @@ class UpdateUKSavingsAccountNameControllerISpec extends IntegrationBaseSpec {
             response.status shouldBe expectedStatus
           }
         }
-
         val input = Seq(
           ("AA1123A", "ABCDE1234567890", validRequestJson, BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "ABCDE1234567890", emptyRequestJson, BAD_REQUEST, RuleIncorrectOrEmptyBodyError),
+          ("AA123456A", "ABCDE1234567890", JsObject.empty, BAD_REQUEST, RuleIncorrectOrEmptyBodyError),
           ("AA123456A", "BAD_ACCT_ID", validRequestJson, BAD_REQUEST, SavingsAccountIdFormatError),
-          ("AA123456A", "ABCDE1234567890", nonValidRequestBodyJson, BAD_REQUEST, AccountNameFormatError)
+          ("AA123456A", "ABCDE1234567890", nonValidRequestBodyJson, BAD_REQUEST, AccountNameFormatError.withPath("/accountName"))
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))

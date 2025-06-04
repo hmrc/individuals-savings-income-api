@@ -23,7 +23,7 @@ import shared.models.domain.Nino
 import shared.models.errors._
 import shared.models.utils.JsonErrorValidators
 import shared.utils.UnitSpec
-import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{invalidRequest, nonValidRequestBodyJson, requestBodyModel, validRequestJson}
+import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{nonValidRequestBodyJson, requestBodyModel, validRequestJson}
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
 class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorValidators {
@@ -84,7 +84,7 @@ class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorVal
       }
 
       "passed a body with an incorrect type for field accountName" in {
-        val invalidJson: JsValue = validRequestJson.update(s"/accountName", invalidRequest)
+        val invalidJson: JsValue = validRequestJson.update("/accountName", JsBoolean(true))
         val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
           validator(validNino, validSavingsAccountId, invalidJson).validateAndWrapResult()
 

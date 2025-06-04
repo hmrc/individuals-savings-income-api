@@ -36,6 +36,6 @@ class UpdateUKSavingsAccountNameService @Inject()(connector: UpdateUKSavingsAcco
     "1215" -> NinoFormatError,
     "1007" -> SavingsAccountIdFormatError,
     "1000" -> InternalError,
-    "5010" -> NotFoundError,
+    "5010" -> NotFoundError
   )
 }

@@ -42,12 +42,4 @@ object UpdateUKSavingsAccountNameFixtures {
         """.stripMargin
   )
 
-  val invalidRequest: JsValue = Json.parse(
-    """
-      |{
-      |   "accountName": "Name@2"
-      |}
-      """.stripMargin
-  )
-
 }

@@ -23,7 +23,7 @@ import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameReq
 
 class UpdateUKSavingsAccountNameRequestBodySpec extends UnitSpec {
 
-  val json: JsValue = Json.parse(
+  val downstreamJson: JsValue = Json.parse(
     """
       |{
       |   "incomeSourceName": "Shares savings account"
@@ -48,7 +48,7 @@ class UpdateUKSavingsAccountNameRequestBodySpec extends UnitSpec {
 
     "written to JSON" should {
       "produce the expected JSON" in {
-        Json.toJson(requestBodyModel) shouldBe json
+        Json.toJson(requestBodyModel) shouldBe downstreamJson
       }
     }
   }

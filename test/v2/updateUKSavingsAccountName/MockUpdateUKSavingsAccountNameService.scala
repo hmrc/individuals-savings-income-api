@@ -30,7 +30,7 @@ trait MockUpdateUKSavingsAccountNameService extends MockFactory {
 
   object MockUpdateUKSavingsAccountNameService {
 
-    def createAmend(requestData: UpdateUKSavingsAccountNameRequest): CallHandler[Future[ServiceOutcome[Unit]]] = {
+    def update(requestData: UpdateUKSavingsAccountNameRequest): CallHandler[Future[ServiceOutcome[Unit]]] = {
       (
         mockUpdateUKSavingsAccountNameService
           .update(_: UpdateUKSavingsAccountNameRequest)(

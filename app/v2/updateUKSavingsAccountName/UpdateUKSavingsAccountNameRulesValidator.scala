@@ -17,27 +17,20 @@
 package v2.updateUKSavingsAccountName
 
 import cats.data.Validated
-import models.errors.AccountNameFormatError
+import resolvers.ResolveAccountName
 import shared.controllers.validators.RulesValidator
-import shared.controllers.validators.resolvers.ResolveStringPattern
 import shared.models.errors._
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
-import scala.util.matching.Regex
-
-
 object UpdateUKSavingsAccountNameRulesValidator extends RulesValidator[UpdateUKSavingsAccountNameRequest] {
-
-  private val accountNameRegex: Regex = "^[A-Za-z0-9 &'()*,-./@£]{1,32}$".r
-
 
   override def validateBusinessRules(parsed: UpdateUKSavingsAccountNameRequest): Validated[Seq[MtdError], UpdateUKSavingsAccountNameRequest] = {
     import parsed.body._
 
-      validateAccountName(accountName).onSuccess(parsed)
+    validateAccountName(accountName).onSuccess(parsed)
   }
 
   private def validateAccountName(accountName: String): Validated[Seq[MtdError], String] =
-      ResolveStringPattern(accountNameRegex, AccountNameFormatError)(accountName)
+    ResolveAccountName(accountName, "/accountName")
 
 }

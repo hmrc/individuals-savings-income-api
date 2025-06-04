@@ -20,6 +20,9 @@ import play.api.libs.json.JsValue
 import shared.controllers.validators.Validator
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
+import javax.inject.Singleton
+
+@Singleton
 class UpdateUKSavingsAccountNameValidatorFactory {
 
   def validator(nino: String, savingsAccountId: String, body: JsValue): Validator[UpdateUKSavingsAccountNameRequest] =

@@ -16,12 +16,20 @@
 
 package v2.updateUKSavingsAccountName.model
 
-import play.api.libs.json.{JsError, JsObject, Json}
+import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 import shared.utils.UnitSpec
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{requestBodyModel, validRequestJson}
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequestBody
 
 class UpdateUKSavingsAccountNameRequestBodySpec extends UnitSpec {
+
+  val json: JsValue = Json.parse(
+    """
+      |{
+      |   "incomeSourceName": "Shares savings account"
+      |}
+      """.stripMargin
+  )
 
   "UpdateUKSavingsAccountNameRequestBody" when {
     "read from valid JSON" should {
@@ -40,7 +48,7 @@ class UpdateUKSavingsAccountNameRequestBodySpec extends UnitSpec {
 
     "written to JSON" should {
       "produce the expected JSON" in {
-        Json.toJson(requestBodyModel) shouldBe validRequestJson
+        Json.toJson(requestBodyModel) shouldBe json
       }
     }
   }

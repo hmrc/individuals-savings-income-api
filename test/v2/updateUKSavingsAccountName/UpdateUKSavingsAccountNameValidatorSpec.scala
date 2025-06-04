@@ -17,28 +17,26 @@
 package v2.updateUKSavingsAccountName
 
 import models.domain.SavingsAccountId
-import models.errors.SavingsAccountIdFormatError
+import models.errors.{AccountNameFormatError, SavingsAccountIdFormatError}
 import play.api.libs.json._
 import shared.models.domain.Nino
 import shared.models.errors._
 import shared.models.utils.JsonErrorValidators
 import shared.utils.UnitSpec
-import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{requestBodyModel, validRequestJson}
+import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{invalidRequest, nonValidRequestBodyJson, requestBodyModel, validRequestJson}
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
 class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorValidators {
 
   private implicit val correlationId: String = "1234"
 
-  private val validNino: String         = "AA123456A"
-  val validSavingsAccountId: String            = "SAVKB2UVwUTBQGJ"
+  private val validNino: String     = "AA123456A"
+  val validSavingsAccountId: String = "SAVKB2UVwUTBQGJ"
 
-  private val parsedNino: Nino                 = Nino(validNino)
+  private val parsedNino: Nino = Nino(validNino)
   private val savingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
-  private def validator(nino: String,
-                        savingsAccountId: String,
-                        body: JsValue): UpdateUKSavingsAccountNameValidator =
+  private def validator(nino: String, savingsAccountId: String, body: JsValue): UpdateUKSavingsAccountNameValidator =
     new UpdateUKSavingsAccountNameValidator(nino, savingsAccountId, body)
 
   "running a validation" should {
@@ -68,12 +66,31 @@ class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorVal
       }
     }
 
-    "passed an empty body" in {
-      val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
-        validator(validNino, validSavingsAccountId, JsObject.empty).validateAndWrapResult()
+    "return AccountNameFormatError error" when {
+      "an invalid account name is supplied in the request body" in {
+        val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
+          validator(validNino, validSavingsAccountId, nonValidRequestBodyJson).validateAndWrapResult()
 
-      result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError))
+        result shouldBe Left(ErrorWrapper(correlationId, AccountNameFormatError.withPath("/accountName")))
+      }
     }
+
+    "return RuleIncorrectOrEmptyBodyError error" when {
+      "passed an empty body" in {
+        val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
+          validator(validNino, validSavingsAccountId, JsObject.empty).validateAndWrapResult()
+
+        result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError))
+      }
+
+      "passed a body with an incorrect type for field accountName" in {
+        val invalidJson: JsValue = validRequestJson.update(s"/accountName", invalidRequest)
+        val result: Either[ErrorWrapper, UpdateUKSavingsAccountNameRequest] =
+          validator(validNino, validSavingsAccountId, invalidJson).validateAndWrapResult()
+
+        result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError.withPath("/accountName")))
+      }
+
     }
 
     "return multiple errors" when {
@@ -85,5 +102,6 @@ class UpdateUKSavingsAccountNameValidatorSpec extends UnitSpec with JsonErrorVal
       }
     }
 
+  }
 
 }

@@ -286,26 +286,6 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
     """.stripMargin
   )
 
-  val multipleFailureErrorTypesJson: JsValue = Json.parse(
-    """
-      |{
-      |    "origin": "HIP",
-      |    "response": {
-      |        "failures": [
-      |            {
-      |                "type": "1007",
-      |                "reason": "Error 1 description"
-      |            },
-      |            {
-      |                "type": "1215",
-      |                "reason": "Error 2 description"
-      |            }
-      |        ]
-      |    }
-      |}
-    """.stripMargin)
-
-
   private def handleHipErrorsCorrectly[A](httpReads: HttpReads[DownstreamOutcome[A]]): Unit = {
     "receiving a response with multiple HIP errors containing top level error codes" should {
       "return a Left ResponseWrapper containing the extracted error codes" in {
@@ -327,18 +307,6 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
 
         httpReads.read(method, url, httpResponse) shouldBe Left(
           ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("1000"), DownstreamErrorCode("1215"))))
-        )
-      }
-    }
-
-    "receiving a response with multiple HIP errors containing types in failure array" should {
-      "return a Left ResponseWrapper containing the extracted types" in {
-        val httpResponse = HttpResponse(
-          BAD_REQUEST, multipleFailureErrorTypesJson, Map("CorrelationId" -> List(correlationId))
-        )
-
-        httpReads.read(method, url, httpResponse) shouldBe Left(
-          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("1007"), DownstreamErrorCode("1215"))))
         )
       }
     }

@@ -17,7 +17,7 @@
 package v2.updateUKSavingsAccountName
 
 import models.domain.SavingsAccountId
-import models.errors.AccountNameFormatError
+import models.errors.SavingsAccountIdFormatError
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
@@ -27,6 +27,7 @@ import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{requestBodyModel, validRequestJson}
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -50,7 +51,7 @@ class UpdateUKSavingsAccountNameControllerSpec
         willUseValidator(returningSuccess(requestData))
 
         MockUpdateUKSavingsAccountNameService
-          .createAmend(requestData)
+          .update(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
 
         runOkTestWithAudit(expectedStatus = NO_CONTENT, maybeAuditRequestBody = Some(validRequestJson))
@@ -68,10 +69,10 @@ class UpdateUKSavingsAccountNameControllerSpec
         willUseValidator(returningSuccess(requestData))
 
         MockUpdateUKSavingsAccountNameService
-          .createAmend(requestData)
-          .returns(Future.successful(Left(ErrorWrapper(correlationId, AccountNameFormatError))))
+          .update(requestData)
+          .returns(Future.successful(Left(ErrorWrapper(correlationId, SavingsAccountIdFormatError))))
 
-        runErrorTestWithAudit(AccountNameFormatError, Some(validRequestJson))
+        runErrorTestWithAudit(SavingsAccountIdFormatError, Some(validRequestJson))
       }
     }
   }
@@ -94,7 +95,7 @@ class UpdateUKSavingsAccountNameControllerSpec
 
     MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    protected def callController(): Future[Result] = controller.updateUKSavingsAccountName(validNino, savingsAccountId)(fakePostRequest(validRequestJson))
+    protected def callController(): Future[Result] = controller.updateUKSavingsAccountName(validNino, savingsAccountId)(fakeRequest.withBody(validRequestJson))
 
     def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(

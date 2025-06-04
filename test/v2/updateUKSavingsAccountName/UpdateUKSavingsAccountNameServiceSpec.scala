@@ -38,7 +38,7 @@ class UpdateUKSavingsAccountNameServiceSpec extends ServiceSpec {
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         MockUpdateUKSavingsAccountNameConnector
-          .createAmend(request)
+          .update(request)
           .returns(Future.successful(outcome))
 
         val result: ServiceOutcome[Unit] = await(service.update(request))
@@ -51,7 +51,7 @@ class UpdateUKSavingsAccountNameServiceSpec extends ServiceSpec {
           s"a $downstreamErrorCode error is returned from the service" in new Test {
 
             MockUpdateUKSavingsAccountNameConnector
-              .createAmend(request)
+              .update(request)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
             val result: ServiceOutcome[Unit] = await(service.update(request))

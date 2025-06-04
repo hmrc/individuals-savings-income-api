@@ -20,7 +20,7 @@ import shared.config.SharedAppConfig
 import shared.connectors.DownstreamUri.HipUri
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v2.updateUKSavingsAccountName.model.request.{UpdateUKSavingsAccountNameDownstreamRequestBody, UpdateUKSavingsAccountNameRequest}
+import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -34,13 +34,11 @@ class UpdateUKSavingsAccountNameConnector @Inject() (val http: HttpClient, val a
                                                                            hc: HeaderCarrier,
                                                                            ec: ExecutionContext,
                                                                            correlationId: String): Future[DownstreamOutcome[Unit]] = {
-
-    val downstreamBody = UpdateUKSavingsAccountNameDownstreamRequestBody(request.body.accountName)
     import request._
 
     val downstreamUri: DownstreamUri[Unit] =
       HipUri(s"itsd/income-sources/$nino/non-business/$savingsAccountId")
-    put(body = downstreamBody, uri = downstreamUri)
+    put(body = request.body, uri = downstreamUri)
   }
 
 }

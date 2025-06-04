@@ -31,7 +31,7 @@ trait MockUpdateUKSavingsAccountNameConnector extends MockFactory {
 
   object MockUpdateUKSavingsAccountNameConnector {
 
-    def createAmend(request: UpdateUKSavingsAccountNameRequest): CallHandler[Future[DownstreamOutcome[Unit]]] =
+    def update(request: UpdateUKSavingsAccountNameRequest): CallHandler[Future[DownstreamOutcome[Unit]]] =
       (mockUpdateUKSavingsAccountNameConnector
         .update(_: UpdateUKSavingsAccountNameRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)

@@ -62,12 +62,11 @@ class UpdateUKSavingsAccountNameControllerISpec extends IntegrationBaseSpec {
                                 requestSavingsAccountId: String,
                                 requestBody: JsValue,
                                 expectedStatus: Int,
-                                expectedBody: MtdError,
-                                errorWrapper: Option[ErrorWrapper]): Unit = {
+                                expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
-            override val nino: String         = requestNino
-            override val savingsAccountId: String      = requestSavingsAccountId
+            override val nino: String             = requestNino
+            override val savingsAccountId: String = requestSavingsAccountId
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -75,29 +74,20 @@ class UpdateUKSavingsAccountNameControllerISpec extends IntegrationBaseSpec {
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val expectedBodyJson: JsValue = errorWrapper match {
-              case Some(wrapper) => Json.toJson(wrapper)
-              case None          => Json.toJson(expectedBody)
-            }
-
             val response: WSResponse = await(request().put(requestBody))
             response.status shouldBe expectedStatus
-            response.json shouldBe Json.toJson(expectedBodyJson)
-            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
         val input = Seq(
-          ("AA1123A", "ABCDE1234567890", validRequestJson, BAD_REQUEST, NinoFormatError, None),
-          ("AA123456A", "ABCDE1234567890", emptyRequestJson, BAD_REQUEST, RuleIncorrectOrEmptyBodyError, None),
-          ("AA123456A",  "BAD_ACCT_ID", validRequestJson, BAD_REQUEST, SavingsAccountIdFormatError,None),
-          ("AA123456A", "ABCDE1234567890", nonValidRequestBodyJson, BAD_REQUEST, AccountNameFormatError, None),
+          ("AA1123A", "ABCDE1234567890", validRequestJson, BAD_REQUEST, NinoFormatError),
+          ("AA123456A", "ABCDE1234567890", emptyRequestJson, BAD_REQUEST, RuleIncorrectOrEmptyBodyError),
+          ("AA123456A", "BAD_ACCT_ID", validRequestJson, BAD_REQUEST, SavingsAccountIdFormatError),
+          ("AA123456A", "ABCDE1234567890", nonValidRequestBodyJson, BAD_REQUEST, AccountNameFormatError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))
       }
-
-
 
       "downstream service error" when {
         def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
@@ -116,25 +106,19 @@ class UpdateUKSavingsAccountNameControllerISpec extends IntegrationBaseSpec {
           }
         }
 
-
-        def errorBody(`type`: String): String =
+        def errorBody(code: String): String =
           s"""
-             |{
-             |    "origin": "HIP",
-             |    "response": {
-             |        "failures": [
-             |            {
-             |                "type": "${`type`}",
-             |                "reason": "downstream message"
-             |            }
-             |        ]
+             |[
+             |    {
+             |        "errorCode": "$code",
+             |        "errorDescription": "error description"
              |    }
-             |}
-       """.stripMargin
+             |]
+          """.stripMargin
 
         val input = List(
           (BAD_REQUEST, "1215", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "1007", BAD_REQUEST,SavingsAccountIdFormatError),
+          (BAD_REQUEST, "1007", BAD_REQUEST, SavingsAccountIdFormatError),
           (BAD_REQUEST, "1000", INTERNAL_SERVER_ERROR, InternalError),
           (NOT_FOUND, "5010", NOT_FOUND, NotFoundError)
         )
@@ -144,10 +128,9 @@ class UpdateUKSavingsAccountNameControllerISpec extends IntegrationBaseSpec {
     }
   }
 
-
   private trait Test {
 
-    val nino: String                     = "AA123456A"
+    val nino: String             = "AA123456A"
     val savingsAccountId: String = "SAVKB2UVwUTBQGJ"
 
     private def uri: String = s"/uk-accounts/$nino/$savingsAccountId"

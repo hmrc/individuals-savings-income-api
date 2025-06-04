@@ -71,7 +71,6 @@ trait HttpParser extends Logging {
       response.validateJson(multipleTopLevelErrorCodesReads).map(errs => DownstreamErrors(errs))
     lazy val multipleErrorCodesInResponse =
       response.validateJson(multipleErrorCodesInResponseReads).map(errs => DownstreamErrors(errs))
-
     lazy val bvrErrors =
       response.validateJson(bvrErrorReads).map(errs => OutboundError(BVRError, Some(errs.map(_.toMtd(BVRError.httpStatus)))))
 

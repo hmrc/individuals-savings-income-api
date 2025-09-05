@@ -23,7 +23,7 @@ import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
-import v1.createAmendUkSavingsAnnualSummary.def1.model.request._
+import v1.createAmendUkSavingsAnnualSummary.def1.model.request.*
 
 import java.net.URL
 import scala.concurrent.Future
@@ -84,7 +84,7 @@ class CreateAmendUkSavingsAnnualSummaryConnectorSpec extends ConnectorSpec with 
   }
 
   trait Test {
-    _: ConnectorTest =>
+    self: ConnectorTest =>
 
     def taxYear: TaxYear
 

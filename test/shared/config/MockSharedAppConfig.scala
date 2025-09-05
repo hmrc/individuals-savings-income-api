@@ -27,9 +27,14 @@ trait MockSharedAppConfig extends TestSuite with MockFactory {
 
   implicit val mockSharedAppConfig: SharedAppConfig = mock[SharedAppConfig]
 
-  object MockedSharedAppConfig {
+    object MockedSharedAppConfig {
     // MTD ID Lookup Config
     def mtdIdBaseUrl: CallHandler0[String] = (() => mockSharedAppConfig.mtdIdBaseUrl: String).expects()
+
+    def minimumPermittedTaxYear(year: Int): CallHandler0[Int] =
+      (() => mockSharedAppConfig.minimumPermittedTaxYear: Int).expects().returning(year).anyNumberOfTimes()
+    def ukSavingsAccountAnnualSummaryMinimumTaxYear(year: Int): CallHandler0[Int] =
+      (() => mockSharedAppConfig.ukSavingsAccountAnnualSummaryMinimumTaxYear: Int).expects().returning(year).anyNumberOfTimes()
 
     def desDownstreamConfig: CallHandler0[DownstreamConfig]    = (() => mockSharedAppConfig.desDownstreamConfig: DownstreamConfig).expects()
     def ifsDownstreamConfig: CallHandler0[DownstreamConfig]    = (() => mockSharedAppConfig.ifsDownstreamConfig: DownstreamConfig).expects()
@@ -63,6 +68,15 @@ trait MockSharedAppConfig extends TestSuite with MockFactory {
 
     def allowRequestCannotBeFulfilledHeader(version: Version): CallHandler[Boolean] =
       (mockSharedAppConfig.allowRequestCannotBeFulfilledHeader: Version => Boolean).expects(version)
+
+  }
+  
+  trait SetupConfig {
+    def setMinimumPermittedTaxYear(): CallHandler0[Int] = MockedSharedAppConfig.minimumPermittedTaxYear(2020)
+    setMinimumPermittedTaxYear()
+    
+    def setUkSavingsAccountAnnualSummaryMinimumTaxYear(): CallHandler0[Int] = MockedSharedAppConfig.ukSavingsAccountAnnualSummaryMinimumTaxYear(2018)
+    setUkSavingsAccountAnnualSummaryMinimumTaxYear()
 
   }
 

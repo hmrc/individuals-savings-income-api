@@ -19,7 +19,7 @@ package v2.updateUKSavingsAccountName
 import models.domain.SavingsAccountId
 import models.errors.SavingsAccountIdFormatError
 import shared.models.domain.Nino
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{ServiceOutcome, ServiceSpec}
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.requestBodyModel
@@ -67,7 +67,7 @@ class UpdateUKSavingsAccountNameServiceSpec extends ServiceSpec {
 
         )
 
-        errors.foreach(args => (serviceError _).tupled(args))
+        errors.foreach(args => serviceError.tupled(args))
       }
     }
   }

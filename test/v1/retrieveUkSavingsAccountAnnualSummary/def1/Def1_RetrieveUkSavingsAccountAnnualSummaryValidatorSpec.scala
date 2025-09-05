@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,10 @@ package v1.retrieveUkSavingsAccountAnnualSummary.def1
 
 import mocks.MockCurrentDateTime
 import models.domain.SavingsAccountId
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
-import config.MockSavingsConfig
 import models.errors.SavingsAccountIdFormatError
 import shared.config.MockSharedAppConfig
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors.*
 import shared.utils.UnitSpec
 import utils.CurrentDateTime
 import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
@@ -30,7 +29,7 @@ import v1.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_Retrieve
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec with MockSharedAppConfig with MockSavingsConfig {
+class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec with MockSharedAppConfig {
 
   private implicit val correlationId: String = "1234"
   private val validNino                      = "AA123456A"
@@ -40,9 +39,9 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec w
   private val parsedTaxYear                  = TaxYear.fromMtd(validTaxYear)
 
   private def validator(nino: String, taxYear: String, savingsAccountId: String) =
-    new Def1_RetrieveUkSavingsAccountAnnualSummaryValidator(nino, taxYear, savingsAccountId)(mockSharedAppConfig, mockSavingsConfig)
+    new Def1_RetrieveUkSavingsAccountAnnualSummaryValidator(nino, taxYear, savingsAccountId)(mockSharedAppConfig)
 
-  class Test extends MockCurrentDateTime {
+  trait Test extends MockCurrentDateTime with SetupConfig {
 
     implicit val dateTimeProvider: CurrentDateTime = mockCurrentDateTime
     val dateTimeFormatter: DateTimeFormatter       = DateTimeFormatter.ISO_LOCAL_DATE

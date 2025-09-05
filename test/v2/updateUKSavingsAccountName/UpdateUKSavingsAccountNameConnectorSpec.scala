@@ -66,7 +66,7 @@ class UpdateUKSavingsAccountNameConnectorSpec extends ConnectorSpec {
     }
   }
 
-  private trait Test { _: ConnectorTest =>
+  private trait Test { self: ConnectorTest =>
 
     protected val connector: UpdateUKSavingsAccountNameConnector =
       new UpdateUKSavingsAccountNameConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)

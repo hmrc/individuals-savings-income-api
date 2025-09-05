@@ -36,6 +36,6 @@ class UpdateUKSavingsAccountNameValidator(nino: String,
       ResolveNino(nino),
       ResolveSavingsAccountId(savingsAccountId),
       resolveJson(body)
-    ).mapN(UpdateUKSavingsAccountNameRequest) andThen UpdateUKSavingsAccountNameRulesValidator.validateBusinessRules
+    ).mapN(UpdateUKSavingsAccountNameRequest.apply) andThen UpdateUKSavingsAccountNameRulesValidator.validateBusinessRules
 
 }

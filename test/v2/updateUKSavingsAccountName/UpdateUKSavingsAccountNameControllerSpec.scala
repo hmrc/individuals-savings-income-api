@@ -22,8 +22,8 @@ import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import shared.models.errors._
+import shared.models.audit.*
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{requestBodyModel, validRequestJson}
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
@@ -93,7 +93,7 @@ class UpdateUKSavingsAccountNameControllerSpec
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes().returns(false)
 
     protected def callController(): Future[Result] = controller.updateUKSavingsAccountName(validNino, savingsAccountId)(fakeRequest.withBody(validRequestJson))
 

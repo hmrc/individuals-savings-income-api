@@ -47,7 +47,7 @@ class CreateAmendSavingsConnectorSpec extends ConnectorSpec {
   }
 
   trait Test {
-    _: ConnectorTest =>
+    self: ConnectorTest =>
     def nino: String     = "AA111111A"
     def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 

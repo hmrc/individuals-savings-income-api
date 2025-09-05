@@ -25,7 +25,7 @@ import shared.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
 import v1.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
 import v1.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
-import v1.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
+import v1.listUkSavingsAccounts.model.response.ListUkSavingsAccountsResponse
 
 import scala.concurrent.Future
 
@@ -48,7 +48,7 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockSharedAp
   )
 
   trait Test {
-    _: ConnectorTest =>
+    self: ConnectorTest =>
 
     val connector: ListUkSavingsAccountsConnector =
       new ListUkSavingsAccountsConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
@@ -61,7 +61,7 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockSharedAp
         "upon receiving SUCCESS response from the backend service" in new IfsTest with Test {
         MockedSharedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_2085.enabled" -> false)
 
-        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
+        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse]] =
           Right(ResponseWrapper(correlationId, validResponse))
 
         willGet(
@@ -69,7 +69,7 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockSharedAp
           parameters = Seq("incomeSourceType" -> "09")
         ).returns(Future.successful(outcome))
 
-        val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] = await(connector.listUkSavingsAccounts(request))
+        val result: DownstreamOutcome[ListUkSavingsAccountsResponse] = await(connector.listUkSavingsAccounts(request))
 
         result shouldBe outcome
       }
@@ -78,7 +78,7 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockSharedAp
         "upon receiving SUCCESS response from the backend service" in new HipTest with Test {
         MockedSharedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_2085.enabled" -> true)
 
-        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
+        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse]] =
           Right(ResponseWrapper(correlationId, validResponse))
 
         willGet(
@@ -86,7 +86,7 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockSharedAp
           parameters = Seq("incomeSourceType" -> "09")
         ).returns(Future.successful(outcome))
 
-        val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] = await(connector.listUkSavingsAccounts(request))
+        val result: DownstreamOutcome[ListUkSavingsAccountsResponse] = await(connector.listUkSavingsAccounts(request))
 
         result shouldBe outcome
       }
@@ -96,7 +96,7 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockSharedAp
         "upon receiving SUCCESS response from the backend service" in new IfsTest with Test {
         MockedSharedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_2085.enabled" -> false)
 
-        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
+        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse]] =
           Right(ResponseWrapper(correlationId, validResponse))
 
         willGet(
@@ -104,7 +104,7 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockSharedAp
           parameters = Seq("incomeSourceType" -> "09", "incomeSourceId" -> savingsAccountId.toString)
         ).returns(Future.successful(outcome))
 
-        val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] =
+        val result: DownstreamOutcome[ListUkSavingsAccountsResponse] =
           await(connector.listUkSavingsAccounts(requestWithSavingsAccountId))
 
         result shouldBe outcome
@@ -115,7 +115,7 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockSharedAp
         "upon receiving SUCCESS response from the backend service" in new HipTest with Test {
         MockedSharedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_2085.enabled" -> true)
 
-        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse[UkSavingsAccount]]] =
+        val outcome: Right[Nothing, ResponseWrapper[ListUkSavingsAccountsResponse]] =
           Right(ResponseWrapper(correlationId, validResponse))
 
         willGet(
@@ -123,7 +123,7 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockSharedAp
           parameters = Seq("incomeSourceType" -> "09", "incomeSourceId" -> savingsAccountId.toString)
         ).returns(Future.successful(outcome))
 
-        val result: DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]] =
+        val result: DownstreamOutcome[ListUkSavingsAccountsResponse] =
           await(connector.listUkSavingsAccounts(requestWithSavingsAccountId))
 
         result shouldBe outcome

@@ -19,11 +19,11 @@ package v2.listUkSavingsAccounts
 import shared.config.{ConfigFeatureSwitches, SharedAppConfig}
 import shared.connectors.DownstreamUri.{HipUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser.reads
-import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
+import shared.connectors.*
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
-import v2.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
+import v2.listUkSavingsAccounts.model.response.ListUkSavingsAccountsResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,10 +35,10 @@ class ListUkSavingsAccountsConnector @Inject() (val http: HttpClientV2, val appC
   def listUkSavingsAccounts(request: ListUkSavingsAccountsRequestData)(implicit
       hc: HeaderCarrier,
       ec: ExecutionContext,
-      correlationId: String): Future[DownstreamOutcome[ListUkSavingsAccountsResponse[UkSavingsAccount]]] = {
+      correlationId: String): Future[DownstreamOutcome[ListUkSavingsAccountsResponse]] = {
 
-    import request._
-    import schema._
+    import request.*
+    import schema.*
 
     val nino: String = request.nino.nino
     val incomeSourceTypeParam: (String, String) = "incomeSourceType" -> "09"

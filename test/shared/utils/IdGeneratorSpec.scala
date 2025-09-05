@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package v2.deleteSavings
+package shared.utils
 
-import shared.config.SharedAppConfig
-import shared.controllers.validators.Validator
-import v2.deleteSavings.def1.Def1_DeleteSavingsValidator
-import v2.deleteSavings.model.request.DeleteSavingsRequestData
+class IdGeneratorSpec extends UnitSpec {
 
-import javax.inject.*
+  val generator        = new IdGenerator
+  val correlationRegex = "^[A-Za-z0-9\\-]{36}$"
 
-class DeleteSavingsValidatorFactory @Inject() (appConfig: SharedAppConfig) {
-
-  def validator(nino: String, taxYear: String): Validator[DeleteSavingsRequestData] =
-    new Def1_DeleteSavingsValidator(nino, taxYear)(appConfig)
+  "IdGenerator" should {
+    "generate a correlation id" when {
+      "getCorrelationId is called" in {
+        generator.generateCorrelationId.matches(correlationRegex) shouldBe true
+      }
+    }
+  }
 
 }

@@ -32,12 +32,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class UpdateUKSavingsAccountNameControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with ControllerTestRunner
     with MockUpdateUKSavingsAccountNameService
     with MockUpdateUKSavingsAccountNameValidatorFactory {
 
-  val savingsAccountId: String            = "SAVKB2UVwUTBQGJ"
+  val savingsAccountId: String = "SAVKB2UVwUTBQGJ"
 
   private val requestData: UpdateUKSavingsAccountNameRequest = UpdateUKSavingsAccountNameRequest(
     nino = parsedNino,
@@ -95,7 +95,8 @@ class UpdateUKSavingsAccountNameControllerSpec
 
     MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes().returns(false)
 
-    protected def callController(): Future[Result] = controller.updateUKSavingsAccountName(validNino, savingsAccountId)(fakeRequest.withBody(validRequestJson))
+    protected def callController(): Future[Result] =
+      controller.updateUKSavingsAccountName(validNino, savingsAccountId)(fakeRequest.withBody(validRequestJson))
 
     def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(

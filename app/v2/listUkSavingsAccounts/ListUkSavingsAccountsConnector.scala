@@ -17,9 +17,9 @@
 package v2.listUkSavingsAccounts
 
 import shared.config.{ConfigFeatureSwitches, SharedAppConfig}
+import shared.connectors.*
 import shared.connectors.DownstreamUri.{HipUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser.reads
-import shared.connectors.*
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
@@ -29,8 +29,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ListUkSavingsAccountsConnector @Inject() (val http: HttpClientV2, val appConfig: SharedAppConfig)
-    extends BaseDownstreamConnector {
+class ListUkSavingsAccountsConnector @Inject() (val http: HttpClientV2, val appConfig: SharedAppConfig) extends BaseDownstreamConnector {
 
   def listUkSavingsAccounts(request: ListUkSavingsAccountsRequestData)(implicit
       hc: HeaderCarrier,
@@ -40,7 +39,7 @@ class ListUkSavingsAccountsConnector @Inject() (val http: HttpClientV2, val appC
     import request.*
     import schema.*
 
-    val nino: String = request.nino.nino
+    val nino: String                            = request.nino.nino
     val incomeSourceTypeParam: (String, String) = "incomeSourceType" -> "09"
 
     val downstreamUri: DownstreamUri[DownstreamResp] = if (ConfigFeatureSwitches().isEnabled("ifs_hip_migration_2085")) {

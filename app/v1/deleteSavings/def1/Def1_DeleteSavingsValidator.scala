@@ -26,8 +26,7 @@ import shared.models.errors.MtdError
 import v1.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
 import v1.deleteSavings.model.request.DeleteSavingsRequestData
 
-class Def1_DeleteSavingsValidator(nino: String, taxYear: String)(appConfig: SharedAppConfig)
-    extends Validator[DeleteSavingsRequestData] {
+class Def1_DeleteSavingsValidator(nino: String, taxYear: String)(appConfig: SharedAppConfig) extends Validator[DeleteSavingsRequestData] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.ending(minimumTaxYear))

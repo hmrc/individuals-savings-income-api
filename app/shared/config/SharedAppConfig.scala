@@ -38,8 +38,8 @@ class SharedAppConfig @Inject() (val config: ServicesConfig, protected[config] v
 
   // MTD ID Lookup Config
   def mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
-  
-  def minimumPermittedTaxYear: Int = config.getInt("minimumPermittedTaxYear")
+
+  def minimumPermittedTaxYear: Int                     = config.getInt("minimumPermittedTaxYear")
   def ukSavingsAccountAnnualSummaryMinimumTaxYear: Int = config.getInt("ukSavingsAccountAnnualSummaryMinimumTaxYear")
 
   def desDownstreamConfig: DownstreamConfig          = downstreamConfig("des")

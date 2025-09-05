@@ -32,8 +32,7 @@ trait MockListUkSavingsAccountsService extends TestSuite with MockFactory {
 
   object MockListUkSavingsAccountsService {
 
-    def listUkSavingsAccounts(
-        requestData: ListUkSavingsAccountsRequestData): CallHandler[Future[ServiceOutcome[ListUkSavingsAccountsResponse]]] = {
+    def listUkSavingsAccounts(requestData: ListUkSavingsAccountsRequestData): CallHandler[Future[ServiceOutcome[ListUkSavingsAccountsResponse]]] = {
       (mockListUkSavingsAccountsService
         .listUkSavingsAccounts(_: ListUkSavingsAccountsRequestData)(_: RequestContext, _: ExecutionContext))
         .expects(requestData, *, *)

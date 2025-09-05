@@ -25,9 +25,8 @@ import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJson
 import shared.models.errors.MtdError
 import v2.updateUKSavingsAccountName.model.request.{UpdateUKSavingsAccountNameRequest, UpdateUKSavingsAccountNameRequestBody}
 
-class UpdateUKSavingsAccountNameValidator(nino: String,
-                                          savingsAccountId: String,
-                                          body: JsValue) extends Validator[UpdateUKSavingsAccountNameRequest] {
+class UpdateUKSavingsAccountNameValidator(nino: String, savingsAccountId: String, body: JsValue)
+    extends Validator[UpdateUKSavingsAccountNameRequest] {
 
   private val resolveJson = ResolveNonEmptyJsonObject.resolver[UpdateUKSavingsAccountNameRequestBody]
 

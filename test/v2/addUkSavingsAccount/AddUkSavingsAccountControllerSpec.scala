@@ -92,7 +92,8 @@ class AddUkSavingsAccountControllerSpec
 
     MockedSharedAppConfig
       .endpointAllowsSupportingAgents(controller.endpointName)
-      .anyNumberOfTimes().returns(true)
+      .anyNumberOfTimes()
+      .returns(true)
 
     protected def callController(): Future[Result] = controller.addUkSavingsAccount(validNino)(fakePostRequest(requestBodyJson))
 

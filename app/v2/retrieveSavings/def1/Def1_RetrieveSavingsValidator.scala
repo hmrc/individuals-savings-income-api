@@ -26,8 +26,7 @@ import shared.models.errors.MtdError
 import v2.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
 import v2.retrieveSavings.model.request.RetrieveSavingsRequestData
 
-class Def1_RetrieveSavingsValidator(nino: String, taxYear: String)(appConfig: SharedAppConfig)
-    extends Validator[RetrieveSavingsRequestData] {
+class Def1_RetrieveSavingsValidator(nino: String, taxYear: String)(appConfig: SharedAppConfig) extends Validator[RetrieveSavingsRequestData] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.ending(minimumTaxYear))

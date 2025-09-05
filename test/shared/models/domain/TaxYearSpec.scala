@@ -59,7 +59,7 @@ class TaxYearSpec extends UnitSpec {
 
     "constructed from a starting year" should {
       "return the tax year that begins in that year and ends the following year" in {
-        val year: Int = 2023
+        val year: Int        = 2023
         val taxYear: TaxYear = TaxYear.starting(year)
         taxYear.year shouldBe 2024
         taxYear.startYear shouldBe 2023
@@ -69,7 +69,7 @@ class TaxYearSpec extends UnitSpec {
 
     "constructed from an ending year" should {
       "return the tax year that ends in that year and started the previous year" in {
-        val year: Int = 2024
+        val year: Int        = 2024
         val taxYear: TaxYear = TaxYear.ending(year)
         taxYear.year shouldBe 2024
         taxYear.startYear shouldBe 2023

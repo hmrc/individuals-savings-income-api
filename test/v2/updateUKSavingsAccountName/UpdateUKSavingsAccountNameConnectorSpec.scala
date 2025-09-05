@@ -76,6 +76,7 @@ class UpdateUKSavingsAccountNameConnectorSpec extends ConnectorSpec {
       savingsAccountId = savingsAccountId,
       body = requestBodyModel
     )
+
   }
 
 }

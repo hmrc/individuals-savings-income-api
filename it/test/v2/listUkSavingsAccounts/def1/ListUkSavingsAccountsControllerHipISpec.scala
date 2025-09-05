@@ -159,7 +159,12 @@ class ListUkSavingsAccountsControllerHipISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DownstreamStub.onError(DownstreamStub.GET, downstreamUri, Map("incomeSourceId" -> savingsAccountId), downstreamStatus, errorBody(downstreamCode))
+              DownstreamStub.onError(
+                DownstreamStub.GET,
+                downstreamUri,
+                Map("incomeSourceId" -> savingsAccountId),
+                downstreamStatus,
+                errorBody(downstreamCode))
             }
 
             val response: WSResponse = await(request.get())

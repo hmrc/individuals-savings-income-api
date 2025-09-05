@@ -113,7 +113,8 @@ class CreateAmendUkSavingsAnnualSummaryControllerSpec
 
     MockedSharedAppConfig
       .endpointAllowsSupportingAgents(controller.endpointName)
-      .anyNumberOfTimes().returns(true)
+      .anyNumberOfTimes()
+      .returns(true)
 
     protected def callController(): Future[Result] =
       controller.createAmendUkSavingsAnnualSummary(validNino, taxYear, savingsAccountId)(fakePostRequest(requestJson))

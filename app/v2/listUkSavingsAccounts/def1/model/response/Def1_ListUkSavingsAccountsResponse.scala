@@ -28,13 +28,15 @@ object Def1_ListUkSavingsAccountsResponse extends JsonUtils {
 
   implicit def reads: Reads[Def1_ListUkSavingsAccountsResponse] = {
     case JsObject(fields) if fields.size == 1 && fields.contains("bbsi") =>
-      fields.get("bbsi").map(arr =>
-        arr.validate(JsPath
-          .readNullable[Seq[Def1_UkSavingsAccount]]
-          .mapEmptySeqToNone
-          .map(Def1_ListUkSavingsAccountsResponse(_))
-        )
-      ).getOrElse(JsError("Unexpected JSON format"))
+      fields
+        .get("bbsi")
+        .map(arr =>
+          arr.validate(
+            JsPath
+              .readNullable[Seq[Def1_UkSavingsAccount]]
+              .mapEmptySeqToNone
+              .map(Def1_ListUkSavingsAccountsResponse(_))))
+        .getOrElse(JsError("Unexpected JSON format"))
 
     case _ =>
       JsError("Unexpected JSON format")

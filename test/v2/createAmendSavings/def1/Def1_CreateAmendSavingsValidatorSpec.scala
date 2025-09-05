@@ -140,14 +140,16 @@ class Def1_CreateAmendSavingsValidatorSpec extends UnitSpec with MockSharedAppCo
   "validator" should {
     "return the parsed domain object" when {
       "a valid request is supplied" in new SetupConfig {
-        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] = validator(validNino, validTaxYear, validRequestBodyJson).validateAndWrapResult()
+        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] =
+          validator(validNino, validTaxYear, validRequestBodyJson).validateAndWrapResult()
         result shouldBe Right(Def1_CreateAmendSavingsRequestData(parsedNino, parsedTaxYear, parsedBody))
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in new SetupConfig {
-        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] = validator("A12344A", validTaxYear, validRequestBodyJson).validateAndWrapResult()
+        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] =
+          validator("A12344A", validTaxYear, validRequestBodyJson).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, NinoFormatError)
         )
@@ -165,7 +167,8 @@ class Def1_CreateAmendSavingsValidatorSpec extends UnitSpec with MockSharedAppCo
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in new SetupConfig {
-        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] = validator(validNino, "2016-17", validRequestBodyJson).validateAndWrapResult()
+        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] =
+          validator(validNino, "2016-17", validRequestBodyJson).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
         )
@@ -174,7 +177,8 @@ class Def1_CreateAmendSavingsValidatorSpec extends UnitSpec with MockSharedAppCo
 
     "return RuleTaxYearRangeInvalidError error" when {
       "an invalid tax year range is supplied" in new SetupConfig {
-        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] = validator(validNino, "2017-19", validRequestBodyJson).validateAndWrapResult()
+        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] =
+          validator(validNino, "2017-19", validRequestBodyJson).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)
         )
@@ -246,7 +250,8 @@ class Def1_CreateAmendSavingsValidatorSpec extends UnitSpec with MockSharedAppCo
 
     "return multiple errors" when {
       "multiple invalid parameters are provided" in new SetupConfig {
-        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] = validator("not-a-nino", "2017-19", validRequestBodyJson).validateAndWrapResult()
+        val result: Either[ErrorWrapper, CreateAmendSavingsRequestData] =
+          validator("not-a-nino", "2017-19", validRequestBodyJson).validateAndWrapResult()
 
         result shouldBe Left(
           ErrorWrapper(

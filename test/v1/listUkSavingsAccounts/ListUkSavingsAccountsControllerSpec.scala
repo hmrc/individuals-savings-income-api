@@ -126,7 +126,8 @@ class ListUkSavingsAccountsControllerSpec
 
     MockedSharedAppConfig
       .endpointAllowsSupportingAgents(controller.endpointName)
-      .anyNumberOfTimes().returns(true)
+      .anyNumberOfTimes()
+      .returns(true)
 
     protected def callController(): Future[Result] = controller.listUkSavingsAccounts(nino, Some(savingsAccountId.toString))(fakeGetRequest)
   }

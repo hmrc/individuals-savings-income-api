@@ -22,6 +22,7 @@ ThisBuild / scalacOptions ++= Seq(
   "-Werror",
   "-Wconf:msg=Flag.*repeatedly:s"
 )
+ThisBuild / scalafmtOnCompile := true
 
 val appName = "individuals-savings-income-api"
 

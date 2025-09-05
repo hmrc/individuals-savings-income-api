@@ -163,7 +163,8 @@ class CreateAmendSavingsControllerSpec
 
     MockedSharedAppConfig
       .endpointAllowsSupportingAgents(controller.endpointName)
-      .anyNumberOfTimes().returns(true)
+      .anyNumberOfTimes()
+      .returns(true)
 
     protected def callController(): Future[Result] = controller.createAmendSavings(validNino, taxYear)(fakePostRequest(requestBodyJson))
 

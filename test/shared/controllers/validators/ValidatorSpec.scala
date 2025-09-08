@@ -162,21 +162,21 @@ class ValidatorSpec extends UnitSpec with MockFactory {
         result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError.withPath("/value2")))
       }
     }
+  }
 
-    "returningErrors()" should {
-      val errors: Seq[MtdError] = List(NinoFormatError, TaxYearFormatError)
+  "returningErrors()" should {
+    val errors: Seq[MtdError] = List(NinoFormatError, TaxYearFormatError)
 
-      "return a Validator that always returns those errors on validate" in {
-        val validator: Validator[Nothing] = Validator.returningErrors(errors)
+    "return a Validator that always returns those errors on validate" in {
+      val validator: Validator[Nothing] = Validator.returningErrors(errors)
 
-        validator.validate shouldBe Invalid(errors)
-      }
+      validator.validate shouldBe Invalid(errors)
+    }
 
-      "return a Validator that returns the errors wrapped in validateAndWrapResult" in {
-        val validator: Validator[Nothing] = Validator.returningErrors(errors)
+    "return a Validator that returns the errors wrapped in validateAndWrapResult" in {
+      val validator: Validator[Nothing] = Validator.returningErrors(errors)
 
-        validator.validateAndWrapResult() shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(errors)))
-      }
+      validator.validateAndWrapResult() shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(errors)))
     }
   }
 

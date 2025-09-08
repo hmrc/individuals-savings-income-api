@@ -38,8 +38,6 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
 
   implicit val someEnumChecker: SchemaStructureSource[SomeEnum] = SchemaStructureSource.leaf
 
-  given SchemaStructureSource[Bar] = SchemaStructureSource.derived
-
   val validator = new UnexpectedJsonFieldsValidator[Foo]
 
   private def errorWithPaths(paths: String*) = Some(Seq(RuleIncorrectOrEmptyBodyError.withPaths(paths)))
@@ -225,39 +223,39 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
           }
         }
       }
+    }
+  }
 
-      "SchemaStructureSource" must {
-        "return Leaf for non-list types" in {
-          SchemaStructureSource[String].schemaStructureOf("test") shouldBe Leaf
-          SchemaStructureSource[Int].schemaStructureOf(1) shouldBe Leaf
-          SchemaStructureSource[Double].schemaStructureOf(1.00) shouldBe Leaf
-          SchemaStructureSource[Boolean].schemaStructureOf(true) shouldBe Leaf
-          SchemaStructureSource[BigInt].schemaStructureOf(BigInt(1)) shouldBe Leaf
-          SchemaStructureSource[BigDecimal].schemaStructureOf(BigDecimal(1)) shouldBe Leaf
-          SchemaStructureSource[TaxYear].schemaStructureOf(TaxYear.fromMtd("2025-26")) shouldBe Leaf
-          SchemaStructureSource[Option[String]].schemaStructureOf(Some("test")) shouldBe Leaf
-          SchemaStructureSource[Option[String]].schemaStructureOf(None) shouldBe Leaf
-        }
+  "SchemaStructureSource" must {
+    "return Leaf for non-list types" in {
+      SchemaStructureSource[String].schemaStructureOf("test") shouldBe Leaf
+      SchemaStructureSource[Int].schemaStructureOf(1) shouldBe Leaf
+      SchemaStructureSource[Double].schemaStructureOf(1.00) shouldBe Leaf
+      SchemaStructureSource[Boolean].schemaStructureOf(true) shouldBe Leaf
+      SchemaStructureSource[BigInt].schemaStructureOf(BigInt(1)) shouldBe Leaf
+      SchemaStructureSource[BigDecimal].schemaStructureOf(BigDecimal(1)) shouldBe Leaf
+      SchemaStructureSource[TaxYear].schemaStructureOf(TaxYear.fromMtd("2025-26")) shouldBe Leaf
+      SchemaStructureSource[Option[String]].schemaStructureOf(Some("test")) shouldBe Leaf
+      SchemaStructureSource[Option[String]].schemaStructureOf(None) shouldBe Leaf
+    }
 
-        "return Arr of Leaf for non-empty Seq" in {
-          SchemaStructureSource[Seq[String]].schemaStructureOf(Seq("test", "test")) shouldBe Arr(Seq(Leaf, Leaf))
-          SchemaStructureSource[Seq[Int]].schemaStructureOf(Seq(1, 1)) shouldBe Arr(Seq(Leaf, Leaf))
-        }
+    "return Arr of Leaf for non-empty Seq" in {
+      SchemaStructureSource[Seq[String]].schemaStructureOf(Seq("test", "test")) shouldBe Arr(Seq(Leaf, Leaf))
+      SchemaStructureSource[Seq[Int]].schemaStructureOf(Seq(1, 1)) shouldBe Arr(Seq(Leaf, Leaf))
+    }
 
-        "return empty Arr for empty Seq" in {
-          SchemaStructureSource[Seq[Double]].schemaStructureOf(Seq.empty) shouldBe Arr(Seq.empty)
-          SchemaStructureSource[Seq[Boolean]].schemaStructureOf(Seq.empty) shouldBe Arr(Seq.empty)
-        }
+    "return empty Arr for empty Seq" in {
+      SchemaStructureSource[Seq[Double]].schemaStructureOf(Seq.empty) shouldBe Arr(Seq.empty)
+      SchemaStructureSource[Seq[Boolean]].schemaStructureOf(Seq.empty) shouldBe Arr(Seq.empty)
+    }
 
-        "return Arr of Leaf for non-empty List" in {
-          SchemaStructureSource[List[BigInt]].schemaStructureOf(List(BigInt(1), BigInt(1))) shouldBe Arr(Seq(Leaf, Leaf))
-          SchemaStructureSource[List[BigDecimal]].schemaStructureOf(List(BigDecimal(1), BigDecimal(1))) shouldBe Arr(Seq(Leaf, Leaf))
-        }
+    "return Arr of Leaf for non-empty List" in {
+      SchemaStructureSource[List[BigInt]].schemaStructureOf(List(BigInt(1), BigInt(1))) shouldBe Arr(Seq(Leaf, Leaf))
+      SchemaStructureSource[List[BigDecimal]].schemaStructureOf(List(BigDecimal(1), BigDecimal(1))) shouldBe Arr(Seq(Leaf, Leaf))
+    }
 
-        "return empty Arr for empty List" in {
-          SchemaStructureSource[List[TaxYear]].schemaStructureOf(List.empty) shouldBe Arr(Seq.empty)
-        }
-      }
+    "return empty Arr for empty List" in {
+      SchemaStructureSource[List[TaxYear]].schemaStructureOf(List.empty) shouldBe Arr(Seq.empty)
     }
   }
 

@@ -20,7 +20,6 @@ import cats.implicits.catsSyntaxValidatedId
 import shared.config.Deprecation.NotDeprecated
 import shared.config.{MockSharedAppConfig, SharedAppConfig}
 import shared.definition.APIStatus.{ALPHA, BETA}
-import shared.mocks.MockHttpClient
 import shared.routing.*
 import shared.utils.UnitSpec
 
@@ -69,7 +68,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     }
   }
 
-  trait Test extends UnitSpec with MockHttpClient with MockSharedAppConfig {
+  trait Test extends MockSharedAppConfig {
     MockedSharedAppConfig.apiGatewayContext returns "individuals/self-assessment/adjustable-summary"
 
     val apiDefinitionFactory: ApiDefinitionFactory = new ApiDefinitionFactory {

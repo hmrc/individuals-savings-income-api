@@ -24,9 +24,9 @@ case class Def1_ListUkSavingsAccountsResponse(savingsAccounts: Option[Seq[Def1_U
 
 object Def1_ListUkSavingsAccountsResponse extends JsonUtils {
 
-  implicit def writes: OWrites[Def1_ListUkSavingsAccountsResponse] = Json.writes[Def1_ListUkSavingsAccountsResponse]
+  implicit val writes: OWrites[Def1_ListUkSavingsAccountsResponse] = Json.writes[Def1_ListUkSavingsAccountsResponse]
 
-  implicit def reads: Reads[Def1_ListUkSavingsAccountsResponse] = {
+  implicit val reads: Reads[Def1_ListUkSavingsAccountsResponse] = {
     case JsObject(fields) if fields.size == 1 && fields.contains("bbsi") =>
       fields
         .get("bbsi")

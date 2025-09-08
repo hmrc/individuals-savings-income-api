@@ -18,7 +18,7 @@ package v2.listUkSavingsAccounts.model.response
 
 import play.api.libs.json.*
 import shared.utils.JsonWritesUtil.writesFrom
-import v2.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
+import v2.listUkSavingsAccounts.def1.model.response.Def1_ListUkSavingsAccountsResponse
 
 trait ListUkSavingsAccountsResponse
 
@@ -26,17 +26,6 @@ object ListUkSavingsAccountsResponse {
 
   implicit val writes: OWrites[ListUkSavingsAccountsResponse] = writesFrom { case def1: Def1_ListUkSavingsAccountsResponse =>
     implicitly[OWrites[Def1_ListUkSavingsAccountsResponse]].writes(def1)
-  }
-
-}
-
-trait UkSavingsAccount
-
-object UkSavingsAccount {
-
-  implicit val writes: OWrites[UkSavingsAccount] = writesFrom { case a: Def1_UkSavingsAccount =>
-    Json.toJson(a).as[JsObject]
-
   }
 
 }

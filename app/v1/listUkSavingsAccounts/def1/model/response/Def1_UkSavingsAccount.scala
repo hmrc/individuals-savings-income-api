@@ -18,9 +18,8 @@ package v1.listUkSavingsAccounts.def1.model.response
 
 import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
-import v1.listUkSavingsAccounts.model.response.UkSavingsAccount
 
-case class Def1_UkSavingsAccount(savingsAccountId: String, accountName: Option[String]) extends UkSavingsAccount
+case class Def1_UkSavingsAccount(savingsAccountId: String, accountName: Option[String])
 
 object Def1_UkSavingsAccount {
 

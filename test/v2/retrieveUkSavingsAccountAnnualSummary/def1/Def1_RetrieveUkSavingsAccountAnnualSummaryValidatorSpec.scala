@@ -16,18 +16,13 @@
 
 package v2.retrieveUkSavingsAccountAnnualSummary.def1
 
-import mocks.MockCurrentDateTime
 import models.domain.SavingsAccountId
 import models.errors.SavingsAccountIdFormatError
 import shared.config.MockSharedAppConfig
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.*
 import shared.utils.UnitSpec
-import utils.CurrentDateTime
 import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
-
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec with MockSharedAppConfig {
 
@@ -41,27 +36,16 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec w
   private def validator(nino: String, taxYear: String, savingsAccountId: String) =
     new Def1_RetrieveUkSavingsAccountAnnualSummaryValidator(nino, taxYear, savingsAccountId)(mockSharedAppConfig)
 
-  trait Test extends MockCurrentDateTime with SetupConfig {
-
-    implicit val dateTimeProvider: CurrentDateTime = mockCurrentDateTime
-    val dateTimeFormatter: DateTimeFormatter       = DateTimeFormatter.ISO_LOCAL_DATE
-
-    MockCurrentDateTime.getLocalDate
-      .returns(LocalDate.parse("2022-07-11", dateTimeFormatter))
-      .anyNumberOfTimes()
-
-  }
-
   "running a validation" should {
     "return no errors" when {
-      "a valid request is supplied" in new Test {
+      "a valid request is supplied" in new SetupConfig {
         validator(validNino, validTaxYear, validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Right(Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData(parsedNino, parsedTaxYear, validSavingsAccountId))
       }
     }
 
     "return NinoFormatError error" when {
-      "an invalid nino is supplied" in new Test {
+      "an invalid nino is supplied" in new SetupConfig {
         validator("A12344A", validTaxYear, validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, NinoFormatError)
@@ -70,7 +54,7 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec w
     }
 
     "return TaxYearFormatError error" when {
-      "an invalid tax year is supplied" in new Test {
+      "an invalid tax year is supplied" in new SetupConfig {
         validator(validNino, "20178", validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, TaxYearFormatError)
@@ -79,7 +63,7 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec w
     }
 
     "return RuleTaxYearNotSupportedError error" when {
-      "a tax year that is not supported is supplied" in new Test {
+      "a tax year that is not supported is supplied" in new SetupConfig {
         validator(validNino, "2018-19", validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
@@ -88,7 +72,7 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec w
     }
 
     "return NinoFormatError and TaxYearFormatError errors" when {
-      "request supplied has invalid nino and tax year" in new Test {
+      "request supplied has invalid nino and tax year" in new SetupConfig {
         validator("A12344A", "20178", validSavingsAccountId.toString).validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(
@@ -101,7 +85,7 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec w
     }
 
     "return NinoFormatError, TaxYearFormatError and SavingsAccountIdFormatError errors" when {
-      "request supplied has invalid nino, tax year and savingsAccountId" in new Test {
+      "request supplied has invalid nino, tax year and savingsAccountId" in new SetupConfig {
         validator("A12344A", "20178", "ABCDE12345FG").validateAndWrapResult() shouldBe
           Left(
             ErrorWrapper(

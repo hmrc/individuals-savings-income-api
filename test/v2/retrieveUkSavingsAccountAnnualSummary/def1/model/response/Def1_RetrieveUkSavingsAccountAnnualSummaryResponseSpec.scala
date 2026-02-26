@@ -46,6 +46,20 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryResponseSpec extends UnitSpec {
             Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
           ))
     }
+
+    "fail when incomeSourceId is missing" in {
+      val json = Json.parse("""
+        {
+          "savingsInterestAnnualIncome": [
+            {
+              "taxedUkInterest": 1.12
+            }
+          ]
+        }
+      """)
+
+      json.validate[Def1_RetrieveUkSavingsAccountAnnualSummaryResponse].isError shouldBe true
+    }
   }
 
   "writes" must {

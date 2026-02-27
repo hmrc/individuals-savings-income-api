@@ -22,6 +22,7 @@ import shared.config.{MockSharedAppConfig, SharedAppConfig}
 import shared.definition.APIStatus.{ALPHA, BETA}
 import shared.routing.*
 import shared.utils.UnitSpec
+import play.api.libs.json.Json
 
 import scala.language.reflectiveCalls
 
@@ -66,6 +67,21 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         exceptionMessage shouldBe "deprecatedOn date is required for a deprecated version"
       }
     }
+
+    "APIVersion Json.format" should {
+
+      "round-trip successfully" in {
+        val model = APIVersion(
+          version = Version2,
+          status = APIStatus.BETA,
+          endpointsEnabled = true
+        )
+
+        val json = Json.toJson(model)
+
+        json.as[APIVersion] shouldBe model
+      }
+    }
   }
 
   trait Test extends MockSharedAppConfig {
@@ -80,7 +96,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
           "description",
           "context",
           List("category"),
-          List(APIVersion(Version1, APIStatus.BETA, endpointsEnabled = true)),
+          List(APIVersion(Version2, APIStatus.BETA, endpointsEnabled = true)),
           None)
       )
 

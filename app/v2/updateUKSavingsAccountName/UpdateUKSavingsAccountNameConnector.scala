@@ -36,8 +36,7 @@ class UpdateUKSavingsAccountNameConnector @Inject() (val http: HttpClientV2, val
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
     import request.*
 
-    val downstreamUri: DownstreamUri[Unit] =
-      HipUri(s"itsd/income-sources/$nino/non-business/$savingsAccountId")
+    val downstreamUri: DownstreamUri[Unit] = HipUri(s"itsd/income-sources/$nino/non-business/$savingsAccountId")
     put(body = request.body, uri = downstreamUri)
   }
 

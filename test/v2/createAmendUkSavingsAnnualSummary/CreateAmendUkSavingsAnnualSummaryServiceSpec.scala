@@ -102,7 +102,7 @@ class CreateAmendUkSavingsAnnualSummaryServiceSpec extends ServiceSpec {
           "OUTSIDE_AMENDMENT_WINDOW"   -> RuleOutsideAmendmentWindowError
         )
 
-        (errors ++ tysErrors).foreach(args => serviceError.tupled(args))
+        (errors ++ tysErrors).foreach(serviceError.tupled)
       }
     }
   }

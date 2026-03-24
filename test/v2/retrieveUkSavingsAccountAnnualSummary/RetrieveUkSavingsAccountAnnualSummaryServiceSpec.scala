@@ -135,7 +135,7 @@ class RetrieveUkSavingsAccountAnnualSummaryServiceSpec extends ServiceSpec {
         ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError)
       )
 
-      (errors ++ tysErrors).foreach(args => serviceError.tupled(args))
+      (errors ++ tysErrors).foreach(serviceError.tupled)
     }
   }
 

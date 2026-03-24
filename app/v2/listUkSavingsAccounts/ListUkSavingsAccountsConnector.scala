@@ -42,10 +42,8 @@ class ListUkSavingsAccountsConnector @Inject() (val http: HttpClientV2, val appC
     val nino: String                            = request.nino.nino
     val incomeSourceTypeParam: (String, String) = "incomeSourceType" -> "09"
 
-    val downstreamUri: DownstreamUri[DownstreamResp] = HipUri[DownstreamResp](s"itsd/income-sources/v2/$nino")
-
     get(
-      downstreamUri,
+      HipUri[DownstreamResp](s"itsd/income-sources/v2/$nino"),
       request.savingsAccountId
         .fold(Seq(incomeSourceTypeParam))(savingsId => Seq(incomeSourceTypeParam, "incomeSourceId" -> savingsId.toString))
     )

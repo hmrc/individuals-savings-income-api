@@ -17,6 +17,6 @@
 package v2.updateUKSavingsAccountName.model.request
 
 import models.domain.SavingsAccountId
-import shared.models.domain.Nino
+import api.models.domain.Nino
 
 case class UpdateUKSavingsAccountNameRequest(nino: Nino, savingsAccountId: SavingsAccountId, body: UpdateUKSavingsAccountNameRequestBody)

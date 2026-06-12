@@ -17,7 +17,7 @@
 package v2.retrieveSavings
 
 import play.api.libs.json.Reads
-import shared.schema.DownstreamReadable
+import api.schema.DownstreamReadable
 import v2.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
 import v2.retrieveSavings.model.response.RetrieveSavingsResponse
 

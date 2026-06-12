@@ -19,8 +19,8 @@ package resolvers
 import cats.data.Validated
 import models.domain.SavingsAccountId
 import models.errors.SavingsAccountIdFormatError
-import shared.controllers.validators.resolvers.{ResolveStringPattern, ResolverSupport}
-import shared.models.errors.MtdError
+import api.controllers.validators.resolvers.{ResolveStringPattern, ResolverSupport}
+import api.models.errors.MtdError
 
 object ResolveSavingsAccountId extends ResolverSupport {
 

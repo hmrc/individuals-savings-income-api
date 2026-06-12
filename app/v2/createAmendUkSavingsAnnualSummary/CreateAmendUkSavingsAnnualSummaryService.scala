@@ -18,9 +18,9 @@ package v2.createAmendUkSavingsAnnualSummary
 
 import cats.implicits._
 import models.errors.RuleOutsideAmendmentWindowError
-import shared.controllers.RequestContext
-import shared.models.errors._
-import shared.services.{BaseService, ServiceOutcome}
+import api.controllers.RequestContext
+import api.models.errors._
+import api.services.{BaseService, ServiceOutcome}
 import v2.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
 
 import javax.inject.{Inject, Singleton}

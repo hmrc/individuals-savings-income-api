@@ -17,7 +17,7 @@
 package v2.updateUKSavingsAccountName
 
 import play.api.libs.json.JsValue
-import shared.controllers.validators.Validator
+import api.controllers.validators.Validator
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
 import javax.inject.Singleton

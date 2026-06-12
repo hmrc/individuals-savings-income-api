@@ -18,9 +18,9 @@ package v2.createAmendUkSavingsAnnualSummary.def1
 
 import cats.data.Validated
 import cats.implicits.toFoldableOps
-import shared.controllers.validators.RulesValidator
-import shared.controllers.validators.resolvers.ResolveParsedNumber
-import shared.models.errors.MtdError
+import api.controllers.validators.RulesValidator
+import api.controllers.validators.resolvers.ResolveParsedNumber
+import api.models.errors.MtdError
 import v2.createAmendUkSavingsAnnualSummary.def1.model.request.Def1_CreateAmendUkSavingsAnnualSummaryRequestData
 
 object Def1_CreateAmendUkSavingsAnnualRulesValidator extends RulesValidator[Def1_CreateAmendUkSavingsAnnualSummaryRequestData] {

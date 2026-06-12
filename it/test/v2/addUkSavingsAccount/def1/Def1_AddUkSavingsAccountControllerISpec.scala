@@ -23,9 +23,9 @@ import play.api.libs.json.*
 import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
-import shared.models.errors.*
-import shared.services.*
-import shared.support.IntegrationBaseSpec
+import api.models.errors.*
+import api.services.*
+import api.support.IntegrationBaseSpec
 
 class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
 

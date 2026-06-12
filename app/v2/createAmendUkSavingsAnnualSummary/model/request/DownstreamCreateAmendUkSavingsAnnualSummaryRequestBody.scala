@@ -17,7 +17,7 @@
 package v2.createAmendUkSavingsAnnualSummary.model.request
 
 import play.api.libs.json.{JsObject, Json, OWrites}
-import shared.utils.JsonWritesUtil
+import api.utils.JsonWritesUtil
 import v2.createAmendUkSavingsAnnualSummary.def1.model.request.Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody
 
 trait DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody

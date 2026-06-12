@@ -17,7 +17,7 @@
 package v2.retrieveSavings.model.response
 
 import play.api.libs.json._
-import shared.utils.JsonWritesUtil
+import api.utils.JsonWritesUtil
 import v2.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
 
 trait RetrieveSavingsResponse

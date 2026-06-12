@@ -17,7 +17,7 @@
 package v2.addUkSavingsAccount
 
 import play.api.libs.json.Reads
-import shared.schema.DownstreamReadable
+import api.schema.DownstreamReadable
 import v2.addUkSavingsAccount.def1.model.response.Def1_AddUkSavingsAccountResponse
 import v2.addUkSavingsAccount.model.response.AddUkSavingsAccountResponse
 

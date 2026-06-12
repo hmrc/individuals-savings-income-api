@@ -19,8 +19,8 @@ package v2.createAmendSavings
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TestSuite
-import shared.controllers.RequestContext
-import shared.services.ServiceOutcome
+import api.controllers.RequestContext
+import api.services.ServiceOutcome
 import v2.createAmendSavings.model.request.CreateAmendSavingsRequestData
 
 import scala.concurrent.{ExecutionContext, Future}

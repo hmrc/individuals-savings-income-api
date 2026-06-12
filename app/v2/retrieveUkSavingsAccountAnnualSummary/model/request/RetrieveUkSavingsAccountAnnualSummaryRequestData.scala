@@ -17,7 +17,7 @@
 package v2.retrieveUkSavingsAccountAnnualSummary.model.request
 
 import models.domain.SavingsAccountId
-import shared.models.domain.{Nino, TaxYear}
+import api.models.domain.{Nino, TaxYear}
 import v2.retrieveUkSavingsAccountAnnualSummary.RetrieveUkSavingsAccountAnnualSummarySchema
 
 trait RetrieveUkSavingsAccountAnnualSummaryRequestData {

@@ -17,15 +17,15 @@
 package v2.addUkSavingsAccount.model.request
 
 import play.api.libs.json.{JsObject, Json, OWrites}
-import shared.config.SharedAppConfig
-import shared.utils.JsonWritesUtil
+import api.config.AppConfig
+import api.utils.JsonWritesUtil
 import v2.addUkSavingsAccount.def1.model.request.Def1_AddUkSavingsAccountRequestBody
 
 trait AddUkSavingsAccountRequestBody
 
 object AddUkSavingsAccountRequestBody extends JsonWritesUtil {
 
-  implicit def writes(implicit appConfig: SharedAppConfig): OWrites[AddUkSavingsAccountRequestBody] = writesFrom {
+  implicit def writes(implicit appConfig: AppConfig): OWrites[AddUkSavingsAccountRequestBody] = writesFrom {
     case a: Def1_AddUkSavingsAccountRequestBody => Json.toJson(a).as[JsObject]
   }
 

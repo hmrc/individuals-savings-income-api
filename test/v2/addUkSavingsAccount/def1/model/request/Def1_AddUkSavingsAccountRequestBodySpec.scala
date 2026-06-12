@@ -17,10 +17,10 @@
 package v2.addUkSavingsAccount.def1.model.request
 
 import play.api.libs.json.{JsError, JsObject, JsValue, Json}
-import shared.config.MockSharedAppConfig
-import shared.utils.UnitSpec
+import api.config.MockAppConfig
+import api.utils.UnitSpec
 
-class Def1_AddUkSavingsAccountRequestBodySpec extends UnitSpec with MockSharedAppConfig {
+class Def1_AddUkSavingsAccountRequestBodySpec extends UnitSpec with MockAppConfig {
 
   val mtdJson: JsValue = Json.parse(
     """

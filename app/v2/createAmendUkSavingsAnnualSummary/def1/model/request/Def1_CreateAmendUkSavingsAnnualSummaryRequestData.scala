@@ -17,7 +17,7 @@
 package v2.createAmendUkSavingsAnnualSummary.def1.model.request
 
 import models.domain.SavingsAccountId
-import shared.models.domain.{Nino, TaxYear}
+import api.models.domain.{Nino, TaxYear}
 import v2.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualSummarySchema
 import v2.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualSummarySchema.Def1
 import v2.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData

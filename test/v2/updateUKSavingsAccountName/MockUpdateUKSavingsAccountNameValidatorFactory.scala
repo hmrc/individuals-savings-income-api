@@ -18,7 +18,7 @@ package v2.updateUKSavingsAccountName
 
 import org.scalamock.handlers.CallHandler
 import play.api.libs.json.JsValue
-import shared.controllers.validators.{MockValidatorFactory, Validator}
+import api.controllers.validators.{MockValidatorFactory, Validator}
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
 trait MockUpdateUKSavingsAccountNameValidatorFactory extends MockValidatorFactory[UpdateUKSavingsAccountNameRequest] {

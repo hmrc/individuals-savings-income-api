@@ -17,7 +17,7 @@
 package v2.listUkSavingsAccounts.model.request
 
 import models.domain.SavingsAccountId
-import shared.models.domain.Nino
+import api.models.domain.Nino
 import v2.listUkSavingsAccounts.ListUkSavingsAccountsSchema
 
 trait ListUkSavingsAccountsRequestData {

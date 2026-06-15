@@ -23,7 +23,10 @@ import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import models.domain.SavingsAccountId
 import models.errors.RuleOutsideAmendmentWindowError
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.{Def1_CreateAmendUkSavingsAnnualSummaryRequestBody, Def1_CreateAmendUkSavingsAnnualSummaryRequestData}
+import v2.createAmendUkSavingsAnnualSummary.def1.model.request.{
+  Def1_CreateAmendUkSavingsAnnualSummaryRequestBody,
+  Def1_CreateAmendUkSavingsAnnualSummaryRequestData
+}
 
 import scala.concurrent.Future
 

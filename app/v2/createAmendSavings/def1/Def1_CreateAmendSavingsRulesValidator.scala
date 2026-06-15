@@ -22,7 +22,12 @@ import api.models.errors.MtdError
 import cats.data.Validated
 import cats.data.Validated.Valid
 import cats.implicits.toFoldableOps
-import v2.createAmendSavings.def1.model.request.{AmendForeignInterestItem, AmendSecurities, Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v2.createAmendSavings.def1.model.request.{
+  AmendForeignInterestItem,
+  AmendSecurities,
+  Def1_CreateAmendSavingsRequestBody,
+  Def1_CreateAmendSavingsRequestData
+}
 
 object Def1_CreateAmendSavingsRulesValidator extends RulesValidator[Def1_CreateAmendSavingsRequestData] {
   private val resolveParsedNumber = ResolveParsedNumber()

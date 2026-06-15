@@ -16,8 +16,8 @@
 
 package models.errors
 
-import play.api.http.Status.BAD_REQUEST
 import api.models.errors.MtdError
+import play.api.http.Status.BAD_REQUEST
 
 object AccountNameFormatError extends MtdError("FORMAT_ACCOUNT_NAME", "The provided account name is invalid", BAD_REQUEST)
 

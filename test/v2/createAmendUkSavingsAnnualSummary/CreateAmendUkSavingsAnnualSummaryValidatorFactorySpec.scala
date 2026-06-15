@@ -16,10 +16,10 @@
 
 package v2.createAmendUkSavingsAnnualSummary
 
-import play.api.libs.json.{JsValue, Json}
 import api.config.MockAppConfig
 import api.controllers.validators.Validator
 import api.utils.UnitSpec
+import play.api.libs.json.{JsValue, Json}
 import v2.createAmendUkSavingsAnnualSummary.def1.Def1_CreateAmendUkSavingsAnnualSummaryValidator
 import v2.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
 

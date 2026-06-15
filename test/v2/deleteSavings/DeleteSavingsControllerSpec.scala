@@ -16,9 +16,6 @@
 
 package v2.deleteSavings
 
-import play.api.Configuration
-import play.api.libs.json.JsValue
-import play.api.mvc.Result
 import api.config.MockAppConfig
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.audit.*
@@ -26,6 +23,9 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.routing.{Version, Version2}
+import play.api.Configuration
+import play.api.libs.json.JsValue
+import play.api.mvc.Result
 import v2.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
 import v2.deleteSavings.model.request.DeleteSavingsRequestData
 

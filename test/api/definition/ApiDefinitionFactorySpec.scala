@@ -16,12 +16,12 @@
 
 package api.definition
 
-import cats.implicits.catsSyntaxValidatedId
 import api.config.Deprecation.NotDeprecated
-import api.config.{MockAppConfig, AppConfig}
+import api.config.{AppConfig, MockAppConfig}
 import api.definition.APIStatus.{ALPHA, BETA}
 import api.routing.*
 import api.utils.UnitSpec
+import cats.implicits.catsSyntaxValidatedId
 import play.api.libs.json.Json
 
 import scala.language.reflectiveCalls

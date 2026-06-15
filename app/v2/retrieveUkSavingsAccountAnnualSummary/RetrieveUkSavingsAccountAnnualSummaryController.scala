@@ -16,11 +16,11 @@
 
 package v2.retrieveUkSavingsAccountAnnualSummary
 
-import play.api.mvc.*
 import api.config.AppConfig
 import api.controllers.*
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import api.utils.IdGenerator
+import play.api.mvc.*
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext

@@ -16,13 +16,13 @@
 
 package v2.retrieveSavings
 
-import play.api.Configuration
-import play.api.mvc.Result
 import api.config.MockAppConfig
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.domain.*
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
+import play.api.Configuration
+import play.api.mvc.Result
 import v2.retrieveSavings.def1.model.RetrieveSavingsControllerFixture
 import v2.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
 import v2.retrieveSavings.def1.model.response.*

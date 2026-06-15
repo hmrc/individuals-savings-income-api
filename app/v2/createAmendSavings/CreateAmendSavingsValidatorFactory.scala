@@ -16,9 +16,9 @@
 
 package v2.createAmendSavings
 
-import play.api.libs.json.JsValue
 import api.config.AppConfig
 import api.controllers.validators.Validator
+import play.api.libs.json.JsValue
 import v2.createAmendSavings.def1.Def1_CreateAmendSavingsValidator
 import v2.createAmendSavings.model.request.CreateAmendSavingsRequestData
 

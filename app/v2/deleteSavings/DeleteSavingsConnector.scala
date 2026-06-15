@@ -33,7 +33,7 @@ class DeleteSavingsConnector @Inject() (val http: HttpClientV2, val appConfig: A
   def deleteSavings(
       request: DeleteSavingsRequestData)(implicit hc: HeaderCarrier, ec: ExecutionContext, correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    import request._
+    import request.*
 
     val downstreamUri = if (taxYear.useTaxYearSpecificApi) {
       IfsUri[Unit](s"income-tax/income/savings/${taxYear.asTysDownstream}/$nino")

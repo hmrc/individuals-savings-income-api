@@ -16,10 +16,10 @@
 
 package v2.createAmendUkSavingsAnnualSummary
 
-import play.api.http.Status
 import api.config.AppConfig
 import api.connectors.DownstreamUri.IfsUri
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
+import play.api.http.Status
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import v2.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
@@ -34,8 +34,8 @@ class CreateAmendUkSavingsAnnualSummaryConnector @Inject() (val http: HttpClient
       hc: HeaderCarrier,
       cc: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
-    import requestData.*
     import api.connectors.httpparsers.StandardDownstreamHttpParser.*
+    import requestData.*
 
     implicit val successCode: SuccessCode = SuccessCode(Status.OK)
 

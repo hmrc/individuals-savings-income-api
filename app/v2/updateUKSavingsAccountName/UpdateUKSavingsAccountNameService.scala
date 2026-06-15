@@ -16,11 +16,11 @@
 
 package v2.updateUKSavingsAccountName
 
-import cats.implicits.*
-import models.errors.SavingsAccountIdFormatError
 import api.controllers.RequestContext
 import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
+import cats.implicits.*
+import models.errors.SavingsAccountIdFormatError
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
 import javax.inject.{Inject, Singleton}

@@ -36,8 +36,8 @@ class RetrieveSavingsConnector @Inject() (val http: HttpClientV2, val appConfig:
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[RetrieveSavingsResponse]] = {
 
-    import request._
-    import schema._
+    import request.*
+    import schema.*
 
     val downstreamUri = if (taxYear.useTaxYearSpecificApi) {
       IfsUri[DownstreamResp](s"income-tax/income/savings/${taxYear.asTysDownstream}/$nino")

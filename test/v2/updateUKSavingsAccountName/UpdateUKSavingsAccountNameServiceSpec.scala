@@ -16,12 +16,12 @@
 
 package v2.updateUKSavingsAccountName
 
-import models.domain.SavingsAccountId
-import models.errors.SavingsAccountIdFormatError
 import api.models.domain.Nino
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.{ServiceOutcome, ServiceSpec}
+import models.domain.SavingsAccountId
+import models.errors.SavingsAccountIdFormatError
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.requestBodyModel
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 

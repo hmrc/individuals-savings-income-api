@@ -16,12 +16,12 @@
 
 package api.routing
 
+import api.config.AppConfig
+import api.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
 import play.api.http.*
 import play.api.mvc.*
 import play.api.routing.Router
 import play.core.DefaultWebCommands
-import api.config.AppConfig
-import api.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
 
 import javax.inject.*
 

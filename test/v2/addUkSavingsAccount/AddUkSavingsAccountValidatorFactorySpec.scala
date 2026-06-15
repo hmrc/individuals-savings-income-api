@@ -16,9 +16,9 @@
 
 package v2.addUkSavingsAccount
 
-import play.api.libs.json.Json
 import api.controllers.validators.Validator
 import api.utils.UnitSpec
+import play.api.libs.json.Json
 import v2.addUkSavingsAccount.def1.Def1_AddUkSavingsAccountValidator
 import v2.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
 

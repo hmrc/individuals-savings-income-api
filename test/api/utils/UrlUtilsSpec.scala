@@ -16,7 +16,7 @@
 
 package api.utils
 
-import api.utils.UrlUtils._
+import api.utils.UrlUtils.*
 
 class UrlUtilsSpec extends UnitSpec {
 

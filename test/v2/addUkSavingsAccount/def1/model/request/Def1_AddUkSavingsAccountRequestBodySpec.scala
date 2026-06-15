@@ -16,9 +16,9 @@
 
 package v2.addUkSavingsAccount.def1.model.request
 
-import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 import api.config.MockAppConfig
 import api.utils.UnitSpec
+import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 
 class Def1_AddUkSavingsAccountRequestBodySpec extends UnitSpec with MockAppConfig {
 

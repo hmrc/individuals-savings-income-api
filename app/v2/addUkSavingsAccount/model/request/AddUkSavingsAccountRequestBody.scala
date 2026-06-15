@@ -16,9 +16,9 @@
 
 package v2.addUkSavingsAccount.model.request
 
-import play.api.libs.json.{JsObject, Json, OWrites}
 import api.config.AppConfig
 import api.utils.JsonWritesUtil
+import play.api.libs.json.{JsObject, Json, OWrites}
 import v2.addUkSavingsAccount.def1.model.request.Def1_AddUkSavingsAccountRequestBody
 
 trait AddUkSavingsAccountRequestBody

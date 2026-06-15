@@ -16,12 +16,12 @@
 
 package v2.createAmendUkSavingsAnnualSummary.def1
 
-import models.domain.SavingsAccountId
-import play.api.libs.json.{JsValue, Json}
 import api.config.MockAppConfig
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec
+import models.domain.SavingsAccountId
+import play.api.libs.json.{JsValue, Json}
 import v2.createAmendUkSavingsAnnualSummary.def1.model.request.*
 import v2.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
 

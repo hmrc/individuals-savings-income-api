@@ -16,11 +16,11 @@
 
 package v2.updateUKSavingsAccountName
 
-import models.domain.SavingsAccountId
 import api.connectors.{ConnectorSpec, DownstreamOutcome}
 import api.models.domain.Nino
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import api.models.outcomes.ResponseWrapper
+import models.domain.SavingsAccountId
 import uk.gov.hmrc.http.StringContextOps
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.requestBodyModel
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest

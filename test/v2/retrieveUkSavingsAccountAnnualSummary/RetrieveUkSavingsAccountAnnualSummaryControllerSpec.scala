@@ -16,20 +16,17 @@
 
 package v2.retrieveUkSavingsAccountAnnualSummary
 
-import models.domain.SavingsAccountId
-import play.api.Configuration
-import play.api.mvc.Result
 import api.config.MockAppConfig
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
+import models.domain.SavingsAccountId
+import play.api.Configuration
+import play.api.mvc.Result
 import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.RetrieveUkSavingsAccountAnnualSummaryControllerFixture
 import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.response.{
-  Def1_RetrieveUkSavingsAccountAnnualSummaryResponse,
-  Def1_RetrieveUkSavingsAnnualIncomeItem
-}
+import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.response.{Def1_RetrieveUkSavingsAccountAnnualSummaryResponse, Def1_RetrieveUkSavingsAnnualIncomeItem}
 import v2.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global

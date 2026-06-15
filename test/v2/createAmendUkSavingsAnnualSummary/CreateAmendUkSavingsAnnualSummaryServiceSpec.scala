@@ -16,17 +16,14 @@
 
 package v2.createAmendUkSavingsAnnualSummary
 
-import models.domain.SavingsAccountId
-import models.errors.RuleOutsideAmendmentWindowError
 import api.controllers.EndpointLogContext
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.{
-  Def1_CreateAmendUkSavingsAnnualSummaryRequestBody,
-  Def1_CreateAmendUkSavingsAnnualSummaryRequestData
-}
+import models.domain.SavingsAccountId
+import models.errors.RuleOutsideAmendmentWindowError
+import v2.createAmendUkSavingsAnnualSummary.def1.model.request.{Def1_CreateAmendUkSavingsAnnualSummaryRequestBody, Def1_CreateAmendUkSavingsAnnualSummaryRequestData}
 
 import scala.concurrent.Future
 

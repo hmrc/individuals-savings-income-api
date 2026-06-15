@@ -16,8 +16,8 @@
 
 package v2.listUkSavingsAccounts.def1.model.response
 
-import play.api.libs.json.{JsError, Json}
 import api.utils.UnitSpec
+import play.api.libs.json.{JsError, Json}
 
 class Def1_ListUkSavingsAccountsResponseSpec extends UnitSpec {
 

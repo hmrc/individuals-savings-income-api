@@ -16,15 +16,15 @@
 
 package v2.listUkSavingsAccounts
 
-import models.domain.SavingsAccountId
-import play.api.Configuration
-import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.Result
 import api.config.MockAppConfig
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.domain.Nino
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
+import models.domain.SavingsAccountId
+import play.api.Configuration
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.Result
 import v2.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
 import v2.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
 

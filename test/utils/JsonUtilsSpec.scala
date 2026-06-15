@@ -16,8 +16,8 @@
 
 package utils
 
-import play.api.libs.json._
 import api.utils.UnitSpec
+import play.api.libs.json.*
 
 class JsonUtilsSpec extends UnitSpec with JsonUtils {
 

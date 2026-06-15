@@ -16,7 +16,7 @@
 
 package v2.deleteSavings.def1
 
-import api.config.{MockAppConfig, AppConfig}
+import api.config.{AppConfig, MockAppConfig}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec

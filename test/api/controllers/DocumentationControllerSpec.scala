@@ -16,16 +16,16 @@
 
 package api.controllers
 
-import com.typesafe.config.ConfigFactory
-import controllers.*
-import play.api.http.*
-import play.api.mvc.Result
-import play.api.{Configuration, Environment}
 import api.config.*
 import api.config.rewriters.*
 import api.config.rewriters.DocumentationRewriters.CheckAndRewrite
 import api.definition.*
 import api.routing.{Version, Versions}
+import com.typesafe.config.ConfigFactory
+import controllers.*
+import play.api.http.*
+import play.api.mvc.Result
+import play.api.{Configuration, Environment}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global

@@ -16,10 +16,10 @@
 
 package v2.retrieveSavings
 
-import cats.implicits._
 import api.controllers.RequestContext
-import api.models.errors._
+import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
+import cats.implicits.*
 import v2.retrieveSavings.model.request.RetrieveSavingsRequestData
 import v2.retrieveSavings.model.response.RetrieveSavingsResponse
 

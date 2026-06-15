@@ -16,9 +16,9 @@
 
 package v2.createAmendUkSavingsAnnualSummary
 
-import play.api.libs.json.JsValue
 import api.config.AppConfig
 import api.controllers.validators.Validator
+import play.api.libs.json.JsValue
 import v2.createAmendUkSavingsAnnualSummary.def1.Def1_CreateAmendUkSavingsAnnualSummaryValidator
 import v2.createAmendUkSavingsAnnualSummary.model.request.*
 

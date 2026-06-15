@@ -16,8 +16,8 @@
 
 package v2.addUkSavingsAccount.def1.model.request
 
-import play.api.libs.json.{Json, OWrites, Reads}
 import api.config.AppConfig
+import play.api.libs.json.{Json, OWrites, Reads}
 import v2.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestBody
 
 case class Def1_AddUkSavingsAccountRequestBody(accountName: String) extends AddUkSavingsAccountRequestBody

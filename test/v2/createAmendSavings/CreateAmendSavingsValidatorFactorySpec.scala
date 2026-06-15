@@ -16,10 +16,10 @@
 
 package v2.createAmendSavings
 
-import play.api.libs.json.{JsValue, Json}
 import api.config.MockAppConfig
 import api.controllers.validators.Validator
 import api.utils.UnitSpec
+import play.api.libs.json.{JsValue, Json}
 import v2.createAmendSavings.def1.Def1_CreateAmendSavingsValidator
 import v2.createAmendSavings.model.request.CreateAmendSavingsRequestData
 

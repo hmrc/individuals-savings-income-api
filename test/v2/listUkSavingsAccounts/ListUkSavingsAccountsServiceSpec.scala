@@ -16,13 +16,13 @@
 
 package v2.listUkSavingsAccounts
 
-import models.domain.SavingsAccountId
-import models.errors.SavingsAccountIdFormatError
 import api.controllers.EndpointLogContext
 import api.models.domain.Nino
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
+import models.domain.SavingsAccountId
+import models.errors.SavingsAccountIdFormatError
 import v2.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
 import v2.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
 

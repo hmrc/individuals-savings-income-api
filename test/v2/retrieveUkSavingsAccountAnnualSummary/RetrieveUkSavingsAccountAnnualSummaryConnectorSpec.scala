@@ -16,10 +16,10 @@
 
 package v2.retrieveUkSavingsAccountAnnualSummary
 
-import models.domain.SavingsAccountId
 import api.connectors.ConnectorSpec
 import api.models.domain.{Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
+import models.domain.SavingsAccountId
 import uk.gov.hmrc.http.StringContextOps
 import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
 import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.response.*

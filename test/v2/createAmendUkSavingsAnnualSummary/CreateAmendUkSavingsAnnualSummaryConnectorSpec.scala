@@ -16,11 +16,11 @@
 
 package v2.createAmendUkSavingsAnnualSummary
 
-import models.domain.SavingsAccountId
-import play.api.libs.json.{JsObject, Json}
 import api.connectors.{ConnectorSpec, DownstreamOutcome}
 import api.models.domain.{Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
+import models.domain.SavingsAccountId
+import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.StringContextOps
 import v2.createAmendUkSavingsAnnualSummary.def1.model.request.*
 

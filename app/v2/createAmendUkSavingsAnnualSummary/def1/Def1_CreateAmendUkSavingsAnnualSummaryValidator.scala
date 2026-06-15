@@ -16,20 +16,17 @@
 
 package v2.createAmendUkSavingsAnnualSummary.def1
 
-import cats.data.Validated
-import cats.implicits.catsSyntaxTuple4Semigroupal
-import play.api.libs.json.JsValue
-import resolvers.ResolveSavingsAccountId
 import api.config.AppConfig
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.*
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
+import cats.data.Validated
+import cats.implicits.catsSyntaxTuple4Semigroupal
+import play.api.libs.json.JsValue
+import resolvers.ResolveSavingsAccountId
 import v2.createAmendUkSavingsAnnualSummary.def1.Def1_CreateAmendUkSavingsAnnualRulesValidator.validateBusinessRules
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.{
-  Def1_CreateAmendUkSavingsAnnualSummaryRequestBody,
-  Def1_CreateAmendUkSavingsAnnualSummaryRequestData
-}
+import v2.createAmendUkSavingsAnnualSummary.def1.model.request.{Def1_CreateAmendUkSavingsAnnualSummaryRequestBody, Def1_CreateAmendUkSavingsAnnualSummaryRequestData}
 import v2.createAmendUkSavingsAnnualSummary.model.request.*
 
 class Def1_CreateAmendUkSavingsAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue)(appConfig: AppConfig)

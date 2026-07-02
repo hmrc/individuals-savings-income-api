@@ -1,5 +1,6 @@
 
-# individuals-savings-income-api
+Individuals Savings Income API
+========================
 
 [![Apache-2.0 license](http://img.shields.io/badge/license-Apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
@@ -15,9 +16,13 @@ The Individuals Savings Income API allows a developer to create, amend, retrieve
 
 ## Development Setup
 
-Run from the console using: `sbt run` (starts on port 9770 by default)
+Run the microservice from the console using: `sbt run` (starts on port 9770 by default)
 
-Start the service manager profile: `sm2 --start MTDFB_INDIVIDUALS_SAVINGS_INCOME_API`
+Start the service manager profile:
+
+```bash
+sm2 --start MTDFB_INDIVIDUALS_SAVINGS_INCOME_API
+```
 
 ## Run Tests
 
@@ -33,18 +38,25 @@ following contents:
 -J-XX:+UseG1GC
 ```
 
-## Viewing OAS
+## View OpenAPI Specification (OAS) documentation
 
-To view documentation locally ensure the Individuals Savings Income API is running, and run api-documentation-frontend:
+To view the OpenAPI documentation locally, ensure the API is running.
 
+Start the `api-documentation-frontend` and `api-definition` services using the Service Manager profile:
+
+```bash
+sm2 -start DEVHUB_PREVIEW_OPENAPI
 ```
-./run_local_with_dependencies.sh
+
+Then navigate to the preview page:
+
+```text
+http://localhost:9680/api-documentation/docs/openapi/preview
 ```
 
-Then go to http://localhost:9680/api-documentation/docs/openapi/preview and enter the full URL path to the YAML file with the
-appropriate port and version:
+Enter the specification URL using the appropriate port and API version:
 
-```
+```text
 http://localhost:9770/api/conf/2.0/application.yaml
 ```
 
@@ -58,10 +70,8 @@ You can create a GitHub issue [here](https://github.com/hmrc/income-tax-mtd-chan
 
 ## API Reference / Documentation
 
-Available on
-the [Individuals Savings Income Documentation](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individuals-savings-income-api)
+Available on the [Individuals Savings Income Documentation](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individuals-savings-income-api)
 
 ## License
 
-This code is open source software licensed under
-the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html")
+This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html")

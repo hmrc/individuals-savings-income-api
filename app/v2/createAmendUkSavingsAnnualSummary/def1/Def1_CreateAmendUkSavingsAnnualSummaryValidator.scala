@@ -19,6 +19,7 @@ package v2.createAmendUkSavingsAnnualSummary.def1
 import api.config.AppConfig
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.*
+import api.controllers.validators.resolvers.ResolveTaxYear.ResolveDetailedTaxYear
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -35,7 +36,7 @@ import v2.createAmendUkSavingsAnnualSummary.model.request.*
 class Def1_CreateAmendUkSavingsAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue)(appConfig: AppConfig)
     extends Validator[CreateAmendUkSavingsAnnualSummaryRequestData] {
   private lazy val minimumTaxYear = appConfig.ukSavingsAccountAnnualSummaryMinimumTaxYear
-  private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.ending(minimumTaxYear))
+  private lazy val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.ending(minimumTaxYear))
   private val resolveJson         = new ResolveNonEmptyJsonObject[Def1_CreateAmendUkSavingsAnnualSummaryRequestBody]()
 
   def validate: Validated[Seq[MtdError], CreateAmendUkSavingsAnnualSummaryRequestData] = {

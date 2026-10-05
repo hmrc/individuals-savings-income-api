@@ -18,7 +18,8 @@ package v2.retrieveUkSavingsAccountAnnualSummary.def1
 
 import api.config.AppConfig
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.ResolveNino
+import api.controllers.validators.resolvers.ResolveTaxYear.ResolveDetailedTaxYear
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -30,7 +31,7 @@ import v2.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsA
 class Def1_RetrieveUkSavingsAccountAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String)(appConfig: AppConfig)
     extends Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] {
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
-  private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.ending(minimumTaxYear))
+  private lazy val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.ending(minimumTaxYear))
 
   def validate: Validated[Seq[MtdError], RetrieveUkSavingsAccountAnnualSummaryRequestData] =
     (

@@ -18,7 +18,8 @@ package v2.deleteSavings.def1
 
 import api.config.AppConfig
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.ResolveNino
+import api.controllers.validators.resolvers.ResolveTaxYear.ResolveDetailedTaxYear
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -29,7 +30,7 @@ import v2.deleteSavings.model.request.DeleteSavingsRequestData
 class Def1_DeleteSavingsValidator(nino: String, taxYear: String)(appConfig: AppConfig) extends Validator[DeleteSavingsRequestData] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
-  private lazy val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.ending(minimumTaxYear))
+  private lazy val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.ending(minimumTaxYear))
 
   def validate: Validated[Seq[MtdError], DeleteSavingsRequestData] = (ResolveNino(nino), resolveTaxYear(taxYear))
     .mapN(Def1_DeleteSavingsRequestData.apply)

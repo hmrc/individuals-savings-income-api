@@ -19,7 +19,6 @@ package v2.deleteSavings.def1
 import api.models.errors.*
 import api.services.*
 import api.support.IntegrationBaseSpec
-import models.errors.RuleOutsideAmendmentWindowError
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status.*
 import play.api.libs.json.Json

@@ -20,7 +20,6 @@ import api.controllers.RequestContext
 import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits.*
-import models.errors.RuleOutsideAmendmentWindowError
 import v2.deleteSavings.model.request.DeleteSavingsRequestData
 
 import javax.inject.{Inject, Singleton}

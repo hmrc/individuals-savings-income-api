@@ -21,7 +21,6 @@ import api.models.audit.*
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import models.domain.SavingsAccountId
-import models.errors.SavingsAccountIdFormatError
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result

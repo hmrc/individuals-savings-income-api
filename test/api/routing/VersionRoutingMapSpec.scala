@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 
-package routing
+package api.routing
 
-import api.routing.*
-import com.google.inject.Singleton
+import api.utils.UnitSpec
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.routing.Router
 
-import javax.inject.Inject
+class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
 
-@Singleton
-case class SavingsVersionRoutingMap @Inject() (defaultRouter: Router, v2Router: v2.Routes) extends VersionRoutingMap {
+  private val defaultRouter: Router = mock[Router]
+  private val v2Routes: v2.Routes   = app.injector.instanceOf[v2.Routes]
 
-  val map: Map[Version, Router] = Map(
-    Version2 -> v2Router
+  private val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
+    defaultRouter = defaultRouter,
+    v2Router = v2Routes
   )
+
+  "VersionRoutingMap" when {
+    "routing to v2" should {
+      "return the v2 router" in {
+        versionRoutingMap.map(Version2) shouldBe v2Routes
+      }
+    }
+  }
 
 }

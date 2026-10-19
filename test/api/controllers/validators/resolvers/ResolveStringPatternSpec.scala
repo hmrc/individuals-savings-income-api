@@ -16,10 +16,9 @@
 
 package api.controllers.validators.resolvers
 
-import api.models.errors.TaxYearFormatError
+import api.models.errors.{AccountNameFormatError, TaxYearFormatError}
 import api.utils.UnitSpec
 import cats.data.Validated.{Invalid, Valid}
-import models.errors.AccountNameFormatError
 
 import scala.util.matching.Regex
 

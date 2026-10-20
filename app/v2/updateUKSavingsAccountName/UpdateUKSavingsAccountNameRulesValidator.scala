@@ -20,7 +20,6 @@ import api.controllers.validators.RulesValidator
 import api.controllers.validators.resolvers.ResolveStringPattern
 import api.models.errors.*
 import cats.data.Validated
-import models.errors.AccountNameFormatError
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest
 
 object UpdateUKSavingsAccountNameRulesValidator extends RulesValidator[UpdateUKSavingsAccountNameRequest] {

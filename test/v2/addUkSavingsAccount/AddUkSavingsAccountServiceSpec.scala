@@ -21,7 +21,6 @@ import api.models.domain.Nino
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import models.errors.{RuleDuplicateAccountNameError, RuleMaximumSavingsAccountsLimitError}
 import v2.addUkSavingsAccount.def1.model.request.{Def1_AddUkSavingsAccountRequestBody, Def1_AddUkSavingsAccountRequestData}
 import v2.addUkSavingsAccount.def1.model.response.Def1_AddUkSavingsAccountResponse
 

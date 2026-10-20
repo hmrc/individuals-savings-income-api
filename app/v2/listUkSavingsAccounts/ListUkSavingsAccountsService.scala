@@ -20,7 +20,6 @@ import api.controllers.RequestContext
 import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits.*
-import models.errors.SavingsAccountIdFormatError
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 import v2.listUkSavingsAccounts.model.response.ListUkSavingsAccountsResponse
 

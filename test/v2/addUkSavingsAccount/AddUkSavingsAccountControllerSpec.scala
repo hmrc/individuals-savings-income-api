@@ -22,7 +22,6 @@ import api.models.audit.*
 import api.models.domain.Nino
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
-import models.errors.RuleMaximumSavingsAccountsLimitError
 import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result

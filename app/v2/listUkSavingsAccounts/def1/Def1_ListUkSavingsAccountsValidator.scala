@@ -18,12 +18,11 @@ package v2.listUkSavingsAccounts.def1
 
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.ResolveNino
-import api.models.errors.MtdError
+import api.models.errors.{MtdError, SavingsAccountIdFormatError}
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import cats.implicits.catsSyntaxTuple2Semigroupal
 import models.domain.SavingsAccountId
-import models.errors.SavingsAccountIdFormatError
 import v2.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 

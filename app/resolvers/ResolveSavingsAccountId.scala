@@ -17,10 +17,9 @@
 package resolvers
 
 import api.controllers.validators.resolvers.{ResolveStringPattern, ResolverSupport}
-import api.models.errors.MtdError
+import api.models.errors.{MtdError, SavingsAccountIdFormatError}
 import cats.data.Validated
 import models.domain.SavingsAccountId
-import models.errors.SavingsAccountIdFormatError
 
 object ResolveSavingsAccountId extends ResolverSupport {
 

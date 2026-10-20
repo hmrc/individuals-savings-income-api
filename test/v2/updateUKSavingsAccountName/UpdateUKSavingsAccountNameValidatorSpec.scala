@@ -21,7 +21,6 @@ import api.models.errors.*
 import api.models.utils.JsonErrorValidators
 import api.utils.UnitSpec
 import models.domain.SavingsAccountId
-import models.errors.{AccountNameFormatError, SavingsAccountIdFormatError}
 import play.api.libs.json.*
 import v2.updateUKSavingsAccountName.fixture.UpdateUKSavingsAccountNameFixtures.{nonValidRequestBodyJson, requestBodyModel, validRequestJson}
 import v2.updateUKSavingsAccountName.model.request.UpdateUKSavingsAccountNameRequest

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package v2.listUkSavingsAccounts.def1
 import api.models.errors.*
 import api.services.*
 import api.support.IntegrationBaseSpec
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.*
@@ -28,8 +27,8 @@ class ListUkSavingsAccountsControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String             = "AA123456A"
-    val savingsAccountId: String = "SAVKB2UVwUTBQGJ"
+    val nino: String                     = "AA123456A"
+    private val savingsAccountId: String = "SAVKB2UVwUTBQGJ"
 
     val downstreamResponse: JsValue = Json.parse(
       """
@@ -38,20 +37,53 @@ class ListUkSavingsAccountsControllerISpec extends IntegrationBaseSpec {
         |    {
         |      "incomeSourceId": "000000000000001",
         |      "incomeSourceName": "Bank Account 1",
-        |      "startDate": "2025-01-30",
-        |      "endDate": "2025-03-30"
+        |      "startDate": "2025-04-06",
+        |      "endDate": "2026-04-05"
         |    },
         |    {
         |      "incomeSourceId": "000000000000002",
         |      "incomeSourceName": "Bank Account 2",
-        |      "startDate": "2025-01-30",
-        |      "endDate": "2025-03-30"
+        |      "startDate": "2025-04-06",
+        |      "endDate": "2026-04-05"
         |    },
         |    {
         |      "incomeSourceId": "000000000000003",
         |      "incomeSourceName": "Bank Account 3",
-        |      "startDate": "2025-01-30",
-        |      "endDate": "2025-03-30"
+        |      "startDate": "2025-04-06",
+        |      "endDate": "2026-04-05"
+        |    }
+        |  ]
+        |}
+      """.stripMargin
+    )
+
+    val downstreamResponseWithDuplicates: JsValue = Json.parse(
+      """
+        |{
+        |  "bbsi": [
+        |    {
+        |      "incomeSourceId": "000000000000001",
+        |      "incomeSourceName": "Bank Account 1",
+        |      "startDate": "2027-04-06",
+        |      "endDate": "2028-04-05"
+        |    },
+        |    {
+        |      "incomeSourceId": "000000000000001",
+        |      "incomeSourceName": "Bank Account 1",
+        |      "startDate": "2025-04-06",
+        |      "endDate": "2026-04-05"
+        |    },
+        |    {
+        |      "incomeSourceId": "000000000000002",
+        |      "incomeSourceName": "Bank Account 2",
+        |      "startDate": "2025-04-06",
+        |      "endDate": "2026-04-05"
+        |    },
+        |    {
+        |      "incomeSourceId": "000000000000003",
+        |      "incomeSourceName": "Bank Account 3",
+        |      "startDate": "2025-04-06",
+        |      "endDate": "2026-04-05"
         |    }
         |  ]
         |}
@@ -79,121 +111,145 @@ class ListUkSavingsAccountsControllerISpec extends IntegrationBaseSpec {
       """.stripMargin
     )
 
-    private def uri: String = s"/uk-accounts/$nino"
+    val mtdQueryParams: Seq[(String, String)] = Seq("savingsAccountId" -> savingsAccountId)
 
-    def downstreamUri: String = s"/itsd/income-sources/v2/$nino"
+    val downstreamUri: String = s"/itsd/income-sources/v2/$nino"
 
-    private def queryParams: Seq[(String, String)] =
-      Seq("savingsAccountId" -> Some(savingsAccountId))
-        .collect { case (k, Some(v)) =>
-          (k, v)
-        }
+    val downstreamQueryParams: Map[String, String] = Map("incomeSourceId" -> savingsAccountId)
 
-    def setupStubs(): StubMapping
+    def setupStubs(): Unit = ()
 
     def request: WSRequest = {
+      AuthStub.authorised()
+      MtdIdLookupStub.ninoFound(nino)
       setupStubs()
-      buildRequest(uri)
-        .addQueryStringParameters(queryParams*)
+      buildRequest(s"/uk-accounts/$nino")
+        .addQueryStringParameters(mtdQueryParams*)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.2.0+json"),
-          (AUTHORIZATION, "Bearer 123") // some bearer token
+          (AUTHORIZATION, "Bearer 123")
         )
     }
 
+    def errorBody(code: String): String =
+      s"""
+        |[
+        |  {
+        |    "errorCode": "$code",
+        |    "errorDescription": "error description"
+        |  }
+        |]
+      """.stripMargin
+
   }
 
-  "Calling the 'list UK Savings Accounts' endpoint" should {
+  "Calling the 'List All UK Savings Accounts' endpoint" should {
     "return a 200 status code" when {
-      "any valid request is made" in new Test {
-
-        override def setupStubs(): StubMapping = {
-          AuditStub.audit()
-          AuthStub.authorised()
-          MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map("incomeSourceId" -> savingsAccountId), OK, downstreamResponse)
-        }
+      "any valid request is made with query parameter savingsAccountId" in new Test {
+        override def setupStubs(): Unit = DownstreamStub.onSuccess(
+          method = DownstreamStub.GET,
+          uri = downstreamUri,
+          queryParams = downstreamQueryParams,
+          status = OK,
+          body = downstreamResponse
+        )
 
         val response: WSResponse = await(request.get())
+
         response.status shouldBe OK
         response.json shouldBe mtdResponse
         response.header("Content-Type") shouldBe Some("application/json")
+        response.header("X-CorrelationId").nonEmpty shouldBe true
+      }
+
+      "any valid request is made without query parameter savingsAccountId" in new Test {
+        override val mtdQueryParams: Seq[(String, String)]      = Seq.empty
+        override val downstreamQueryParams: Map[String, String] = Map.empty
+
+        override def setupStubs(): Unit = DownstreamStub.onSuccess(
+          method = DownstreamStub.GET,
+          uri = downstreamUri,
+          queryParams = downstreamQueryParams,
+          status = OK,
+          body = downstreamResponse
+        )
+
+        val response: WSResponse = await(request.get())
+
+        response.status shouldBe OK
+        response.json shouldBe mtdResponse
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.header("X-CorrelationId").nonEmpty shouldBe true
+      }
+
+      "duplicate savings accounts are returned from downstream" in new Test {
+        override def setupStubs(): Unit = DownstreamStub.onSuccess(
+          method = DownstreamStub.GET,
+          uri = downstreamUri,
+          queryParams = downstreamQueryParams,
+          status = OK,
+          body = downstreamResponseWithDuplicates
+        )
+
+        val response: WSResponse = await(request.get())
+
+        response.status shouldBe OK
+        response.json shouldBe mtdResponse
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.header("X-CorrelationId").nonEmpty shouldBe true
       }
     }
 
     "return error according to spec" when {
+      def validationErrorTest(requestNino: String, requestSavingsAccountId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        s"validation fails with ${expectedBody.code} error" in new Test {
+          override val nino: String                          = requestNino
+          override val mtdQueryParams: Seq[(String, String)] = Seq("savingsAccountId" -> requestSavingsAccountId)
 
-      "validation error" when {
-        def validationErrorTest(requestNino: String, requestSavingsAccountId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"validation fails with ${expectedBody.code} error" in new Test {
+          val response: WSResponse = await(request.get())
 
-            override val nino: String             = requestNino
-            override val savingsAccountId: String = requestSavingsAccountId
-
-            override def setupStubs(): StubMapping = {
-              AuditStub.audit()
-              AuthStub.authorised()
-              MtdIdLookupStub.ninoFound(nino)
-            }
-
-            val response: WSResponse = await(request.get())
-            response.status shouldBe expectedStatus
-            response.json shouldBe Json.toJson(expectedBody)
-            response.header("Content-Type") shouldBe Some("application/json")
-          }
+          response.status shouldBe expectedStatus
+          response.json shouldBe expectedBody.asJson
+          response.header("Content-Type") shouldBe Some("application/json")
         }
-
-        val input = Seq(
-          ("AA1123A", "SAVKB2UVwUTBQGJ", BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "SAVKB2UVwUTBQG", BAD_REQUEST, SavingsAccountIdFormatError)
-        )
-        input.foreach(args => validationErrorTest.tupled(args))
       }
 
-      "downstream service error" when {
-        def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"downstream returns a code $downstreamCode error and status $downstreamStatus" in new Test {
+      val validationInput: Seq[(String, String, Int, MtdError)] = Seq(
+        ("AA1123A", "SAVKB2UVwUTBQGJ", BAD_REQUEST, NinoFormatError),
+        ("AA123456A", "SAVKB2UVwUTBQG", BAD_REQUEST, SavingsAccountIdFormatError)
+      )
 
-            override def setupStubs(): StubMapping = {
-              AuditStub.audit()
-              AuthStub.authorised()
-              MtdIdLookupStub.ninoFound(nino)
-              DownstreamStub.onError(
-                DownstreamStub.GET,
-                downstreamUri,
-                Map("incomeSourceId" -> savingsAccountId),
-                downstreamStatus,
-                errorBody(downstreamCode))
-            }
+      validationInput.foreach(validationErrorTest.tupled)
 
-            val response: WSResponse = await(request.get())
-            response.status shouldBe expectedStatus
-            response.json shouldBe Json.toJson(expectedBody)
-            response.header("Content-Type") shouldBe Some("application/json")
-          }
+      def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        s"downstream returns a code $downstreamCode error and status $downstreamStatus" in new Test {
+          override def setupStubs(): Unit = DownstreamStub.onError(
+            method = DownstreamStub.GET,
+            uri = downstreamUri,
+            queryParams = downstreamQueryParams,
+            errorStatus = downstreamStatus,
+            errorBody = errorBody(downstreamCode)
+          )
+
+          val response: WSResponse = await(request.get())
+
+          response.status shouldBe expectedStatus
+          response.json shouldBe expectedBody.asJson
+          response.header("Content-Type") shouldBe Some("application/json")
+          response.header("X-CorrelationId").nonEmpty shouldBe true
         }
-
-        def errorBody(code: String): String =
-          s"""
-            |[
-            |    {
-            |        "errorCode": "$code",
-            |        "errorDescription": "error description"
-            |    }
-            |]
-          """.stripMargin
-
-        val input = Seq(
-          (BAD_REQUEST, "1215", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "1117", INTERNAL_SERVER_ERROR, InternalError),
-          (BAD_REQUEST, "1122", INTERNAL_SERVER_ERROR, InternalError),
-          (BAD_REQUEST, "1007", BAD_REQUEST, SavingsAccountIdFormatError),
-          (BAD_REQUEST, "1229", INTERNAL_SERVER_ERROR, InternalError),
-          (NOT_FOUND, "5010", NOT_FOUND, NotFoundError)
-        )
-
-        input.foreach(args => serviceErrorTest.tupled(args))
       }
+
+      val serviceInput: Seq[(Int, String, Int, MtdError)] = Seq(
+        (BAD_REQUEST, "1215", BAD_REQUEST, NinoFormatError),
+        (BAD_REQUEST, "1117", INTERNAL_SERVER_ERROR, InternalError),
+        (BAD_REQUEST, "1122", INTERNAL_SERVER_ERROR, InternalError),
+        (BAD_REQUEST, "1007", BAD_REQUEST, SavingsAccountIdFormatError),
+        (BAD_REQUEST, "1229", INTERNAL_SERVER_ERROR, InternalError),
+        (NOT_FOUND, "5010", NOT_FOUND, NotFoundError)
+      )
+
+      serviceInput.foreach(serviceErrorTest.tupled)
     }
   }
 

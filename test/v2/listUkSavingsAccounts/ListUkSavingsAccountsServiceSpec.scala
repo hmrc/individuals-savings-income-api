@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v2.listUkSavingsAccounts
 
-import api.controllers.EndpointLogContext
+import api.connectors.DownstreamOutcome
 import api.models.domain.Nino
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
@@ -24,17 +24,19 @@ import api.services.ServiceSpec
 import models.domain.SavingsAccountId
 import v2.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
 import v2.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
+import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
+import v2.listUkSavingsAccounts.model.response.ListUkSavingsAccountsResponse
 
 import scala.concurrent.Future
 
 class ListUkSavingsAccountsServiceSpec extends ServiceSpec {
 
-  private val nino             = "AA112233A"
-  private val savingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
+  private val requestData: ListUkSavingsAccountsRequestData = Def1_ListUkSavingsAccountsRequestData(
+    nino = Nino("AA112233A"),
+    savingsAccountId = Some(SavingsAccountId("SAVKB2UVwUTBQGJ"))
+  )
 
-  private val requestData = Def1_ListUkSavingsAccountsRequestData(Nino(nino), Some(savingsAccountId))
-
-  private val validResponse = Def1_ListUkSavingsAccountsResponse(
+  private val validResponse: ListUkSavingsAccountsResponse = Def1_ListUkSavingsAccountsResponse(
     savingsAccounts = Some(
       Seq(
         Def1_UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Bank Account 1")),
@@ -44,16 +46,44 @@ class ListUkSavingsAccountsServiceSpec extends ServiceSpec {
     )
   )
 
-  trait Test extends MockListUkSavingsAccountsConnector {
-    implicit val logContext: EndpointLogContext = EndpointLogContext("c", "ep")
-
+  private trait Test extends MockListUkSavingsAccountsConnector {
     val service: ListUkSavingsAccountsService = new ListUkSavingsAccountsService(connector = mockListUkSavingsAccountsConnector)
   }
 
   "ListUkSavingsAccountsService" when {
     "listUkSavingsAccounts" must {
       "return correct result for a success" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, validResponse))
+        val outcome: DownstreamOutcome[ListUkSavingsAccountsResponse] = Right(ResponseWrapper(correlationId, validResponse))
+
+        MockListUkSavingsAccountsConnector
+          .listUkSavingsAccounts(requestData)
+          .returns(Future.successful(outcome))
+
+        await(service.listUkSavingsAccounts(requestData)) shouldBe outcome
+      }
+
+      "deduplicate savings accounts by savingsAccountId" in new Test {
+        val responseWithDuplicates: ListUkSavingsAccountsResponse = Def1_ListUkSavingsAccountsResponse(
+          savingsAccounts = Some(
+            Seq(
+              Def1_UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Bank Account 1")),
+              Def1_UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Duplicate Bank Account 1")),
+              Def1_UkSavingsAccount(savingsAccountId = "000000000000002", accountName = Some("Bank Account 2")),
+              Def1_UkSavingsAccount(savingsAccountId = "000000000000003", accountName = Some("Bank Account 3"))
+            )
+          )
+        )
+
+        MockListUkSavingsAccountsConnector
+          .listUkSavingsAccounts(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithDuplicates))))
+
+        await(service.listUkSavingsAccounts(requestData)) shouldBe Right(ResponseWrapper(correlationId, validResponse))
+      }
+
+      "preserve missing savings accounts" in new Test {
+        val outcome: DownstreamOutcome[ListUkSavingsAccountsResponse] =
+          Right(ResponseWrapper(correlationId, Def1_ListUkSavingsAccountsResponse(savingsAccounts = None)))
 
         MockListUkSavingsAccountsConnector
           .listUkSavingsAccounts(requestData)
@@ -63,7 +93,6 @@ class ListUkSavingsAccountsServiceSpec extends ServiceSpec {
       }
 
       "map errors according to spec" when {
-
         def serviceError(downstreamErrorCode: String, error: MtdError): Unit =
           s"a $downstreamErrorCode error is returned from the service" in new Test {
 
@@ -74,7 +103,7 @@ class ListUkSavingsAccountsServiceSpec extends ServiceSpec {
             await(service.listUkSavingsAccounts(requestData)) shouldBe Left(ErrorWrapper(correlationId, error))
           }
 
-        val errors = List(
+        val errors: Seq[(String, MtdError)] = List(
           ("1215", NinoFormatError),
           ("1117", InternalError),
           ("1122", InternalError),

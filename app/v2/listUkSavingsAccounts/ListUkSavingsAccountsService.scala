@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import api.controllers.RequestContext
 import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits.*
+import v2.listUkSavingsAccounts.def1.model.response.Def1_ListUkSavingsAccountsResponse
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 import v2.listUkSavingsAccounts.model.response.ListUkSavingsAccountsResponse
 
@@ -32,7 +33,11 @@ class ListUkSavingsAccountsService @Inject() (connector: ListUkSavingsAccountsCo
   def listUkSavingsAccounts(request: ListUkSavingsAccountsRequestData)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[ListUkSavingsAccountsResponse]] =
-    connector.listUkSavingsAccounts(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+    connector.listUkSavingsAccounts(request).map(_.bimap(mapDownstreamErrors(downstreamErrorMap), _.map(deduplicateSavingsAccounts)))
+
+  private def deduplicateSavingsAccounts(response: ListUkSavingsAccountsResponse): ListUkSavingsAccountsResponse = response match {
+    case def1: Def1_ListUkSavingsAccountsResponse => def1.copy(savingsAccounts = def1.savingsAccounts.map(_.distinctBy(_.savingsAccountId)))
+  }
 
   private val downstreamErrorMap: Map[String, MtdError] = Map(
     "1215" -> NinoFormatError,

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v2.createAmendSavings.def1.model.request
+package v2.createAmendSavings.model.request
 
 import api.utils.UnitSpec
 import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 
-class Def1_CreateAmendSavingsRequestBodySpec extends UnitSpec {
+class CreateAmendSavingsRequestBodySpec extends UnitSpec {
 
   val mtdJson: JsValue = Json.parse(
     """
@@ -61,8 +61,8 @@ class Def1_CreateAmendSavingsRequestBodySpec extends UnitSpec {
       foreignTaxCreditRelief = Some(true)
     )
 
-  val requestBodyModel: Def1_CreateAmendSavingsRequestBody =
-    Def1_CreateAmendSavingsRequestBody(
+  val requestBodyModel: CreateAmendSavingsRequestBody =
+    CreateAmendSavingsRequestBody(
       securities = Some(securitiesModel),
       foreignInterest = Some(Seq(foreignInterestItemModel))
     )
@@ -118,7 +118,7 @@ class Def1_CreateAmendSavingsRequestBodySpec extends UnitSpec {
   "AmendSavingsRequestBody" when {
     "read from valid JSON" should {
       "produce the expected AmendSavingsRequestBody object" in {
-        mtdJson.as[Def1_CreateAmendSavingsRequestBody] shouldBe requestBodyModel
+        mtdJson.as[CreateAmendSavingsRequestBody] shouldBe requestBodyModel
       }
 
       "preserve empty foreign interest arrays" in {
@@ -135,19 +135,19 @@ class Def1_CreateAmendSavingsRequestBodySpec extends UnitSpec {
             |}
             |""".stripMargin
         )
-        mtdJsonEmptyForeignInterest.as[Def1_CreateAmendSavingsRequestBody] shouldBe requestBodyModel.copy(foreignInterest = Some(Seq.empty))
+        mtdJsonEmptyForeignInterest.as[CreateAmendSavingsRequestBody] shouldBe requestBodyModel.copy(foreignInterest = Some(Seq.empty))
       }
     }
 
     "read from invalid JSON" should {
       "produce a JsError" in {
-        invalidJson.validate[Def1_CreateAmendSavingsRequestBody] shouldBe a[JsError]
+        invalidJson.validate[CreateAmendSavingsRequestBody] shouldBe a[JsError]
       }
     }
 
     "read from empty JSON" should {
       "produce an empty AmendSavingsRequestBody object" in {
-        emptyJson.as[Def1_CreateAmendSavingsRequestBody] shouldBe Def1_CreateAmendSavingsRequestBody.empty
+        emptyJson.as[CreateAmendSavingsRequestBody] shouldBe CreateAmendSavingsRequestBody.empty
       }
     }
 
@@ -159,7 +159,7 @@ class Def1_CreateAmendSavingsRequestBodySpec extends UnitSpec {
 
     "written from an empty object" should {
       "produce empty JSON" in {
-        Json.toJson(Def1_CreateAmendSavingsRequestBody.empty) shouldBe emptyJson
+        Json.toJson(CreateAmendSavingsRequestBody.empty) shouldBe emptyJson
       }
     }
   }

@@ -28,8 +28,7 @@ import api.services.MockMtdIdLookupService
 import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
-import v2.createAmendSavings.def1.model.request.*
-import v2.createAmendSavings.model.request.CreateAmendSavingsRequestData
+import v2.createAmendSavings.model.request.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -103,12 +102,12 @@ class CreateAmendSavingsControllerSpec
     )
   )
 
-  private val amendSavingsRequestBody: Def1_CreateAmendSavingsRequestBody = Def1_CreateAmendSavingsRequestBody(
+  private val amendSavingsRequestBody: CreateAmendSavingsRequestBody = CreateAmendSavingsRequestBody(
     securities = Some(security),
     foreignInterest = Some(foreignInterests)
   )
 
-  private val requestData: CreateAmendSavingsRequestData = Def1_CreateAmendSavingsRequestData(
+  private val requestData: CreateAmendSavingsRequestData = CreateAmendSavingsRequestData(
     nino = Nino(validNino),
     taxYear = TaxYear.fromMtd(taxYear),
     body = amendSavingsRequestBody

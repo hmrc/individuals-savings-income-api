@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.createAmendSavings.def1
+package v2.createAmendSavings
 
 import api.config.AppConfig
 import api.controllers.validators.Validator
@@ -25,22 +25,21 @@ import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple3Semigroupal
 import play.api.libs.json.JsValue
-import v2.createAmendSavings.def1.Def1_CreateAmendSavingsRulesValidator.validateBusinessRules
-import v2.createAmendSavings.def1.model.request.{Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
-import v2.createAmendSavings.model.request.CreateAmendSavingsRequestData
+import v2.createAmendSavings.CreateAmendSavingsRulesValidator.validateBusinessRules
+import v2.createAmendSavings.model.request.{CreateAmendSavingsRequestBody, CreateAmendSavingsRequestData}
 
-class Def1_CreateAmendSavingsValidator(nino: String, taxYear: String, body: JsValue)(appConfig: AppConfig)
+class CreateAmendSavingsValidator(nino: String, taxYear: String, body: JsValue)(appConfig: AppConfig)
     extends Validator[CreateAmendSavingsRequestData] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.ending(minimumTaxYear))
-  private val resolveJson         = new ResolveNonEmptyJsonObject[Def1_CreateAmendSavingsRequestBody]()
+  private val resolveJson         = new ResolveNonEmptyJsonObject[CreateAmendSavingsRequestBody]()
 
   def validate: Validated[Seq[MtdError], CreateAmendSavingsRequestData] =
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       resolveJson(body)
-    ).mapN(Def1_CreateAmendSavingsRequestData.apply) andThen validateBusinessRules
+    ).mapN(CreateAmendSavingsRequestData.apply) andThen validateBusinessRules
 
 }

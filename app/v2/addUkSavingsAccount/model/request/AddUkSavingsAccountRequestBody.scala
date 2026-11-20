@@ -17,16 +17,20 @@
 package v2.addUkSavingsAccount.model.request
 
 import api.config.AppConfig
-import api.utils.JsonWritesUtil
-import play.api.libs.json.{JsObject, Json, OWrites}
-import v2.addUkSavingsAccount.def1.model.request.Def1_AddUkSavingsAccountRequestBody
+import play.api.libs.json.{JsObject, Json, OWrites, Reads}
 
-trait AddUkSavingsAccountRequestBody
+case class AddUkSavingsAccountRequestBody(accountName: String)
 
-object AddUkSavingsAccountRequestBody extends JsonWritesUtil {
+object AddUkSavingsAccountRequestBody {
 
-  implicit def writes(implicit appConfig: AppConfig): OWrites[AddUkSavingsAccountRequestBody] = writesFrom {
-    case a: Def1_AddUkSavingsAccountRequestBody => Json.toJson(a).as[JsObject]
-  }
+  implicit val reads: Reads[AddUkSavingsAccountRequestBody] = Json.reads[AddUkSavingsAccountRequestBody]
+
+  implicit def writes(implicit appConfig: AppConfig): OWrites[AddUkSavingsAccountRequestBody] =
+    (addUkSavingsRequestBody: AddUkSavingsAccountRequestBody) => {
+      Json.obj(
+        "incomeSourceType" -> "09",
+        "incomeSourceName" -> addUkSavingsRequestBody.accountName
+      )
+    }
 
 }

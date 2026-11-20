@@ -18,11 +18,10 @@ package v2.addUkSavingsAccount
 
 import api.controllers.validators.Validator
 import play.api.libs.json.JsValue
-import v2.addUkSavingsAccount.def1.Def1_AddUkSavingsAccountValidator
 import v2.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
 
 class AddUkSavingsAccountValidatorFactory {
 
-  def validator(nino: String, body: JsValue): Validator[AddUkSavingsAccountRequestData] = new Def1_AddUkSavingsAccountValidator(nino, body)
+  def validator(nino: String, body: JsValue): Validator[AddUkSavingsAccountRequestData] = new AddUkSavingsAccountValidator(nino, body)
 
 }

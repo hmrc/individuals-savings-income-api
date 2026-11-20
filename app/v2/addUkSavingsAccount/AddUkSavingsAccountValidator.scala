@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.addUkSavingsAccount.def1
+package v2.addUkSavingsAccount
 
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject}
@@ -22,16 +22,15 @@ import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.*
 import play.api.libs.json.JsValue
-import v2.addUkSavingsAccount.def1.model.request.{Def1_AddUkSavingsAccountRequestBody, Def1_AddUkSavingsAccountRequestData}
-import v2.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
+import v2.addUkSavingsAccount.model.request.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
 
-class Def1_AddUkSavingsAccountValidator(nino: String, body: JsValue) extends Validator[AddUkSavingsAccountRequestData] {
+class AddUkSavingsAccountValidator(nino: String, body: JsValue) extends Validator[AddUkSavingsAccountRequestData] {
 
-  private val resolveJson = new ResolveNonEmptyJsonObject[Def1_AddUkSavingsAccountRequestBody]()
+  private val resolveJson = new ResolveNonEmptyJsonObject[AddUkSavingsAccountRequestBody]()
 
   def validate: Validated[Seq[MtdError], AddUkSavingsAccountRequestData] = (
     ResolveNino(nino),
     resolveJson(body)
-  ).mapN(Def1_AddUkSavingsAccountRequestData.apply) andThen Def1_AddUkSavingsAccountRulesValidator.validateBusinessRules
+  ).mapN(AddUkSavingsAccountRequestData.apply) andThen AddUkSavingsAccountRulesValidator.validateBusinessRules
 
 }

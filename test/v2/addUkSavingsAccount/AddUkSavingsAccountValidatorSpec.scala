@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package v2.addUkSavingsAccount.def1
+package v2.addUkSavingsAccount
 
 import api.models.domain.Nino
 import api.models.errors.{AccountNameFormatError, ErrorWrapper, NinoFormatError, RuleIncorrectOrEmptyBodyError}
 import api.utils.UnitSpec
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v2.addUkSavingsAccount.def1.model.request.{Def1_AddUkSavingsAccountRequestBody, Def1_AddUkSavingsAccountRequestData}
-import v2.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
+import v2.addUkSavingsAccount.model.request.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
 
-class Def1_AddUkSavingsAccountValidatorSpec extends UnitSpec {
+class AddUkSavingsAccountValidatorSpec extends UnitSpec {
 
   implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
   private val validNino              = "AA123456A"
@@ -71,15 +70,15 @@ class Def1_AddUkSavingsAccountValidatorSpec extends UnitSpec {
   )
 
   private val parsedNino                             = Nino(validNino)
-  private val parsedRequestBody                      = Def1_AddUkSavingsAccountRequestBody("Shares savings account")
-  private def validator(nino: String, body: JsValue) = new Def1_AddUkSavingsAccountValidator(nino, body)
+  private val parsedRequestBody                      = AddUkSavingsAccountRequestBody("Shares savings account")
+  private def validator(nino: String, body: JsValue) = new AddUkSavingsAccountValidator(nino, body)
 
   "AddUkSavingsAccountValidator" when {
     "running a validation" should {
       "return no errors" when {
         "a valid request is supplied" in {
           val result: Either[ErrorWrapper, AddUkSavingsAccountRequestData] = validator(validNino, validRequestBodyJson).validateAndWrapResult()
-          result shouldBe Right(Def1_AddUkSavingsAccountRequestData(parsedNino, parsedRequestBody))
+          result shouldBe Right(AddUkSavingsAccountRequestData(parsedNino, parsedRequestBody))
         }
       }
 

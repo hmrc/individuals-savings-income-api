@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package v2.addUkSavingsAccount.def1.model.request
+package v2.addUkSavingsAccount.model.request
 
 import api.config.MockAppConfig
 import api.utils.UnitSpec
 import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 
-class Def1_AddUkSavingsAccountRequestBodySpec extends UnitSpec with MockAppConfig {
+class AddUkSavingsAccountRequestBodySpec extends UnitSpec with MockAppConfig {
 
   val mtdJson: JsValue = Json.parse(
     """
@@ -39,19 +39,19 @@ class Def1_AddUkSavingsAccountRequestBodySpec extends UnitSpec with MockAppConfi
     """.stripMargin
   )
 
-  val model: Def1_AddUkSavingsAccountRequestBody = Def1_AddUkSavingsAccountRequestBody("Shares savings account")
+  val model: AddUkSavingsAccountRequestBody = AddUkSavingsAccountRequestBody("Shares savings account")
 
-  "Def1_AddUkSavingsAccountRequestBody" when {
+  "AddUkSavingsAccountRequestBody" when {
     "read from a valid JSON" should {
       "produce the expected object" in {
-        mtdJson.as[Def1_AddUkSavingsAccountRequestBody] shouldBe model
+        mtdJson.as[AddUkSavingsAccountRequestBody] shouldBe model
       }
     }
 
     "read from empty JSON" should {
       "produce a JsError" in {
         val invalidJson = JsObject.empty
-        invalidJson.validate[Def1_AddUkSavingsAccountRequestBody] shouldBe a[JsError]
+        invalidJson.validate[AddUkSavingsAccountRequestBody] shouldBe a[JsError]
       }
     }
 

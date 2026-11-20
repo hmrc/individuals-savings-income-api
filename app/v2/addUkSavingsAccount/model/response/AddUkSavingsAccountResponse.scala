@@ -16,16 +16,14 @@
 
 package v2.addUkSavingsAccount.model.response
 
-import api.utils.JsonWritesUtil
 import play.api.libs.json.*
-import v2.addUkSavingsAccount.def1.model.response.Def1_AddUkSavingsAccountResponse
 
-trait AddUkSavingsAccountResponse
+case class AddUkSavingsAccountResponse(savingsAccountId: String)
 
-object AddUkSavingsAccountResponse extends JsonWritesUtil {
+object AddUkSavingsAccountResponse {
 
-  implicit val writes: OWrites[AddUkSavingsAccountResponse] = writesFrom { case a: Def1_AddUkSavingsAccountResponse =>
-    Json.toJson(a).as[JsObject]
-  }
+  implicit val reads: Reads[AddUkSavingsAccountResponse] = (JsPath \ "incomeSourceId").read[String].map(AddUkSavingsAccountResponse(_))
+
+  implicit val writes: OWrites[AddUkSavingsAccountResponse] = Json.writes[AddUkSavingsAccountResponse]
 
 }

@@ -25,8 +25,8 @@ import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
-import v2.addUkSavingsAccount.def1.model.request.{Def1_AddUkSavingsAccountRequestBody, Def1_AddUkSavingsAccountRequestData}
-import v2.addUkSavingsAccount.def1.model.response.Def1_AddUkSavingsAccountResponse
+import v2.addUkSavingsAccount.model.response.AddUkSavingsAccountResponse
+import v2.addUkSavingsAccount.model.request.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -117,12 +117,12 @@ class AddUkSavingsAccountControllerSpec
       |}
       |""".stripMargin)
 
-    val requestData: Def1_AddUkSavingsAccountRequestData = Def1_AddUkSavingsAccountRequestData(
+    val requestData: AddUkSavingsAccountRequestData = AddUkSavingsAccountRequestData(
       nino = Nino(validNino),
-      body = Def1_AddUkSavingsAccountRequestBody("Shares savings account")
+      body = AddUkSavingsAccountRequestBody("Shares savings account")
     )
 
-    val responseData: Def1_AddUkSavingsAccountResponse = Def1_AddUkSavingsAccountResponse(
+    val responseData: AddUkSavingsAccountResponse = AddUkSavingsAccountResponse(
       savingsAccountId = savingsAccountId
     )
 

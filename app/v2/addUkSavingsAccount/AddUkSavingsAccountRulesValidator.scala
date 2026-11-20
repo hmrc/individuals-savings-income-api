@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package v2.addUkSavingsAccount.def1
+package v2.addUkSavingsAccount
 
 import api.controllers.validators.RulesValidator
 import api.controllers.validators.resolvers.ResolveStringPattern
 import api.models.errors.{AccountNameFormatError, MtdError}
 import cats.data.Validated
-import v2.addUkSavingsAccount.def1.model.request.Def1_AddUkSavingsAccountRequestData
+import v2.addUkSavingsAccount.model.request.AddUkSavingsAccountRequestData
 
-object Def1_AddUkSavingsAccountRulesValidator extends RulesValidator[Def1_AddUkSavingsAccountRequestData] {
+object AddUkSavingsAccountRulesValidator extends RulesValidator[AddUkSavingsAccountRequestData] {
 
   private val accountNameRegex = "^[A-Za-z0-9 &'\\(\\)\\*,\\-\\./@£]{1,32}$".r
 
-  def validateBusinessRules(parsed: Def1_AddUkSavingsAccountRequestData): Validated[Seq[MtdError], Def1_AddUkSavingsAccountRequestData] = {
+  def validateBusinessRules(parsed: AddUkSavingsAccountRequestData): Validated[Seq[MtdError], AddUkSavingsAccountRequestData] = {
     import parsed.body.*
     ResolveStringPattern(accountName, accountNameRegex, AccountNameFormatError.withPath("/accountName")).onSuccess(parsed)
   }

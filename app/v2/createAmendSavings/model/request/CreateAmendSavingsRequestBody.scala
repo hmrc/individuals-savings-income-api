@@ -16,16 +16,22 @@
 
 package v2.createAmendSavings.model.request
 
-import api.utils.JsonWritesUtil
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.*
-import v2.createAmendSavings.def1.model.request.Def1_CreateAmendSavingsRequestBody
 
-trait CreateAmendSavingsRequestBody
+case class CreateAmendSavingsRequestBody(securities: Option[AmendSecurities], foreignInterest: Option[Seq[AmendForeignInterestItem]])
 
-object CreateAmendSavingsRequestBody extends JsonWritesUtil {
+object CreateAmendSavingsRequestBody {
+  val empty: CreateAmendSavingsRequestBody = CreateAmendSavingsRequestBody(None, None)
 
-  implicit val writes: OWrites[CreateAmendSavingsRequestBody] = writesFrom { case a: Def1_CreateAmendSavingsRequestBody =>
-    Json.toJson(a).as[JsObject]
-  }
+  implicit val reads: Reads[CreateAmendSavingsRequestBody] = (
+    (JsPath \ "securities").readNullable[AmendSecurities] and
+      (JsPath \ "foreignInterest").readNullable[Seq[AmendForeignInterestItem]]
+  )(CreateAmendSavingsRequestBody.apply)
+
+  implicit val writes: OWrites[CreateAmendSavingsRequestBody] = (
+    (JsPath \ "securities").writeNullable[AmendSecurities] and
+      (JsPath \ "foreignInterest").writeNullable[Seq[AmendForeignInterestItem]]
+  )(w => Tuple.fromProductTyped(w))
 
 }

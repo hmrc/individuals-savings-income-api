@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.createAmendSavings.def1
+package v2.createAmendSavings
 
 import api.controllers.validators.RulesValidator
 import api.controllers.validators.resolvers.{ResolveParsedCountryCode, ResolveParsedNumber}
@@ -22,17 +22,12 @@ import api.models.errors.MtdError
 import cats.data.Validated
 import cats.data.Validated.Valid
 import cats.implicits.toFoldableOps
-import v2.createAmendSavings.def1.model.request.{
-  AmendForeignInterestItem,
-  AmendSecurities,
-  Def1_CreateAmendSavingsRequestBody,
-  Def1_CreateAmendSavingsRequestData
-}
+import v2.createAmendSavings.model.request.{AmendForeignInterestItem, AmendSecurities, CreateAmendSavingsRequestBody, CreateAmendSavingsRequestData}
 
-object Def1_CreateAmendSavingsRulesValidator extends RulesValidator[Def1_CreateAmendSavingsRequestData] {
+object CreateAmendSavingsRulesValidator extends RulesValidator[CreateAmendSavingsRequestData] {
   private val resolveParsedNumber = ResolveParsedNumber()
 
-  def validateBusinessRules(parsed: Def1_CreateAmendSavingsRequestData): Validated[Seq[MtdError], Def1_CreateAmendSavingsRequestData] = {
+  def validateBusinessRules(parsed: CreateAmendSavingsRequestData): Validated[Seq[MtdError], CreateAmendSavingsRequestData] = {
     import parsed.*
 
     combine(
@@ -41,13 +36,13 @@ object Def1_CreateAmendSavingsRulesValidator extends RulesValidator[Def1_CreateA
     ).onSuccess(parsed)
   }
 
-  private def validateSecuritiesSequence(requestBody: Def1_CreateAmendSavingsRequestBody): Validated[Seq[MtdError], Unit] = {
+  private def validateSecuritiesSequence(requestBody: CreateAmendSavingsRequestBody): Validated[Seq[MtdError], Unit] = {
     requestBody.securities.fold[Validated[Seq[MtdError], Unit]](Valid(())) { securities =>
       validateSecurity(securities)
     }
   }
 
-  private def validateForeignSequence(requestBody: Def1_CreateAmendSavingsRequestBody): Validated[Seq[MtdError], Unit] = {
+  private def validateForeignSequence(requestBody: CreateAmendSavingsRequestBody): Validated[Seq[MtdError], Unit] = {
     requestBody.foreignInterest.fold[Validated[Seq[MtdError], Unit]](Valid(())) { foreignInterest =>
       foreignInterest.zipWithIndex.traverse_ { case (foreignInterest, index) =>
         validateForeignInterests(foreignInterest, index)

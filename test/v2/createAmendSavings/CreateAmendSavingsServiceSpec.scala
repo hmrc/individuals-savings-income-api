@@ -21,7 +21,7 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v2.createAmendSavings.def1.model.request.{Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
+import v2.createAmendSavings.model.request.{CreateAmendSavingsRequestBody, CreateAmendSavingsRequestData}
 
 import scala.concurrent.Future
 
@@ -75,10 +75,10 @@ class CreateAmendSavingsServiceSpec extends ServiceSpec {
     private val nino    = "AA112233A"
     private val taxYear = "2019-20"
 
-    val request = Def1_CreateAmendSavingsRequestData(
+    val request = CreateAmendSavingsRequestData(
       nino = Nino(nino),
       taxYear = TaxYear.fromMtd(taxYear),
-      body = Def1_CreateAmendSavingsRequestBody(securities = None, foreignInterest = None)
+      body = CreateAmendSavingsRequestBody(securities = None, foreignInterest = None)
     )
 
     implicit val logContext: EndpointLogContext = EndpointLogContext("c", "ep")

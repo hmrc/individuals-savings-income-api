@@ -22,10 +22,7 @@ import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import models.domain.SavingsAccountId
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.{
-  Def1_CreateAmendUkSavingsAnnualSummaryRequestBody,
-  Def1_CreateAmendUkSavingsAnnualSummaryRequestData
-}
+import v2.createAmendUkSavingsAnnualSummary.model.request.{CreateAmendUkSavingsAnnualSummaryRequestBody, CreateAmendUkSavingsAnnualSummaryRequestData}
 
 import scala.concurrent.Future
 
@@ -35,11 +32,11 @@ class CreateAmendUkSavingsAnnualSummaryServiceSpec extends ServiceSpec {
   private val taxYear                  = TaxYear.fromMtd("2019-20")
   private val savingsAccountId: String = "ABC1234567890"
 
-  private val requestData = Def1_CreateAmendUkSavingsAnnualSummaryRequestData(
+  private val requestData = CreateAmendUkSavingsAnnualSummaryRequestData(
     nino = nino,
     taxYear = taxYear,
     SavingsAccountId(savingsAccountId),
-    mtdBody = Def1_CreateAmendUkSavingsAnnualSummaryRequestBody(None, None)
+    mtdBody = CreateAmendUkSavingsAnnualSummaryRequestBody(None, None)
   )
 
   trait Test extends MockCreateAmendUkSavingsAnnualSummaryConnector {

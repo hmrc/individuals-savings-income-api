@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v2.createAmendUkSavingsAnnualSummary.def1.model.request
+package v2.createAmendUkSavingsAnnualSummary.model.request
 
 import api.utils.UnitSpec
 import play.api.libs.json.{JsObject, JsValue, Json}
 
-class Def1_CreateAmendUkSavingsAnnualSummaryRequestBodySpec extends UnitSpec {
+class CreateAmendUkSavingsAnnualSummaryRequestBodySpec extends UnitSpec {
 
   private val json: JsValue = Json.parse(
     """
@@ -30,14 +30,14 @@ class Def1_CreateAmendUkSavingsAnnualSummaryRequestBodySpec extends UnitSpec {
       |""".stripMargin
   )
 
-  private val model: Def1_CreateAmendUkSavingsAnnualSummaryRequestBody = Def1_CreateAmendUkSavingsAnnualSummaryRequestBody(
+  private val model: CreateAmendUkSavingsAnnualSummaryRequestBody = CreateAmendUkSavingsAnnualSummaryRequestBody(
     Some(1000.99),
     Some(1001.99)
   )
 
   val emptyJson: JsValue = JsObject.empty
 
-  private val emptyModel: Def1_CreateAmendUkSavingsAnnualSummaryRequestBody = Def1_CreateAmendUkSavingsAnnualSummaryRequestBody(
+  private val emptyModel: CreateAmendUkSavingsAnnualSummaryRequestBody = CreateAmendUkSavingsAnnualSummaryRequestBody(
     None,
     None
   )
@@ -45,13 +45,13 @@ class Def1_CreateAmendUkSavingsAnnualSummaryRequestBodySpec extends UnitSpec {
   "CreateAmendUkSavingsAnnualSummaryRequestBody reads" when {
     "reading valid JSON" should {
       "read OK" in {
-        json.as[Def1_CreateAmendUkSavingsAnnualSummaryRequestBody] shouldBe model
+        json.as[CreateAmendUkSavingsAnnualSummaryRequestBody] shouldBe model
       }
     }
 
     "reading empty JSON" should {
       "create an empty instance" in {
-        emptyJson.as[Def1_CreateAmendUkSavingsAnnualSummaryRequestBody] shouldBe emptyModel
+        emptyJson.as[CreateAmendUkSavingsAnnualSummaryRequestBody] shouldBe emptyModel
       }
     }
   }

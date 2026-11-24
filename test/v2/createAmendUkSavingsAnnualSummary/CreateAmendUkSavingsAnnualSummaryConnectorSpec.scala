@@ -22,7 +22,7 @@ import api.models.outcomes.ResponseWrapper
 import models.domain.SavingsAccountId
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.StringContextOps
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.*
+import v2.createAmendUkSavingsAnnualSummary.model.request.*
 
 import java.net.URL
 import scala.concurrent.Future
@@ -37,10 +37,10 @@ class CreateAmendUkSavingsAnnualSummaryConnectorSpec extends ConnectorSpec {
 
   val transactionReference: String = "0000000000000001"
 
-  val requestBody: Def1_CreateAmendUkSavingsAnnualSummaryRequestBody =
-    Def1_CreateAmendUkSavingsAnnualSummaryRequestBody(taxedUkInterest, untaxedUkInterest)
+  val requestBody: CreateAmendUkSavingsAnnualSummaryRequestBody =
+    CreateAmendUkSavingsAnnualSummaryRequestBody(taxedUkInterest, untaxedUkInterest)
 
-  val downstreamRequestBody: Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody = requestBody.asDownstreamRequestBody(savingsAccountId)
+  val downstreamRequestBody: DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody = requestBody.asDownstreamRequestBody(savingsAccountId)
 
   private val validResponse: JsObject = Json.obj("transactionReference" -> transactionReference)
   val outcome                         = Right(ResponseWrapper(correlationId, validResponse))
@@ -78,8 +78,8 @@ class CreateAmendUkSavingsAnnualSummaryConnectorSpec extends ConnectorSpec {
     protected val connector: CreateAmendUkSavingsAnnualSummaryConnector =
       new CreateAmendUkSavingsAnnualSummaryConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
-    protected val requestData: Def1_CreateAmendUkSavingsAnnualSummaryRequestData =
-      Def1_CreateAmendUkSavingsAnnualSummaryRequestData(
+    protected val requestData: CreateAmendUkSavingsAnnualSummaryRequestData =
+      CreateAmendUkSavingsAnnualSummaryRequestData(
         nino = Nino(nino),
         taxYear = taxYear,
         savingsAccountId = savingsAccountId,

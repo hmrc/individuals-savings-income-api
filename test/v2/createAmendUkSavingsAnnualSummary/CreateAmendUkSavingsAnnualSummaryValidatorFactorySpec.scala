@@ -20,7 +20,6 @@ import api.config.MockAppConfig
 import api.controllers.validators.Validator
 import api.utils.UnitSpec
 import play.api.libs.json.{JsValue, Json}
-import v2.createAmendUkSavingsAnnualSummary.def1.Def1_CreateAmendUkSavingsAnnualSummaryValidator
 import v2.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
 
 class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec with MockAppConfig {
@@ -45,7 +44,7 @@ class CreateAmendUkSavingsAnnualSummaryValidatorFactorySpec extends UnitSpec wit
       "return the Validator for schema definition 1" in {
         val result: Validator[CreateAmendUkSavingsAnnualSummaryRequestData] =
           validatorFactory.validator(validNino, validTaxYear, validSavingsAccountId, validMtdRequestBodyJson)
-        result shouldBe a[Def1_CreateAmendUkSavingsAnnualSummaryValidator]
+        result shouldBe a[CreateAmendUkSavingsAnnualSummaryValidator]
       }
 
     }

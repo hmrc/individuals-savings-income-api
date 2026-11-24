@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.createAmendUkSavingsAnnualSummary.def1
+package v2.createAmendUkSavingsAnnualSummary
 
 import api.config.AppConfig
 import api.controllers.validators.Validator
@@ -26,18 +26,14 @@ import cats.data.Validated
 import cats.implicits.catsSyntaxTuple4Semigroupal
 import play.api.libs.json.JsValue
 import resolvers.ResolveSavingsAccountId
-import v2.createAmendUkSavingsAnnualSummary.def1.Def1_CreateAmendUkSavingsAnnualRulesValidator.validateBusinessRules
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.{
-  Def1_CreateAmendUkSavingsAnnualSummaryRequestBody,
-  Def1_CreateAmendUkSavingsAnnualSummaryRequestData
-}
+import v2.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualRulesValidator.validateBusinessRules
 import v2.createAmendUkSavingsAnnualSummary.model.request.*
 
-class Def1_CreateAmendUkSavingsAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue)(appConfig: AppConfig)
+class CreateAmendUkSavingsAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue)(appConfig: AppConfig)
     extends Validator[CreateAmendUkSavingsAnnualSummaryRequestData] {
   private lazy val minimumTaxYear = appConfig.ukSavingsAccountAnnualSummaryMinimumTaxYear
   private lazy val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.ending(minimumTaxYear))
-  private val resolveJson         = new ResolveNonEmptyJsonObject[Def1_CreateAmendUkSavingsAnnualSummaryRequestBody]()
+  private val resolveJson         = new ResolveNonEmptyJsonObject[CreateAmendUkSavingsAnnualSummaryRequestBody]()
 
   def validate: Validated[Seq[MtdError], CreateAmendUkSavingsAnnualSummaryRequestData] = {
     (
@@ -45,7 +41,7 @@ class Def1_CreateAmendUkSavingsAnnualSummaryValidator(nino: String, taxYear: Str
       resolveTaxYear(taxYear),
       ResolveSavingsAccountId(savingsAccountId),
       resolveJson(body)
-    ).mapN(Def1_CreateAmendUkSavingsAnnualSummaryRequestData.apply) andThen validateBusinessRules
+    ).mapN(CreateAmendUkSavingsAnnualSummaryRequestData.apply) andThen validateBusinessRules
   }
 
 }

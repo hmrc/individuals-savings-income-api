@@ -18,7 +18,4 @@ package v2.createAmendUkSavingsAnnualSummary
 
 sealed trait CreateAmendUkSavingsAnnualSummarySchema
 
-object CreateAmendUkSavingsAnnualSummarySchema {
-
-  case object Def1 extends CreateAmendUkSavingsAnnualSummarySchema
-}
+case object CreateAmendUkSavingsAnnualSummarySchema extends CreateAmendUkSavingsAnnualSummarySchema

@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package v2.createAmendUkSavingsAnnualSummary.def1
+package v2.createAmendUkSavingsAnnualSummary
 
 import api.controllers.validators.RulesValidator
 import api.controllers.validators.resolvers.ResolveParsedNumber
 import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.toFoldableOps
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.Def1_CreateAmendUkSavingsAnnualSummaryRequestData
+import v2.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
 
-object Def1_CreateAmendUkSavingsAnnualRulesValidator extends RulesValidator[Def1_CreateAmendUkSavingsAnnualSummaryRequestData] {
+object CreateAmendUkSavingsAnnualRulesValidator extends RulesValidator[CreateAmendUkSavingsAnnualSummaryRequestData] {
   private val resolveParsedNumber = ResolveParsedNumber()
 
   def validateBusinessRules(
-      parsed: Def1_CreateAmendUkSavingsAnnualSummaryRequestData): Validated[Seq[MtdError], Def1_CreateAmendUkSavingsAnnualSummaryRequestData] = {
+      parsed: CreateAmendUkSavingsAnnualSummaryRequestData): Validated[Seq[MtdError], CreateAmendUkSavingsAnnualSummaryRequestData] = {
     import parsed.*
 
     val validatedMandatoryDecimalNumbers = List(

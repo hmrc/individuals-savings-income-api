@@ -17,7 +17,31 @@
 package v2.createAmendUkSavingsAnnualSummary.model.request
 
 import models.domain.SavingsAccountId
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import play.api.libs.json.*
 
-trait CreateAmendUkSavingsAnnualSummaryRequestBody {
-  def asDownstreamRequestBody(savingsAccountId: SavingsAccountId): DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody
+case class CreateAmendUkSavingsAnnualSummaryRequestBody(taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal]) {
+
+  def asDownstreamRequestBody(savingsAccountId: SavingsAccountId): DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody = {
+    DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody(
+      incomeSourceId = savingsAccountId.toString,
+      taxedUkInterest = taxedUkInterest,
+      untaxedUkInterest = untaxedUkInterest
+    )
+  }
+
+}
+
+object CreateAmendUkSavingsAnnualSummaryRequestBody {
+
+  implicit val reads: Reads[CreateAmendUkSavingsAnnualSummaryRequestBody] = (
+    (JsPath \ "taxedUkInterest").readNullable[BigDecimal] and
+      (JsPath \ "untaxedUkInterest").readNullable[BigDecimal]
+  )(CreateAmendUkSavingsAnnualSummaryRequestBody.apply)
+
+  implicit val writes: OWrites[CreateAmendUkSavingsAnnualSummaryRequestBody] = (
+    (JsPath \ "taxedUkInterest").writeNullable[BigDecimal] and
+      (JsPath \ "untaxedUkInterest").writeNullable[BigDecimal]
+  )(w => Tuple.fromProductTyped(w))
+
 }

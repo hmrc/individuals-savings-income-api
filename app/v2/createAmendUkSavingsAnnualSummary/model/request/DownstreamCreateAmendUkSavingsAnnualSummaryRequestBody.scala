@@ -16,17 +16,13 @@
 
 package v2.createAmendUkSavingsAnnualSummary.model.request
 
-import api.utils.JsonWritesUtil
-import play.api.libs.json.{JsObject, Json, OWrites}
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody
+import play.api.libs.json.{Json, OWrites}
 
-trait DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody
+case class DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody(incomeSourceId: String,
+                                                                  taxedUkInterest: Option[BigDecimal],
+                                                                  untaxedUkInterest: Option[BigDecimal])
 
-object DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody extends JsonWritesUtil {
+object DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody {
 
-  implicit val writes: OWrites[DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody] = writesFrom {
-    case a: Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody =>
-      Json.toJson(a).as[JsObject]
-  }
-
+  implicit val writes: OWrites[DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody] = Json.writes
 }

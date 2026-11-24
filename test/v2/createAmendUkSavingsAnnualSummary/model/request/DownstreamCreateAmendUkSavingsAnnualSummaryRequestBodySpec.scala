@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package v2.createAmendUkSavingsAnnualSummary.def1.model.request
+package v2.createAmendUkSavingsAnnualSummary.model.request
 
 import api.utils.UnitSpec
 import play.api.libs.json.Json
 
-class Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBodySpec extends UnitSpec {
+class DownstreamCreateAmendUkSavingsAnnualSummaryRequestBodySpec extends UnitSpec {
 
   "DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody" when {
     "written to JSON" must {
       "produce expected downstream request mtdBody" in {
         Json.toJson(
-          Def1_DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody(
+          DownstreamCreateAmendUkSavingsAnnualSummaryRequestBody(
             incomeSourceId = "someIncomeSourceId",
             taxedUkInterest = Some(10.12),
             untaxedUkInterest = Some(11.12))) shouldBe

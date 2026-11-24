@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.createAmendUkSavingsAnnualSummary.def1
+package v2.createAmendUkSavingsAnnualSummary
 
 import api.config.MockAppConfig
 import api.models.domain.{Nino, TaxYear}
@@ -22,10 +22,9 @@ import api.models.errors.*
 import api.utils.UnitSpec
 import models.domain.SavingsAccountId
 import play.api.libs.json.{JsValue, Json}
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.*
-import v2.createAmendUkSavingsAnnualSummary.model.request.CreateAmendUkSavingsAnnualSummaryRequestData
+import v2.createAmendUkSavingsAnnualSummary.model.request.*
 
-class Def1_CreateAmendUkSavingsAnnualSummaryValidatorSpec extends UnitSpec with MockAppConfig {
+class CreateAmendUkSavingsAnnualSummaryValidatorSpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
 
@@ -94,17 +93,17 @@ class Def1_CreateAmendUkSavingsAnnualSummaryValidatorSpec extends UnitSpec with 
   private val parsedNino            = Nino(validNino)
   private val parsedTaxYear         = TaxYear.fromMtd(validTaxYear)
   private val parsedSavngsAccountId = SavingsAccountId(validSavingsAccountId)
-  private val parsedMtdBody         = validMtdRequestBodyJson.as[Def1_CreateAmendUkSavingsAnnualSummaryRequestBody]
+  private val parsedMtdBody         = validMtdRequestBodyJson.as[CreateAmendUkSavingsAnnualSummaryRequestBody]
 
   private def validator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue) =
-    new Def1_CreateAmendUkSavingsAnnualSummaryValidator(nino, taxYear, savingsAccountId, body)(mockAppConfig)
+    new CreateAmendUkSavingsAnnualSummaryValidator(nino, taxYear, savingsAccountId, body)(mockAppConfig)
 
   "validator" should {
     "return the parsed domain object" when {
       "a valid request is supplied" in new SetupConfig {
         val result: Either[ErrorWrapper, CreateAmendUkSavingsAnnualSummaryRequestData] =
           validator(validNino, validTaxYear, validSavingsAccountId, validMtdRequestBodyJson).validateAndWrapResult()
-        result shouldBe Right(Def1_CreateAmendUkSavingsAnnualSummaryRequestData(parsedNino, parsedTaxYear, parsedSavngsAccountId, parsedMtdBody))
+        result shouldBe Right(CreateAmendUkSavingsAnnualSummaryRequestData(parsedNino, parsedTaxYear, parsedSavngsAccountId, parsedMtdBody))
       }
     }
 

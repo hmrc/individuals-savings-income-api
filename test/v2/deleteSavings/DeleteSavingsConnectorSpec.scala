@@ -20,7 +20,6 @@ import api.connectors.ConnectorSpec
 import api.models.domain.{Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
-import v2.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
 import v2.deleteSavings.model.request.DeleteSavingsRequestData
 
 import scala.concurrent.Future
@@ -63,7 +62,7 @@ class DeleteSavingsConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    lazy val request: DeleteSavingsRequestData = Def1_DeleteSavingsRequestData(Nino("AA111111A"), TaxYear.fromMtd(taxYear))
+    lazy val request: DeleteSavingsRequestData = DeleteSavingsRequestData(Nino("AA111111A"), TaxYear.fromMtd(taxYear))
   }
 
 }

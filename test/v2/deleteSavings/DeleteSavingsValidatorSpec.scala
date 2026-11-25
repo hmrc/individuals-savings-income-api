@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package v2.deleteSavings.def1
+package v2.deleteSavings
 
 import api.config.{AppConfig, MockAppConfig}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec
-import v2.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
 import v2.deleteSavings.model.request.DeleteSavingsRequestData
 
-class Def1_DeleteSavingsValidatorSpec extends UnitSpec with MockAppConfig {
+class DeleteSavingsValidatorSpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
   private val validNino                      = "AA123456A"
@@ -33,13 +32,13 @@ class Def1_DeleteSavingsValidatorSpec extends UnitSpec with MockAppConfig {
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
 
   implicit val appConfig: AppConfig                    = mockAppConfig
-  private def validator(nino: String, taxYear: String) = new Def1_DeleteSavingsValidator(nino, taxYear)(mockAppConfig)
+  private def validator(nino: String, taxYear: String) = new DeleteSavingsValidator(nino, taxYear)(mockAppConfig)
 
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in new SetupConfig {
         val result: Either[ErrorWrapper, DeleteSavingsRequestData] = validator(validNino, validTaxYear).validateAndWrapResult()
-        result shouldBe Right(Def1_DeleteSavingsRequestData(parsedNino, parsedTaxYear))
+        result shouldBe Right(DeleteSavingsRequestData(parsedNino, parsedTaxYear))
 
       }
     }

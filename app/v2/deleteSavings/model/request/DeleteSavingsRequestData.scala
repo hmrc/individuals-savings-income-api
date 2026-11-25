@@ -19,8 +19,6 @@ package v2.deleteSavings.model.request
 import api.models.domain.{Nino, TaxYear}
 import v2.deleteSavings.DeleteSavingsSchema
 
-trait DeleteSavingsRequestData {
-  def nino: Nino
-  def taxYear: TaxYear
-  val schema: DeleteSavingsSchema
+case class DeleteSavingsRequestData(nino: Nino, taxYear: TaxYear) {
+  val schema: DeleteSavingsSchema = DeleteSavingsSchema
 }

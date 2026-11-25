@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.deleteSavings.def1
+package v2.deleteSavings
 
 import api.config.AppConfig
 import api.controllers.validators.Validator
@@ -24,15 +24,14 @@ import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple2Semigroupal
-import v2.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
 import v2.deleteSavings.model.request.DeleteSavingsRequestData
 
-class Def1_DeleteSavingsValidator(nino: String, taxYear: String)(appConfig: AppConfig) extends Validator[DeleteSavingsRequestData] {
+class DeleteSavingsValidator(nino: String, taxYear: String)(appConfig: AppConfig) extends Validator[DeleteSavingsRequestData] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.ending(minimumTaxYear))
 
   def validate: Validated[Seq[MtdError], DeleteSavingsRequestData] = (ResolveNino(nino), resolveTaxYear(taxYear))
-    .mapN(Def1_DeleteSavingsRequestData.apply)
+    .mapN(DeleteSavingsRequestData.apply)
 
 }

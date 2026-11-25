@@ -18,6 +18,4 @@ package v2.deleteSavings
 
 sealed trait DeleteSavingsSchema
 
-object DeleteSavingsSchema {
-  case object Def1 extends DeleteSavingsSchema
-}
+case object DeleteSavingsSchema extends DeleteSavingsSchema

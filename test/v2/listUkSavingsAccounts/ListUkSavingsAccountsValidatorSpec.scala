@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v2.listUkSavingsAccounts.def1
+package v2.listUkSavingsAccounts
 
 import api.models.domain.Nino
 import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, SavingsAccountIdFormatError}
 import api.utils.UnitSpec
 import models.domain.SavingsAccountId
-import v2.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
+import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 
-class Def1_ListUkSavingsAccountsValidatorSpec extends UnitSpec {
+class ListUkSavingsAccountsValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
@@ -30,13 +30,13 @@ class Def1_ListUkSavingsAccountsValidatorSpec extends UnitSpec {
   private val validSavingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
   private val parsedNino            = Nino(validNino)
 
-  private def validator(nino: String, savingsAccountId: Option[String]) = new Def1_ListUkSavingsAccountsValidator(nino, savingsAccountId)
+  private def validator(nino: String, savingsAccountId: Option[String]) = new ListUkSavingsAccountsValidator(nino, savingsAccountId)
 
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
         val result = validator(validNino, Some(validSavingsAccountId.toString)).validateAndWrapResult()
-        result shouldBe Right(Def1_ListUkSavingsAccountsRequestData(parsedNino, Some(validSavingsAccountId)))
+        result shouldBe Right(ListUkSavingsAccountsRequestData(parsedNino, Some(validSavingsAccountId)))
       }
     }
 

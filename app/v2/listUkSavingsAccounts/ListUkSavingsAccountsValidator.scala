@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.listUkSavingsAccounts.def1
+package v2.listUkSavingsAccounts
 
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.ResolveNino
@@ -23,16 +23,15 @@ import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import cats.implicits.catsSyntaxTuple2Semigroupal
 import models.domain.SavingsAccountId
-import v2.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 
-class Def1_ListUkSavingsAccountsValidator(nino: String, savingsAccountId: Option[String]) extends Validator[ListUkSavingsAccountsRequestData] {
+class ListUkSavingsAccountsValidator(nino: String, savingsAccountId: Option[String]) extends Validator[ListUkSavingsAccountsRequestData] {
 
   def validate: Validated[Seq[MtdError], ListUkSavingsAccountsRequestData] =
     (
       ResolveNino(nino),
       resolveOptionalSavingsAccountId(savingsAccountId)
-    ).mapN(Def1_ListUkSavingsAccountsRequestData.apply)
+    ).mapN(ListUkSavingsAccountsRequestData.apply)
 
   private def resolveOptionalSavingsAccountId(maybeId: Option[String]): Validated[Seq[MtdError], Option[SavingsAccountId]] = {
     val regex = "^[A-Za-z0-9]{15}$"

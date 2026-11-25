@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v2.listUkSavingsAccounts.def1.model.response
+package v2.listUkSavingsAccounts.model.response
 
 import api.utils.UnitSpec
 import play.api.libs.json.{JsError, Json}
 
-class Def1_ListUkSavingsAccountsResponseSpec extends UnitSpec {
+class ListUkSavingsAccountsResponseSpec extends UnitSpec {
 
   private val ukSavingsAccountsDownstreamJson = Json.parse(
     """
@@ -85,43 +85,43 @@ class Def1_ListUkSavingsAccountsResponseSpec extends UnitSpec {
     """.stripMargin
   )
 
-  private val listUkSavingsAccountResponse = Def1_ListUkSavingsAccountsResponse(
+  private val listUkSavingsAccountResponse = ListUkSavingsAccountsResponse(
     Some(
       List(
-        Def1_UkSavingsAccount("000000000000001", Some("Bank Account 1")),
-        Def1_UkSavingsAccount("000000000000002", Some("Bank Account 2")),
-        Def1_UkSavingsAccount("000000000000003", None)
+        UkSavingsAccount("000000000000001", Some("Bank Account 1")),
+        UkSavingsAccount("000000000000002", Some("Bank Account 2")),
+        UkSavingsAccount("000000000000003", None)
       )
     )
   )
 
-  "Def1_ListUkSavingsAccountsResponse" when {
+  "ListUkSavingsAccountsResponse" when {
     ".reads" should {
-      "return a parsed Def1_ListUkSavingsAccountsResponse" when {
+      "return a parsed ListUkSavingsAccountsResponse" when {
         "given a valid JSON document from downstream" in {
-          val result = ukSavingsAccountsDownstreamJson.as[Def1_ListUkSavingsAccountsResponse]
+          val result = ukSavingsAccountsDownstreamJson.as[ListUkSavingsAccountsResponse]
           result shouldBe listUkSavingsAccountResponse
         }
       }
 
       "return a JSON error" when {
         "given a downstream response that does not include bbsi" in {
-          val result = ukSavingsAccountsNotBbsiDownstreamJson.validate[Def1_ListUkSavingsAccountsResponse]
+          val result = ukSavingsAccountsNotBbsiDownstreamJson.validate[ListUkSavingsAccountsResponse]
           result shouldBe a[JsError]
         }
       }
 
-      "return a valid empty Def1_ListUkSavingsAccountsResponse model" when {
+      "return a valid empty ListUkSavingsAccountsResponse model" when {
         "given a valid empty uk savings account list json from downstream" in {
-          val result = emptyBbsiJson.as[Def1_ListUkSavingsAccountsResponse]
-          result shouldBe Def1_ListUkSavingsAccountsResponse(None)
+          val result = emptyBbsiJson.as[ListUkSavingsAccountsResponse]
+          result shouldBe ListUkSavingsAccountsResponse(None)
         }
       }
     }
 
     ".writes" should {
       "return a valid list uk savings account response MTD json" when {
-        "given a valid Def1_ListUkSavingsAccountsResponse" in {
+        "given a valid ListUkSavingsAccountsResponse" in {
           val result = Json.toJson(listUkSavingsAccountResponse)
           result shouldBe ukSavingsAccountsMtdJson
         }

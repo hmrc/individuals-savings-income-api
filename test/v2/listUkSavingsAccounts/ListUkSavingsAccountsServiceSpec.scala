@@ -22,26 +22,24 @@ import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import models.domain.SavingsAccountId
-import v2.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
-import v2.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
-import v2.listUkSavingsAccounts.model.response.ListUkSavingsAccountsResponse
+import v2.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
 
 import scala.concurrent.Future
 
 class ListUkSavingsAccountsServiceSpec extends ServiceSpec {
 
-  private val requestData: ListUkSavingsAccountsRequestData = Def1_ListUkSavingsAccountsRequestData(
+  private val requestData: ListUkSavingsAccountsRequestData = ListUkSavingsAccountsRequestData(
     nino = Nino("AA112233A"),
     savingsAccountId = Some(SavingsAccountId("SAVKB2UVwUTBQGJ"))
   )
 
-  private val validResponse: ListUkSavingsAccountsResponse = Def1_ListUkSavingsAccountsResponse(
+  private val validResponse: ListUkSavingsAccountsResponse = ListUkSavingsAccountsResponse(
     savingsAccounts = Some(
       Seq(
-        Def1_UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Bank Account 1")),
-        Def1_UkSavingsAccount(savingsAccountId = "000000000000002", accountName = Some("Bank Account 2")),
-        Def1_UkSavingsAccount(savingsAccountId = "000000000000003", accountName = Some("Bank Account 3"))
+        UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Bank Account 1")),
+        UkSavingsAccount(savingsAccountId = "000000000000002", accountName = Some("Bank Account 2")),
+        UkSavingsAccount(savingsAccountId = "000000000000003", accountName = Some("Bank Account 3"))
       )
     )
   )
@@ -63,13 +61,13 @@ class ListUkSavingsAccountsServiceSpec extends ServiceSpec {
       }
 
       "deduplicate savings accounts by savingsAccountId" in new Test {
-        val responseWithDuplicates: ListUkSavingsAccountsResponse = Def1_ListUkSavingsAccountsResponse(
+        val responseWithDuplicates: ListUkSavingsAccountsResponse = ListUkSavingsAccountsResponse(
           savingsAccounts = Some(
             Seq(
-              Def1_UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Bank Account 1")),
-              Def1_UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Duplicate Bank Account 1")),
-              Def1_UkSavingsAccount(savingsAccountId = "000000000000002", accountName = Some("Bank Account 2")),
-              Def1_UkSavingsAccount(savingsAccountId = "000000000000003", accountName = Some("Bank Account 3"))
+              UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Bank Account 1")),
+              UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Duplicate Bank Account 1")),
+              UkSavingsAccount(savingsAccountId = "000000000000002", accountName = Some("Bank Account 2")),
+              UkSavingsAccount(savingsAccountId = "000000000000003", accountName = Some("Bank Account 3"))
             )
           )
         )
@@ -83,7 +81,7 @@ class ListUkSavingsAccountsServiceSpec extends ServiceSpec {
 
       "preserve missing savings accounts" in new Test {
         val outcome: DownstreamOutcome[ListUkSavingsAccountsResponse] =
-          Right(ResponseWrapper(correlationId, Def1_ListUkSavingsAccountsResponse(savingsAccounts = None)))
+          Right(ResponseWrapper(correlationId, ListUkSavingsAccountsResponse(savingsAccounts = None)))
 
         MockListUkSavingsAccountsConnector
           .listUkSavingsAccounts(requestData)

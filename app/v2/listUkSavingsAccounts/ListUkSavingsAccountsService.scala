@@ -20,7 +20,6 @@ import api.controllers.RequestContext
 import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits.*
-import v2.listUkSavingsAccounts.def1.model.response.Def1_ListUkSavingsAccountsResponse
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 import v2.listUkSavingsAccounts.model.response.ListUkSavingsAccountsResponse
 
@@ -36,7 +35,8 @@ class ListUkSavingsAccountsService @Inject() (connector: ListUkSavingsAccountsCo
     connector.listUkSavingsAccounts(request).map(_.bimap(mapDownstreamErrors(downstreamErrorMap), _.map(deduplicateSavingsAccounts)))
 
   private def deduplicateSavingsAccounts(response: ListUkSavingsAccountsResponse): ListUkSavingsAccountsResponse = response match {
-    case def1: Def1_ListUkSavingsAccountsResponse => def1.copy(savingsAccounts = def1.savingsAccounts.map(_.distinctBy(_.savingsAccountId)))
+    case deduplicatedResponse: ListUkSavingsAccountsResponse =>
+      deduplicatedResponse.copy(savingsAccounts = deduplicatedResponse.savingsAccounts.map(_.distinctBy(_.savingsAccountId)))
   }
 
   private val downstreamErrorMap: Map[String, MtdError] = Map(

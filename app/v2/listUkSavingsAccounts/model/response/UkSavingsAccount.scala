@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package v2.listUkSavingsAccounts.def1.model.response
+package v2.listUkSavingsAccounts.model.response
 
 import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
 
-case class Def1_UkSavingsAccount(savingsAccountId: String, accountName: Option[String])
+case class UkSavingsAccount(savingsAccountId: String, accountName: Option[String])
 
-object Def1_UkSavingsAccount {
+object UkSavingsAccount {
 
-  implicit val writes: OWrites[Def1_UkSavingsAccount] = Json.writes[Def1_UkSavingsAccount]
+  implicit val writes: OWrites[UkSavingsAccount] = Json.writes[UkSavingsAccount]
 
-  implicit val reads: Reads[Def1_UkSavingsAccount] = (
+  implicit val reads: Reads[UkSavingsAccount] = (
     (JsPath \ "incomeSourceId").read[String] and
       (JsPath \ "incomeSourceName").readNullable[String]
-  )(Def1_UkSavingsAccount.apply)
+  )(UkSavingsAccount.apply)
 
 }

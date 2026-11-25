@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v2.listUkSavingsAccounts.def1.model.response
+package v2.listUkSavingsAccounts.model.response
 
 import api.utils.UnitSpec
 import play.api.libs.json.{JsError, Json}
 
-class Def1_UkSavingsAccountSpec extends UnitSpec {
+class UkSavingsAccountSpec extends UnitSpec {
 
   val validUkSavingsAccountFromDESJson = Json.parse(
     """
@@ -65,39 +65,39 @@ class Def1_UkSavingsAccountSpec extends UnitSpec {
 
   val emptyJson = Json.parse("{}")
 
-  "Def1_UkSavingsAccount" should {
-    "return a valid Def1_UkSavingsAccount model " when {
+  "UkSavingsAccount" should {
+    "return a valid UkSavingsAccount model " when {
       "a valid uk savings account json from DES is supplied" in {
-        validUkSavingsAccountFromDESJson.as[Def1_UkSavingsAccount] shouldBe
-          Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", Some("Shares savings account"))
+        validUkSavingsAccountFromDESJson.as[UkSavingsAccount] shouldBe
+          UkSavingsAccount("SAVKB2UVwUTBQGJ", Some("Shares savings account"))
       }
 
       "a valid uk savings account json with mandatory fields only from DES is supplied" in {
-        validNoOptUkSavingsAccountFromDESJson.as[Def1_UkSavingsAccount] shouldBe
-          Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", None)
+        validNoOptUkSavingsAccountFromDESJson.as[UkSavingsAccount] shouldBe
+          UkSavingsAccount("SAVKB2UVwUTBQGJ", None)
       }
     }
 
     "return a JsError" when {
       "an invalid uk savings account json from DES is supplied" in {
-        invalidUkSavingsAccountFromDESJson.validate[Def1_UkSavingsAccount] shouldBe a[JsError]
+        invalidUkSavingsAccountFromDESJson.validate[UkSavingsAccount] shouldBe a[JsError]
       }
     }
 
     "return a JsError" when {
       "an empty json from DES is supplied" in {
-        emptyJson.validate[Def1_UkSavingsAccount] shouldBe a[JsError]
+        emptyJson.validate[UkSavingsAccount] shouldBe a[JsError]
       }
     }
 
     "return a valid MTD uk savings json" when {
-      "a valid Def1_UkSavingsAccount model is supplier" in {
-        Json.toJson(Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", Some("Shares savings account"))) shouldBe
+      "a valid UkSavingsAccount model is supplied" in {
+        Json.toJson(UkSavingsAccount("SAVKB2UVwUTBQGJ", Some("Shares savings account"))) shouldBe
           validUkSavigsAccountFromMTDJson
       }
 
-      "a valid Def1_UkSavingsAccount model with mandatory fields only is supplier" in {
-        Json.toJson(Def1_UkSavingsAccount("SAVKB2UVwUTBQGJ", None)) shouldBe
+      "a valid UkSavingsAccount model with mandatory fields only is supplied" in {
+        Json.toJson(UkSavingsAccount("SAVKB2UVwUTBQGJ", None)) shouldBe
           validNoOptUkSavingsAccountFromMTDJson
       }
     }

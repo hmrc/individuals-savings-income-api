@@ -17,7 +17,6 @@
 package v2.listUkSavingsAccounts
 
 import api.controllers.validators.Validator
-import v2.listUkSavingsAccounts.def1.Def1_ListUkSavingsAccountsValidator
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 
 import javax.inject.Singleton
@@ -26,6 +25,6 @@ import javax.inject.Singleton
 class ListUkSavingsAccountsValidatorFactory {
 
   def validator(nino: String, savingsAccountId: Option[String]): Validator[ListUkSavingsAccountsRequestData] =
-    new Def1_ListUkSavingsAccountsValidator(nino, savingsAccountId)
+    new ListUkSavingsAccountsValidator(nino, savingsAccountId)
 
 }

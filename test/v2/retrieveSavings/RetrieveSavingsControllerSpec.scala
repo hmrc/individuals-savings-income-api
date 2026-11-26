@@ -23,9 +23,9 @@ import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.mvc.Result
-import v2.retrieveSavings.def1.model.RetrieveSavingsControllerFixture
-import v2.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
-import v2.retrieveSavings.def1.model.response.*
+import v2.retrieveSavings.model.RetrieveSavingsControllerFixture
+import v2.retrieveSavings.model.request.RetrieveSavingsRequestData
+import v2.retrieveSavings.model.response.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -40,7 +40,7 @@ class RetrieveSavingsControllerSpec
   val nino: String    = "AA123456A"
   private val taxYear = "2019-20"
 
-  private val requestData: Def1_RetrieveSavingsRequestData = Def1_RetrieveSavingsRequestData(
+  private val requestData: RetrieveSavingsRequestData = RetrieveSavingsRequestData(
     nino = Nino(nino),
     taxYear = TaxYear.fromMtd(taxYear)
   )
@@ -60,7 +60,7 @@ class RetrieveSavingsControllerSpec
     foreignTaxCreditRelief = Some(true)
   )
 
-  private val retrieveSavingsResponseModel = Def1_RetrieveSavingsResponse(
+  private val retrieveSavingsResponseModel = RetrieveSavingsResponse(
     submittedOn = Timestamp("2019-04-04T01:01:01.000Z"),
     securities = Some(fullSecuritiesItemsModel),
     foreignInterest = Some(Seq(fullForeignInterestsModel))

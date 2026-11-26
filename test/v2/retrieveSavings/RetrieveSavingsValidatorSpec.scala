@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v2.retrieveSavings.def1
+package v2.retrieveSavings
 
 import api.config.{AppConfig, MockAppConfig}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec
-import v2.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
+import v2.retrieveSavings.model.request.RetrieveSavingsRequestData
 
-class Def1_RetrieveSavingsValidatorSpec extends UnitSpec with MockAppConfig {
+class RetrieveSavingsValidatorSpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
 
@@ -32,13 +32,13 @@ class Def1_RetrieveSavingsValidatorSpec extends UnitSpec with MockAppConfig {
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
 
   implicit val appConfig: AppConfig                    = mockAppConfig
-  private def validator(nino: String, taxYear: String) = new Def1_RetrieveSavingsValidator(nino, taxYear)(mockAppConfig)
+  private def validator(nino: String, taxYear: String) = new RetrieveSavingsValidator(nino, taxYear)(mockAppConfig)
 
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in new SetupConfig {
         validator(validNino, validTaxYear).validateAndWrapResult() shouldBe
-          Right(Def1_RetrieveSavingsRequestData(parsedNino, parsedTaxYear))
+          Right(RetrieveSavingsRequestData(parsedNino, parsedTaxYear))
       }
     }
 

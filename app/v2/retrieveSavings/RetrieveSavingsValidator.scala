@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.retrieveSavings.def1
+package v2.retrieveSavings
 
 import api.config.AppConfig
 import api.controllers.validators.Validator
@@ -24,10 +24,9 @@ import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple2Semigroupal
-import v2.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
 import v2.retrieveSavings.model.request.RetrieveSavingsRequestData
 
-class Def1_RetrieveSavingsValidator(nino: String, taxYear: String)(appConfig: AppConfig) extends Validator[RetrieveSavingsRequestData] {
+class RetrieveSavingsValidator(nino: String, taxYear: String)(appConfig: AppConfig) extends Validator[RetrieveSavingsRequestData] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.ending(minimumTaxYear))
@@ -36,6 +35,6 @@ class Def1_RetrieveSavingsValidator(nino: String, taxYear: String)(appConfig: Ap
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear)
-    ).mapN(Def1_RetrieveSavingsRequestData.apply)
+    ).mapN(RetrieveSavingsRequestData.apply)
 
 }

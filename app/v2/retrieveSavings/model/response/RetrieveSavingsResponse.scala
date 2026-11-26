@@ -16,16 +16,21 @@
 
 package v2.retrieveSavings.model.response
 
-import api.utils.JsonWritesUtil
+import api.models.domain.Timestamp
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.*
-import v2.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
+import utils.JsonUtils
 
-trait RetrieveSavingsResponse
+case class RetrieveSavingsResponse(submittedOn: Timestamp, securities: Option[Securities], foreignInterest: Option[Seq[ForeignInterestItem]])
 
-object RetrieveSavingsResponse extends JsonWritesUtil {
+object RetrieveSavingsResponse extends JsonUtils {
 
-  implicit val writes: OWrites[RetrieveSavingsResponse] = writesFrom { case a: Def1_RetrieveSavingsResponse =>
-    Json.toJson(a).as[JsObject]
-  }
+  implicit val reads: Reads[RetrieveSavingsResponse] = (
+    (JsPath \ "submittedOn").read[Timestamp] and
+      (JsPath \ "securities").readNullable[Securities] and
+      (JsPath \ "foreignInterest").readNullable[Seq[ForeignInterestItem]].mapEmptySeqToNone
+  )(RetrieveSavingsResponse.apply)
+
+  implicit val writes: OWrites[RetrieveSavingsResponse] = Json.writes[RetrieveSavingsResponse]
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.retrieveSavings.def1.model
+package v2.retrieveSavings.model
 
 import play.api.libs.json.{JsValue, Json}
 

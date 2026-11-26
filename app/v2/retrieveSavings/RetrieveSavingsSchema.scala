@@ -18,16 +18,11 @@ package v2.retrieveSavings
 
 import api.schema.DownstreamReadable
 import play.api.libs.json.Reads
-import v2.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
 import v2.retrieveSavings.model.response.RetrieveSavingsResponse
 
 sealed trait RetrieveSavingsSchema extends DownstreamReadable[RetrieveSavingsResponse]
 
-object RetrieveSavingsSchema {
-
-  case object Def1 extends RetrieveSavingsSchema {
-    type DownstreamResp = Def1_RetrieveSavingsResponse
-    val connectorReads: Reads[DownstreamResp] = Def1_RetrieveSavingsResponse.reads
-  }
-
+case object RetrieveSavingsSchema extends RetrieveSavingsSchema {
+  type DownstreamResp = RetrieveSavingsResponse
+  val connectorReads: Reads[DownstreamResp] = RetrieveSavingsResponse.reads
 }

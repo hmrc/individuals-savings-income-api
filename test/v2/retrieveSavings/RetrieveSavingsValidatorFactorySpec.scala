@@ -19,7 +19,6 @@ package v2.retrieveSavings
 import api.config.MockAppConfig
 import api.controllers.validators.Validator
 import api.utils.UnitSpec
-import v2.retrieveSavings.def1.Def1_RetrieveSavingsValidator
 import v2.retrieveSavings.model.request.RetrieveSavingsRequestData
 
 class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
@@ -35,7 +34,7 @@ class RetrieveSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
         val result: Validator[RetrieveSavingsRequestData] =
           validatorFactory.validator(validNino, validTaxYear)
 
-        result shouldBe a[Def1_RetrieveSavingsValidator]
+        result shouldBe a[RetrieveSavingsValidator]
       }
     }
 

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package v2.retrieveUkSavingsAccountAnnualSummary.def1
+package v2.retrieveUkSavingsAccountAnnualSummary
 
 import api.config.MockAppConfig
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec
 import models.domain.SavingsAccountId
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
+import v2.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
-class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec with MockAppConfig {
+class RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec with MockAppConfig {
 
   private implicit val correlationId: String = "1234"
   private val validNino                      = "AA123456A"
@@ -33,13 +33,13 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryValidatorSpec extends UnitSpec w
   private val parsedTaxYear                  = TaxYear.fromMtd(validTaxYear)
 
   private def validator(nino: String, taxYear: String, savingsAccountId: String) =
-    new Def1_RetrieveUkSavingsAccountAnnualSummaryValidator(nino, taxYear, savingsAccountId)(mockAppConfig)
+    new RetrieveUkSavingsAccountAnnualSummaryValidator(nino, taxYear, savingsAccountId)(mockAppConfig)
 
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in new SetupConfig {
         validator(validNino, validTaxYear, validSavingsAccountId.toString).validateAndWrapResult() shouldBe
-          Right(Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData(parsedNino, parsedTaxYear, validSavingsAccountId))
+          Right(RetrieveUkSavingsAccountAnnualSummaryRequestData(parsedNino, parsedTaxYear, validSavingsAccountId))
       }
     }
 

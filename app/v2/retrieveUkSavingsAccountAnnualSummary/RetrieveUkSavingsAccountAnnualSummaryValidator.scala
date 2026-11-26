@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.retrieveUkSavingsAccountAnnualSummary.def1
+package v2.retrieveUkSavingsAccountAnnualSummary
 
 import api.config.AppConfig
 import api.controllers.validators.Validator
@@ -25,10 +25,9 @@ import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple3Semigroupal
 import resolvers.ResolveSavingsAccountId
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
 import v2.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
-class Def1_RetrieveUkSavingsAccountAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String)(appConfig: AppConfig)
+class RetrieveUkSavingsAccountAnnualSummaryValidator(nino: String, taxYear: String, savingsAccountId: String)(appConfig: AppConfig)
     extends Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] {
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.ending(minimumTaxYear))
@@ -38,6 +37,6 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryValidator(nino: String, taxYear:
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveSavingsAccountId(savingsAccountId)
-    ).mapN(Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData.apply)
+    ).mapN(RetrieveUkSavingsAccountAnnualSummaryRequestData.apply)
 
 }

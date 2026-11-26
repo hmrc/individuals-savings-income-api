@@ -21,8 +21,7 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
 import models.domain.SavingsAccountId
 import uk.gov.hmrc.http.StringContextOps
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.response.*
+import v2.retrieveUkSavingsAccountAnnualSummary.model.response.*
 import v2.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 import scala.concurrent.Future
@@ -38,15 +37,15 @@ class RetrieveUkSavingsAccountAnnualSummaryConnectorSpec extends ConnectorSpec {
     def taxYear: TaxYear
 
     val request: RetrieveUkSavingsAccountAnnualSummaryRequestData =
-      Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData(
+      RetrieveUkSavingsAccountAnnualSummaryRequestData(
         Nino(nino),
         taxYear,
         SavingsAccountId(incomeSourceId)
       )
 
-    val response: Def1_RetrieveUkSavingsAccountAnnualSummaryResponse = Def1_RetrieveUkSavingsAccountAnnualSummaryResponse(
+    val response: RetrieveUkSavingsAccountAnnualSummaryResponse = RetrieveUkSavingsAccountAnnualSummaryResponse(
       Seq(
-        Def1_RetrieveUkSavingsAnnualIncomeItem(
+        RetrieveUkSavingsAnnualIncomeItem(
           incomeSourceId = incomeSourceId,
           taxedUkInterest = Some(1230.55),
           untaxedUkInterest = Some(1230.55)

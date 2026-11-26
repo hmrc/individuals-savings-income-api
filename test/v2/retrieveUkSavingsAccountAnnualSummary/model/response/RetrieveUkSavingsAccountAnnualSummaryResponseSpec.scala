@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v2.retrieveUkSavingsAccountAnnualSummary.def1.model.response
+package v2.retrieveUkSavingsAccountAnnualSummary.model.response
 
 import api.utils.UnitSpec
 import play.api.libs.json.Json
 
-class Def1_RetrieveUkSavingsAccountAnnualSummaryResponseSpec extends UnitSpec {
+class RetrieveUkSavingsAccountAnnualSummaryResponseSpec extends UnitSpec {
 
   "Reads" must {
     "read from downstream JSON" in {
@@ -39,11 +39,11 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryResponseSpec extends UnitSpec {
                    |  ]
                    |}
           |""".stripMargin)
-        .as[Def1_RetrieveUkSavingsAccountAnnualSummaryResponse] shouldBe
-        Def1_RetrieveUkSavingsAccountAnnualSummaryResponse(
+        .as[RetrieveUkSavingsAccountAnnualSummaryResponse] shouldBe
+        RetrieveUkSavingsAccountAnnualSummaryResponse(
           Seq(
-            Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
-            Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
+            RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
+            RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
           ))
     }
 
@@ -58,16 +58,16 @@ class Def1_RetrieveUkSavingsAccountAnnualSummaryResponseSpec extends UnitSpec {
         }
       """)
 
-      json.validate[Def1_RetrieveUkSavingsAccountAnnualSummaryResponse].isError shouldBe true
+      json.validate[RetrieveUkSavingsAccountAnnualSummaryResponse].isError shouldBe true
     }
   }
 
   "writes" must {
     "write as MTD JSON" in {
       Json.toJson(
-        Def1_RetrieveUkSavingsAccountAnnualSummaryResponse(Seq(
-          Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
-          Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
+        RetrieveUkSavingsAccountAnnualSummaryResponse(Seq(
+          RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
+          RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
         ))) shouldBe
         Json.parse("""{
             |  "taxedUkInterest": 1.12,

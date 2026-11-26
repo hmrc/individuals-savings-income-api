@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package v2.retrieveUkSavingsAccountAnnualSummary.def1.model
+package v2.retrieveUkSavingsAccountAnnualSummary.model.response
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{Json, Reads}
 
-object RetrieveUkSavingsAccountAnnualSummaryControllerFixture {
+case class RetrieveUkSavingsAnnualIncomeItem(incomeSourceId: String, taxedUkInterest: Option[BigDecimal], untaxedUkInterest: Option[BigDecimal])
 
-  val mtdRetrieveResponse: JsValue = Json.parse("""
-      |{
-      |   "taxedUkInterest": 1.12,
-      |   "untaxedUkInterest": 2.12
-      |   }
-      """.stripMargin)
-
+object RetrieveUkSavingsAnnualIncomeItem {
+  implicit val reads: Reads[RetrieveUkSavingsAnnualIncomeItem] = Json.reads[RetrieveUkSavingsAnnualIncomeItem]
 }

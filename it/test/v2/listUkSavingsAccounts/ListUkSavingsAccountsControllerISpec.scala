@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.listUkSavingsAccounts.def1
+package v2.listUkSavingsAccounts
 
 import api.models.errors.*
 import api.services.*

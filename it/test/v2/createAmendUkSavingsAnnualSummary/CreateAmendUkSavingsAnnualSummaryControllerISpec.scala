@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.createAmendUkSavingsAnnualSummary.def1
+package v2.createAmendUkSavingsAnnualSummary
 
 import api.models.errors.*
 import api.services.*
@@ -27,7 +27,7 @@ import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 
-class Def1_CreateAmendUkSavingsAnnualSummaryControllerISpec extends IntegrationBaseSpec {
+class CreateAmendUkSavingsAnnualSummaryControllerISpec extends IntegrationBaseSpec {
 
   val requestJson: JsValue =
     Json.parse("""{

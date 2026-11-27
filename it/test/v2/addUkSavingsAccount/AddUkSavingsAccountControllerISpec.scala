@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.addUkSavingsAccount.def1
+package v2.addUkSavingsAccount
 
 import api.models.errors.*
 import api.services.*
@@ -26,7 +26,7 @@ import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
 
-class Def1_AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
+class AddUkSavingsAccountControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 

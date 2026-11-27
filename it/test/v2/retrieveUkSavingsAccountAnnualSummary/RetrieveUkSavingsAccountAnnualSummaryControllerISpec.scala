@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.retrieveUkSavingsAccountAnnualSummary.def1
+package v2.retrieveUkSavingsAccountAnnualSummary
 
 import api.models.errors.*
 import api.services.*

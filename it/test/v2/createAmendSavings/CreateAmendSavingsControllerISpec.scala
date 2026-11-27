@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v2.createAmendSavings.def1
+package v2.createAmendSavings
 
 import api.models.errors
 import api.models.errors.*
@@ -28,7 +28,7 @@ import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 
-class Def1_CreateAmendSavingsControllerISpec extends IntegrationBaseSpec {
+class CreateAmendSavingsControllerISpec extends IntegrationBaseSpec {
 
   "Calling the 'create amend savings' endpoint" should {
     "return a 200 status code" when {

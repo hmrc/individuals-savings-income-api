@@ -24,12 +24,8 @@ import api.models.outcomes.ResponseWrapper
 import models.domain.SavingsAccountId
 import play.api.Configuration
 import play.api.mvc.Result
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.RetrieveUkSavingsAccountAnnualSummaryControllerFixture
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.request.Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.response.{
-  Def1_RetrieveUkSavingsAccountAnnualSummaryResponse,
-  Def1_RetrieveUkSavingsAnnualIncomeItem
-}
+import v2.retrieveUkSavingsAccountAnnualSummary.model.RetrieveUkSavingsAccountAnnualSummaryControllerFixture
+import v2.retrieveUkSavingsAccountAnnualSummary.model.response.{RetrieveUkSavingsAccountAnnualSummaryResponse, RetrieveUkSavingsAnnualIncomeItem}
 import v2.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -48,17 +44,17 @@ class RetrieveUkSavingsAccountAnnualSummaryControllerSpec
   val taxedUkIncome: Option[BigDecimal]   = Some(93556675358.99)
   val unTaxedUkIncome: Option[BigDecimal] = Some(34514974058.99)
 
-  private val requestData: RetrieveUkSavingsAccountAnnualSummaryRequestData = Def1_RetrieveUkSavingsAccountAnnualSummaryRequestData(
+  private val requestData: RetrieveUkSavingsAccountAnnualSummaryRequestData = RetrieveUkSavingsAccountAnnualSummaryRequestData(
     nino = Nino(nino),
     taxYear = TaxYear.fromMtd(taxYear),
     savingsAccountId = SavingsAccountId(savingsAccountId)
   )
 
-  private val retrieveUkSavingsAccountAnnualSummaryResponse: Def1_RetrieveUkSavingsAccountAnnualSummaryResponse =
-    new Def1_RetrieveUkSavingsAccountAnnualSummaryResponse(
+  private val retrieveUkSavingsAccountAnnualSummaryResponse: RetrieveUkSavingsAccountAnnualSummaryResponse =
+    RetrieveUkSavingsAccountAnnualSummaryResponse(
       Seq(
-        Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
-        Def1_RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
+        RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
+        RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
       ))
 
   private val mtdResponse = RetrieveUkSavingsAccountAnnualSummaryControllerFixture.mtdRetrieveResponse

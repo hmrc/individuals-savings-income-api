@@ -19,9 +19,6 @@ package v2.retrieveSavings.model.request
 import api.models.domain.{Nino, TaxYear}
 import v2.retrieveSavings.RetrieveSavingsSchema
 
-trait RetrieveSavingsRequestData {
-  def nino: Nino
-  def taxYear: TaxYear
-
-  val schema: RetrieveSavingsSchema
+case class RetrieveSavingsRequestData(nino: Nino, taxYear: TaxYear) {
+  val schema: RetrieveSavingsSchema = RetrieveSavingsSchema
 }

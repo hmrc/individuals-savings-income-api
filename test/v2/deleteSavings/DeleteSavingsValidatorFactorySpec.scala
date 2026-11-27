@@ -18,7 +18,6 @@ package v2.deleteSavings
 
 import api.config.MockAppConfig
 import api.utils.UnitSpec
-import v2.deleteSavings.def1.Def1_DeleteSavingsValidator
 
 class DeleteSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
   private val validNino    = "AA123456A"
@@ -29,16 +28,16 @@ class DeleteSavingsValidatorFactorySpec extends UnitSpec with MockAppConfig {
   val validatorFactory       = new DeleteSavingsValidatorFactory(mockAppConfig)
 
   "validator" should {
-    "return the Def1 validator" when {
+    "return the DeleteSavingsValidator" when {
 
       "given any valid request" in {
         val result = validatorFactory.validator(validNino, validTaxYear)
-        result shouldBe a[Def1_DeleteSavingsValidator]
+        result shouldBe a[DeleteSavingsValidator]
       }
 
       "given any invalid request" in {
         val result = validatorFactory.validator(invalidNino, invalidTaxYear)
-        result shouldBe a[Def1_DeleteSavingsValidator]
+        result shouldBe a[DeleteSavingsValidator]
       }
     }
 

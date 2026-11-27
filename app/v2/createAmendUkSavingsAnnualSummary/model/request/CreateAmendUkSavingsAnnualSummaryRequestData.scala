@@ -20,11 +20,12 @@ import api.models.domain.{Nino, TaxYear}
 import models.domain.SavingsAccountId
 import v2.createAmendUkSavingsAnnualSummary.CreateAmendUkSavingsAnnualSummarySchema
 
-trait CreateAmendUkSavingsAnnualSummaryRequestData {
-  def nino: Nino
-  def taxYear: TaxYear
-  def savingsAccountId: SavingsAccountId
-  def mtdBody: CreateAmendUkSavingsAnnualSummaryRequestBody
+case class CreateAmendUkSavingsAnnualSummaryRequestData(
+    nino: Nino,
+    taxYear: TaxYear,
+    savingsAccountId: SavingsAccountId,
+    mtdBody: CreateAmendUkSavingsAnnualSummaryRequestBody
+) {
 
-  val schema: CreateAmendUkSavingsAnnualSummarySchema
+  val schema: CreateAmendUkSavingsAnnualSummarySchema = CreateAmendUkSavingsAnnualSummarySchema
 }

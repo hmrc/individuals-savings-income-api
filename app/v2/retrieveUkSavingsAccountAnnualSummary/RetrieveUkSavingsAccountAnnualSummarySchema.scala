@@ -18,16 +18,11 @@ package v2.retrieveUkSavingsAccountAnnualSummary
 
 import api.schema.DownstreamReadable
 import play.api.libs.json.Reads
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.model.response.Def1_RetrieveUkSavingsAccountAnnualSummaryResponse
 import v2.retrieveUkSavingsAccountAnnualSummary.model.response.RetrieveUkSavingsAccountAnnualSummaryResponse
 
 sealed trait RetrieveUkSavingsAccountAnnualSummarySchema extends DownstreamReadable[RetrieveUkSavingsAccountAnnualSummaryResponse]
 
-object RetrieveUkSavingsAccountAnnualSummarySchema {
-
-  case object Def1 extends RetrieveUkSavingsAccountAnnualSummarySchema {
-    type DownstreamResp = Def1_RetrieveUkSavingsAccountAnnualSummaryResponse
-    val connectorReads: Reads[DownstreamResp] = Def1_RetrieveUkSavingsAccountAnnualSummaryResponse.reads
-  }
-
+case object RetrieveUkSavingsAccountAnnualSummarySchema extends RetrieveUkSavingsAccountAnnualSummarySchema {
+  type DownstreamResp = RetrieveUkSavingsAccountAnnualSummaryResponse
+  val connectorReads: Reads[DownstreamResp] = RetrieveUkSavingsAccountAnnualSummaryResponse.reads
 }

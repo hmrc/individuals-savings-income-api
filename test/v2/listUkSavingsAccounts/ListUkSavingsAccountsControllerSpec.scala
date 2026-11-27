@@ -25,8 +25,8 @@ import models.domain.SavingsAccountId
 import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
-import v2.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
-import v2.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
+import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
+import v2.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -41,17 +41,17 @@ class ListUkSavingsAccountsControllerSpec
   val nino: String                       = "AA123456A"
   val savingsAccountId: SavingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
-  val requestData: Def1_ListUkSavingsAccountsRequestData = Def1_ListUkSavingsAccountsRequestData(
+  val requestData: ListUkSavingsAccountsRequestData = ListUkSavingsAccountsRequestData(
     nino = Nino(nino),
     savingsAccountId = Some(savingsAccountId)
   )
 
-  val validListUkSavingsAccountResponse: Def1_ListUkSavingsAccountsResponse = Def1_ListUkSavingsAccountsResponse(
+  val validListUkSavingsAccountResponse: ListUkSavingsAccountsResponse = ListUkSavingsAccountsResponse(
     Some(
       Seq(
-        Def1_UkSavingsAccount("000000000000001", Some("Bank Account 1")),
-        Def1_UkSavingsAccount("000000000000002", Some("Bank Account 2")),
-        Def1_UkSavingsAccount("000000000000003", Some("Bank Account 3"))
+        UkSavingsAccount("000000000000001", Some("Bank Account 1")),
+        UkSavingsAccount("000000000000002", Some("Bank Account 2")),
+        UkSavingsAccount("000000000000003", Some("Bank Account 3"))
       )
     )
   )

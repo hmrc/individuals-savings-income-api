@@ -19,7 +19,6 @@ package v2.createAmendUkSavingsAnnualSummary
 import api.config.AppConfig
 import api.controllers.validators.Validator
 import play.api.libs.json.JsValue
-import v2.createAmendUkSavingsAnnualSummary.def1.Def1_CreateAmendUkSavingsAnnualSummaryValidator
 import v2.createAmendUkSavingsAnnualSummary.model.request.*
 
 import javax.inject.{Inject, Singleton}
@@ -28,6 +27,6 @@ import javax.inject.{Inject, Singleton}
 class CreateAmendUkSavingsAnnualSummaryValidatorFactory @Inject() (appConfig: AppConfig) {
 
   def validator(nino: String, taxYear: String, savingsAccountId: String, body: JsValue): Validator[CreateAmendUkSavingsAnnualSummaryRequestData] =
-    new Def1_CreateAmendUkSavingsAnnualSummaryValidator(nino, taxYear, savingsAccountId, body)(appConfig)
+    new CreateAmendUkSavingsAnnualSummaryValidator(nino, taxYear, savingsAccountId, body)(appConfig)
 
 }

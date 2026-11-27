@@ -1,0 +1,79 @@
+/*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package v2.retrieveUkSavingsAccountAnnualSummary.model.response
+
+import api.utils.UnitSpec
+import play.api.libs.json.Json
+
+class RetrieveUkSavingsAccountAnnualSummaryResponseSpec extends UnitSpec {
+
+  "Reads" must {
+    "read from downstream JSON" in {
+      Json
+        .parse("""{
+                   |  "savingsInterestAnnualIncome": [
+                   |    {
+                   |      "incomeSourceId": "id1",
+                   |      "taxedUkInterest": 1.12,
+                   |      "untaxedUkInterest": 2.12
+                   |    },
+                   |    {
+                   |      "incomeSourceId": "id2",
+                   |      "taxedUkInterest": 3.12,
+                   |      "untaxedUkInterest": 4.12
+                   |    }
+                   |  ]
+                   |}
+          |""".stripMargin)
+        .as[RetrieveUkSavingsAccountAnnualSummaryResponse] shouldBe
+        RetrieveUkSavingsAccountAnnualSummaryResponse(
+          Seq(
+            RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
+            RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
+          ))
+    }
+
+    "fail when incomeSourceId is missing" in {
+      val json = Json.parse("""
+        {
+          "savingsInterestAnnualIncome": [
+            {
+              "taxedUkInterest": 1.12
+            }
+          ]
+        }
+      """)
+
+      json.validate[RetrieveUkSavingsAccountAnnualSummaryResponse].isError shouldBe true
+    }
+  }
+
+  "writes" must {
+    "write as MTD JSON" in {
+      Json.toJson(
+        RetrieveUkSavingsAccountAnnualSummaryResponse(Seq(
+          RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id1", taxedUkInterest = Some(1.12), untaxedUkInterest = Some(2.12)),
+          RetrieveUkSavingsAnnualIncomeItem(incomeSourceId = "id2", taxedUkInterest = Some(3.12), untaxedUkInterest = Some(4.12))
+        ))) shouldBe
+        Json.parse("""{
+            |  "taxedUkInterest": 1.12,
+            |  "untaxedUkInterest": 2.12
+            |}""".stripMargin)
+    }
+  }
+
+}

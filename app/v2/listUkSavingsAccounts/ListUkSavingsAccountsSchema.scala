@@ -18,16 +18,11 @@ package v2.listUkSavingsAccounts
 
 import api.schema.DownstreamReadable
 import play.api.libs.json.Reads
-import v2.listUkSavingsAccounts.def1.model.response.Def1_ListUkSavingsAccountsResponse
 import v2.listUkSavingsAccounts.model.response.ListUkSavingsAccountsResponse
 
 sealed trait ListUkSavingsAccountsSchema extends DownstreamReadable[ListUkSavingsAccountsResponse]
 
-object ListUkSavingsAccountsSchema {
-
-  case object Def1 extends ListUkSavingsAccountsSchema {
-    type DownstreamResp = Def1_ListUkSavingsAccountsResponse
-    val connectorReads: Reads[DownstreamResp] = Def1_ListUkSavingsAccountsResponse.reads
-  }
-
+case object ListUkSavingsAccountsSchema extends ListUkSavingsAccountsSchema {
+  type DownstreamResp = ListUkSavingsAccountsResponse
+  val connectorReads: Reads[DownstreamResp] = ListUkSavingsAccountsResponse.reads
 }

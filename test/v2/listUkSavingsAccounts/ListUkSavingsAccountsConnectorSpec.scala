@@ -22,9 +22,8 @@ import api.models.domain.Nino
 import api.models.outcomes.ResponseWrapper
 import models.domain.SavingsAccountId
 import uk.gov.hmrc.http.StringContextOps
-import v2.listUkSavingsAccounts.def1.model.request.Def1_ListUkSavingsAccountsRequestData
-import v2.listUkSavingsAccounts.def1.model.response.{Def1_ListUkSavingsAccountsResponse, Def1_UkSavingsAccount}
-import v2.listUkSavingsAccounts.model.response.ListUkSavingsAccountsResponse
+import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
+import v2.listUkSavingsAccounts.model.response.{ListUkSavingsAccountsResponse, UkSavingsAccount}
 
 import scala.concurrent.Future
 
@@ -33,15 +32,15 @@ class ListUkSavingsAccountsConnectorSpec extends ConnectorSpec with MockAppConfi
   val nino: String                       = "AA111111A"
   val savingsAccountId: SavingsAccountId = SavingsAccountId("SAVKB2UVwUTBQGJ")
 
-  val request: Def1_ListUkSavingsAccountsRequestData                     = Def1_ListUkSavingsAccountsRequestData(Nino(nino), None)
-  val requestWithSavingsAccountId: Def1_ListUkSavingsAccountsRequestData = Def1_ListUkSavingsAccountsRequestData(Nino(nino), Some(savingsAccountId))
+  val request: ListUkSavingsAccountsRequestData                     = ListUkSavingsAccountsRequestData(Nino(nino), None)
+  val requestWithSavingsAccountId: ListUkSavingsAccountsRequestData = ListUkSavingsAccountsRequestData(Nino(nino), Some(savingsAccountId))
 
-  private val validResponse = Def1_ListUkSavingsAccountsResponse(
+  private val validResponse = ListUkSavingsAccountsResponse(
     savingsAccounts = Some(
       Seq(
-        Def1_UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Bank Account 1")),
-        Def1_UkSavingsAccount(savingsAccountId = "000000000000002", accountName = Some("Bank Account 2")),
-        Def1_UkSavingsAccount(savingsAccountId = "000000000000003", accountName = Some("Bank Account 3"))
+        UkSavingsAccount(savingsAccountId = "000000000000001", accountName = Some("Bank Account 1")),
+        UkSavingsAccount(savingsAccountId = "000000000000002", accountName = Some("Bank Account 2")),
+        UkSavingsAccount(savingsAccountId = "000000000000003", accountName = Some("Bank Account 3"))
       )
     )
   )

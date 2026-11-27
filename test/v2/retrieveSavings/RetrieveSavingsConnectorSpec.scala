@@ -20,8 +20,6 @@ import api.connectors.{ConnectorSpec, DownstreamOutcome}
 import api.models.domain.*
 import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
-import v2.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
-import v2.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
 import v2.retrieveSavings.model.request.RetrieveSavingsRequestData
 import v2.retrieveSavings.model.response.RetrieveSavingsResponse
 
@@ -68,9 +66,9 @@ class RetrieveSavingsConnectorSpec extends ConnectorSpec {
     def taxYear: TaxYear
 
     val request: RetrieveSavingsRequestData =
-      Def1_RetrieveSavingsRequestData(Nino(nino), taxYear)
+      RetrieveSavingsRequestData(Nino(nino), taxYear)
 
-    val response: Def1_RetrieveSavingsResponse = Def1_RetrieveSavingsResponse(
+    val response: RetrieveSavingsResponse = RetrieveSavingsResponse(
       submittedOn = Timestamp("2019-04-04T01:01:01.000Z"),
       securities = None,
       foreignInterest = None

@@ -19,7 +19,6 @@ package v2.retrieveUkSavingsAccountAnnualSummary
 import api.config.MockAppConfig
 import api.controllers.validators.Validator
 import api.utils.UnitSpec
-import v2.retrieveUkSavingsAccountAnnualSummary.def1.Def1_RetrieveUkSavingsAccountAnnualSummaryValidator
 import v2.retrieveUkSavingsAccountAnnualSummary.model.request.RetrieveUkSavingsAccountAnnualSummaryRequestData
 
 class RetrieveUkSavingsAccountValidatorAnnualSummaryFactorySpec extends UnitSpec with MockAppConfig {
@@ -37,7 +36,7 @@ class RetrieveUkSavingsAccountValidatorAnnualSummaryFactorySpec extends UnitSpec
         val result: Validator[RetrieveUkSavingsAccountAnnualSummaryRequestData] =
           validator.validator(validNino, validTaxYear, validSavingsAccountId)
 
-        result shouldBe a[Def1_RetrieveUkSavingsAccountAnnualSummaryValidator]
+        result shouldBe a[RetrieveUkSavingsAccountAnnualSummaryValidator]
       }
     }
 

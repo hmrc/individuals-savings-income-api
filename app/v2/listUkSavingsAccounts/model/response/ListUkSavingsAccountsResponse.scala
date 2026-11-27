@@ -16,16 +16,29 @@
 
 package v2.listUkSavingsAccounts.model.response
 
-import api.utils.JsonWritesUtil.writesFrom
 import play.api.libs.json.*
-import v2.listUkSavingsAccounts.def1.model.response.Def1_ListUkSavingsAccountsResponse
+import utils.JsonUtils
 
-trait ListUkSavingsAccountsResponse
+case class ListUkSavingsAccountsResponse(savingsAccounts: Option[Seq[UkSavingsAccount]])
 
-object ListUkSavingsAccountsResponse {
+object ListUkSavingsAccountsResponse extends JsonUtils {
 
-  implicit val writes: OWrites[ListUkSavingsAccountsResponse] = writesFrom { case def1: Def1_ListUkSavingsAccountsResponse =>
-    implicitly[OWrites[Def1_ListUkSavingsAccountsResponse]].writes(def1)
+  implicit val writes: OWrites[ListUkSavingsAccountsResponse] = Json.writes[ListUkSavingsAccountsResponse]
+
+  implicit val reads: Reads[ListUkSavingsAccountsResponse] = {
+    case JsObject(fields) if fields.size == 1 && fields.contains("bbsi") =>
+      fields
+        .get("bbsi")
+        .map(arr =>
+          arr.validate(
+            JsPath
+              .readNullable[Seq[UkSavingsAccount]]
+              .mapEmptySeqToNone
+              .map(ListUkSavingsAccountsResponse(_))))
+        .getOrElse(JsError("Unexpected JSON format"))
+
+    case _ =>
+      JsError("Unexpected JSON format")
   }
 
 }

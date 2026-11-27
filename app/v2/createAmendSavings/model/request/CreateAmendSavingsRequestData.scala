@@ -19,10 +19,6 @@ package v2.createAmendSavings.model.request
 import api.models.domain.{Nino, TaxYear}
 import v2.createAmendSavings.CreateAmendSavingsSchema
 
-trait CreateAmendSavingsRequestData {
-  def nino: Nino
-  def taxYear: TaxYear
-  def body: CreateAmendSavingsRequestBody
-
-  val schema: CreateAmendSavingsSchema
+case class CreateAmendSavingsRequestData(nino: Nino, taxYear: TaxYear, body: CreateAmendSavingsRequestBody) {
+  val schema: CreateAmendSavingsSchema = CreateAmendSavingsSchema
 }

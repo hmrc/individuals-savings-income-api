@@ -30,7 +30,7 @@ import models.domain.SavingsAccountId
 import play.api.Configuration
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.Result
-import v2.createAmendUkSavingsAnnualSummary.def1.model.request.*
+import v2.createAmendUkSavingsAnnualSummary.model.request.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -54,11 +54,11 @@ class CreateAmendUkSavingsAnnualSummaryControllerSpec
 
   val requestJson: JsObject = JsObject.empty
 
-  val requestData: Def1_CreateAmendUkSavingsAnnualSummaryRequestData = Def1_CreateAmendUkSavingsAnnualSummaryRequestData(
+  val requestData: CreateAmendUkSavingsAnnualSummaryRequestData = CreateAmendUkSavingsAnnualSummaryRequestData(
     nino = Nino(validNino),
     taxYear = TaxYear.fromMtd(taxYear),
     savingsAccountId = SavingsAccountId(savingsAccountId),
-    mtdBody = Def1_CreateAmendUkSavingsAnnualSummaryRequestBody(None, None)
+    mtdBody = CreateAmendUkSavingsAnnualSummaryRequestBody(None, None)
   )
 
   "CreateAmendUkSavingsAnnualSummaryController" should {

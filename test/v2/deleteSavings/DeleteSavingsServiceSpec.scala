@@ -21,7 +21,6 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v2.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
 import v2.deleteSavings.model.request.DeleteSavingsRequestData
 
 import scala.concurrent.Future
@@ -77,7 +76,7 @@ class DeleteSavingsServiceSpec extends ServiceSpec {
     private val nino    = Nino("AA112233A")
     private val taxYear = TaxYear.fromMtd("2021-22")
 
-    val request: DeleteSavingsRequestData = Def1_DeleteSavingsRequestData(
+    val request: DeleteSavingsRequestData = DeleteSavingsRequestData(
       nino = nino,
       taxYear = taxYear
     )

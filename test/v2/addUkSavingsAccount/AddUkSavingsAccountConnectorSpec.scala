@@ -22,8 +22,8 @@ import api.mocks.MockHttpClient
 import api.models.domain.Nino
 import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
-import v2.addUkSavingsAccount.def1.model.request.{Def1_AddUkSavingsAccountRequestBody, Def1_AddUkSavingsAccountRequestData}
-import v2.addUkSavingsAccount.def1.model.response.Def1_AddUkSavingsAccountResponse
+import v2.addUkSavingsAccount.model.response.AddUkSavingsAccountResponse
+import v2.addUkSavingsAccount.model.request.{AddUkSavingsAccountRequestBody, AddUkSavingsAccountRequestData}
 
 import scala.concurrent.Future
 
@@ -31,15 +31,15 @@ class AddUkSavingsAccountConnectorSpec extends ConnectorSpec {
 
   val nino: String = "AA111111A"
 
-  val addUkSavingsAccountRequestBody: Def1_AddUkSavingsAccountRequestBody =
-    Def1_AddUkSavingsAccountRequestBody(accountName = "Shares savings account")
+  val addUkSavingsAccountRequestBody: AddUkSavingsAccountRequestBody =
+    AddUkSavingsAccountRequestBody(accountName = "Shares savings account")
 
-  val addUkSavingsAccountRequest: Def1_AddUkSavingsAccountRequestData = Def1_AddUkSavingsAccountRequestData(
+  val addUkSavingsAccountRequest: AddUkSavingsAccountRequestData = AddUkSavingsAccountRequestData(
     nino = Nino(nino),
     body = addUkSavingsAccountRequestBody
   )
 
-  val addUkSavingsAccountResponse: Def1_AddUkSavingsAccountResponse = Def1_AddUkSavingsAccountResponse(
+  val addUkSavingsAccountResponse: AddUkSavingsAccountResponse = AddUkSavingsAccountResponse(
     savingsAccountId = "SAVKB2UVwUTBQGJ"
   )
 

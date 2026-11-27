@@ -20,8 +20,7 @@ import api.connectors.ConnectorSpec
 import api.models.domain.{Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
-import v2.createAmendSavings.def1.model.request.{Def1_CreateAmendSavingsRequestBody, Def1_CreateAmendSavingsRequestData}
-import v2.createAmendSavings.model.request.CreateAmendSavingsRequestData
+import v2.createAmendSavings.model.request.{CreateAmendSavingsRequestBody, CreateAmendSavingsRequestData}
 
 import scala.concurrent.Future
 
@@ -52,9 +51,9 @@ class CreateAmendSavingsConnectorSpec extends ConnectorSpec {
     def nino: String     = "AA111111A"
     def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
-    val requestBody: Def1_CreateAmendSavingsRequestBody = Def1_CreateAmendSavingsRequestBody(securities = None, foreignInterest = None)
+    val requestBody: CreateAmendSavingsRequestBody = CreateAmendSavingsRequestBody(securities = None, foreignInterest = None)
 
-    val request: CreateAmendSavingsRequestData = Def1_CreateAmendSavingsRequestData(
+    val request: CreateAmendSavingsRequestData = CreateAmendSavingsRequestData(
       nino = Nino(nino),
       taxYear = taxYear,
       body = requestBody

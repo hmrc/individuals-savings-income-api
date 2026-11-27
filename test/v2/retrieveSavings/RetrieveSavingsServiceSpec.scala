@@ -21,8 +21,8 @@ import api.models.domain.*
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v2.retrieveSavings.def1.model.request.Def1_RetrieveSavingsRequestData
-import v2.retrieveSavings.def1.model.response.Def1_RetrieveSavingsResponse
+import v2.retrieveSavings.model.request.RetrieveSavingsRequestData
+import v2.retrieveSavings.model.response.RetrieveSavingsResponse
 
 import scala.concurrent.Future
 
@@ -76,12 +76,12 @@ class RetrieveSavingsServiceSpec extends ServiceSpec {
     private val nino    = Nino("AA112233A")
     private val taxYear = TaxYear.fromMtd("2019-20")
 
-    val request: Def1_RetrieveSavingsRequestData = Def1_RetrieveSavingsRequestData(
+    val request: RetrieveSavingsRequestData = RetrieveSavingsRequestData(
       nino = nino,
       taxYear = taxYear
     )
 
-    val response: Def1_RetrieveSavingsResponse = Def1_RetrieveSavingsResponse(
+    val response: RetrieveSavingsResponse = RetrieveSavingsResponse(
       submittedOn = Timestamp("2019-04-04T01:01:01.000Z"),
       securities = None,
       foreignInterest = None

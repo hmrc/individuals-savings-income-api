@@ -20,9 +20,6 @@ import api.models.domain.Nino
 import models.domain.SavingsAccountId
 import v2.listUkSavingsAccounts.ListUkSavingsAccountsSchema
 
-trait ListUkSavingsAccountsRequestData {
-  def nino: Nino
-  def savingsAccountId: Option[SavingsAccountId]
-
-  val schema: ListUkSavingsAccountsSchema
+case class ListUkSavingsAccountsRequestData(nino: Nino, savingsAccountId: Option[SavingsAccountId]) {
+  val schema: ListUkSavingsAccountsSchema = ListUkSavingsAccountsSchema
 }

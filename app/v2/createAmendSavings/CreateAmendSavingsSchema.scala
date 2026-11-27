@@ -18,8 +18,4 @@ package v2.createAmendSavings
 
 sealed trait CreateAmendSavingsSchema
 
-object CreateAmendSavingsSchema {
-
-  case object Def1 extends CreateAmendSavingsSchema
-
-}
+case object CreateAmendSavingsSchema extends CreateAmendSavingsSchema

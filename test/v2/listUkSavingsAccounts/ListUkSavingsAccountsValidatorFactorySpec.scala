@@ -18,7 +18,6 @@ package v2.listUkSavingsAccounts
 
 import api.controllers.validators.Validator
 import api.utils.UnitSpec
-import v2.listUkSavingsAccounts.def1.Def1_ListUkSavingsAccountsValidator
 import v2.listUkSavingsAccounts.model.request.ListUkSavingsAccountsRequestData
 
 class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec {
@@ -35,7 +34,7 @@ class ListUkSavingsAccountsValidatorFactorySpec extends UnitSpec {
         val result: Validator[ListUkSavingsAccountsRequestData] =
           validatorFactory.validator(validNino, validSavingsAccountId)
 
-        result shouldBe a[Def1_ListUkSavingsAccountsValidator]
+        result shouldBe a[ListUkSavingsAccountsValidator]
       }
     }
 

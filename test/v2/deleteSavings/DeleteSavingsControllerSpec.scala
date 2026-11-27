@@ -26,7 +26,6 @@ import api.routing.{Version, Version2}
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import v2.deleteSavings.def1.model.request.Def1_DeleteSavingsRequestData
 import v2.deleteSavings.model.request.DeleteSavingsRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -43,7 +42,7 @@ class DeleteSavingsControllerSpec
 
   private val taxYear = "2021-22"
 
-  private val requestData: DeleteSavingsRequestData = Def1_DeleteSavingsRequestData(
+  private val requestData: DeleteSavingsRequestData = DeleteSavingsRequestData(
     nino = Nino(validNino),
     taxYear = TaxYear.fromMtd(taxYear)
   )

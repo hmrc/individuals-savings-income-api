@@ -19,9 +19,6 @@ package v2.addUkSavingsAccount.model.request
 import api.models.domain.Nino
 import v2.addUkSavingsAccount.AddUkSavingsAccountSchema
 
-trait AddUkSavingsAccountRequestData {
-  def nino: Nino
-  def body: AddUkSavingsAccountRequestBody
-
-  val schema: AddUkSavingsAccountSchema
+case class AddUkSavingsAccountRequestData(nino: Nino, body: AddUkSavingsAccountRequestBody) {
+  val schema: AddUkSavingsAccountSchema = AddUkSavingsAccountSchema
 }
